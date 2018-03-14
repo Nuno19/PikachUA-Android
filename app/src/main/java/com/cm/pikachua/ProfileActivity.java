@@ -1,17 +1,19 @@
-package com.cm.nuno.weatherapp;
+package com.cm.pikachua;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.widget.FrameLayout;
 
-public class DailyForecastActivity extends AppCompatActivity {
+import com.cm.nuno.weatherapp.R;
+
+public class ProfileActivity extends AppCompatActivity {
 
     private boolean isTwoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_daily_forecast);
+        setContentView(R.layout.activity_profile);
         determinePaneLayout();
 
         if (findViewById(R.id.fragment_container) != null) {
@@ -24,7 +26,7 @@ public class DailyForecastActivity extends AppCompatActivity {
             }
 
             // Create a new Fragment to be placed in the activity layout
-            DailyListFragment firstFragment = new DailyListFragment();
+            ProfileFragment firstFragment = new ProfileFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
@@ -32,11 +34,7 @@ public class DailyForecastActivity extends AppCompatActivity {
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
-
-
         }
-
-
     }
 
     private void determinePaneLayout() {

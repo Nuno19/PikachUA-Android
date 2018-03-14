@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragmentItemsList"
-        android:name="com.cm.nuno.weatherapp.DailyListFragment"
+        android:name="com.cm.pikachua.DailyListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

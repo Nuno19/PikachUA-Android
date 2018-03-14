@@ -3,24 +3,34 @@
     package="com.cm.nuno.weatherapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/pikachua"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/pikachua"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".MainActivity" />
 
-        <activity android:name=".DailyForecastActivity">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name="com.cm.pikachua.MapsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.cm.pikachua.StorageActivity" />
+        <activity android:name="com.cm.pikachua.CollectionActivity" />
+        <activity android:name="com.cm.pikachua.BagActivity" />
+        <activity android:name="com.cm.pikachua.SettingsActivity" />
+        <activity android:name="com.cm.pikachua.ProfileActivity"></activity>
     </application>
 
 </manifest>
