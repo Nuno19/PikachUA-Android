@@ -32,6 +32,7 @@ public class StorageFragment extends Fragment {
     CharSequence[] values = {" Sort By Alphabetic Order "," Sort By Number "," Sort By Better Stat "};
     AlertDialog alertDialog1;
     Editable YouEditTextValue;
+    boolean searching = false;
 
     int choice = 0;
 
@@ -73,29 +74,38 @@ public class StorageFragment extends Fragment {
                         "Search", Toast.LENGTH_LONG)
                         .show();
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                final EditText edittext = new EditText(getContext());
-                edittext.setText(YouEditTextValue);
-                alert.setTitle("Search");
+                if (searching == false){
+                    searching = true;
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                    final EditText edittext = new EditText(getContext());
+                    edittext.setText(YouEditTextValue);
+                    alert.setTitle("Search");
 
-                alert.setView(edittext);
+                    alert.setView(edittext);
 
-                alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //What ever you want to do with the value
-                        YouEditTextValue = edittext.getText();
-                        button_search.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
-                    }
-                });
+                    alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //What ever you want to do with the value
+                            YouEditTextValue = edittext.getText();
+                            button_search.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+                        }
+                    });
 
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        button_search.getBackground().clearColorFilter();
-                        YouEditTextValue = null;
-                    }
-                });
+                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
 
-                alert.show();
+                        }
+                    });
+
+                    alert.show();
+                }
+                else {
+                    searching = false;
+                    button_search.getBackground().clearColorFilter();
+                    YouEditTextValue = null;
+                }
+
+
 
             }
         });

@@ -33,7 +33,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="30dp"
-        android:src="@drawable/bag"
+        android:src="@drawable/collection"
         android:background="@null"/>
 
     <ImageButton
@@ -48,7 +48,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="30dp"
-        android:src="@drawable/collection"
+        android:src="@drawable/bag"
         android:background="@null"/>
 
     <ImageButton
