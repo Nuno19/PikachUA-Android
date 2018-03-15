@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cm.nuno.weatherapp.R;
-
 /**
  * Created by PedroRaimundo on 2018-03-14.
  */

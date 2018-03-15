@@ -13,8 +13,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cm.nuno.weatherapp.R;
-
 import java.util.ArrayList;
 
 

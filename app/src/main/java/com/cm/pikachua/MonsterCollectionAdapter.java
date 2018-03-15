@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.cm.nuno.weatherapp.R;
+import com.cm.pikachua.MonsterCollection;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 
 public class MonsterCollectionAdapter extends ArrayAdapter<MonsterCollection> {
+
     public MonsterCollectionAdapter(Context context, ArrayList<MonsterCollection> monsterCollections) {
         super(context, 0, monsterCollections);
     }

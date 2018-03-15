@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cm.nuno.weatherapp.R;
-
 import java.util.ArrayList;
 
 /**
@@ -22,10 +20,10 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup parent) {
+    public View getView(final int i, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        Item item = getItem(i);
+        final Item item = getItem(i);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {

@@ -1,14 +1,13 @@
 package com.cm.pikachua;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.cm.nuno.weatherapp.R;
 
 import java.util.ArrayList;
 
@@ -17,8 +16,12 @@ import java.util.ArrayList;
  */
 
 public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
+
+    public ArrayList selectedPositions;
+
     public MonsterStorageAdapter(Context context, ArrayList<MonsterStorage> items) {
         super(context, 0, items);
+        selectedPositions = new ArrayList<>();
     }
 
     @Override
@@ -36,7 +39,14 @@ public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
         textViewAndroid1.setText(monsterStorage.monsterName);
 
         TextView textViewAndroid2 = (TextView) convertView.findViewById(R.id.item_text2);
-        textViewAndroid2.setText( String.valueOf(monsterStorage.stat));
+        textViewAndroid2.setText(String.valueOf(monsterStorage.stat) + "%");
+
+        if (selectedPositions.contains(i)){
+            convertView.setBackgroundColor(Color.rgb(255,255,153));
+        }
+        else {
+            convertView.setBackgroundColor(Color.rgb(242,242,242));
+        }
 
         ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);
         imageViewAndroid.setImageResource(monsterStorage.monsterImage);

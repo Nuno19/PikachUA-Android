@@ -31,7 +31,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="10sp" >
+        android:textSize="15sp" >
     </TextView>
 
 </android.support.constraint.ConstraintLayout>

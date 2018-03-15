@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.cm.nuno.weatherapp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -81,8 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         "Profile", Toast.LENGTH_LONG)
                         .show();
 
-                Intent myIntent = new Intent(getParent(),ProfileActivity.class);
-                getParent().startActivity(myIntent);
+                Intent myIntent = new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(myIntent);
             }
         });
 

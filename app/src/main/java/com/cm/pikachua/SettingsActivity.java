@@ -4,8 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
-import com.cm.nuno.weatherapp.R;
-
 public class SettingsActivity extends AppCompatActivity {
 
     private boolean isTwoPane = false;
