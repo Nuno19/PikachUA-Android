@@ -37,21 +37,21 @@ public class StorageFragment extends Fragment {
     int choice = 0;
 
     int[] gridViewStat = {
-            1,4,2,3,4,5,
-            10,8,9,7,2,6,
-            11,12,3,13,0,1
+            100,100,100,100,100,100,
+            100,100,100,100,100,100,
+            100,100,100,100,100,100,
     };
 
     String[] gridViewString = {
-            "Alram", "Android", "Mobile", "Website", "Profile", "WordPress",
-            "Alram", "Android", "Mobile", "Website", "Profile", "WordPress",
-            "Alram", "Android", "Mobile", "Website", "Profile", "WordPress"
+            "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo",
+            "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo",
+            "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo"
 
     } ;
     int[] gridViewImageId = {
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background
+            R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo,
+            R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo,
+            R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo
 
     };
 

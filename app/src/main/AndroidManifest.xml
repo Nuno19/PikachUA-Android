@@ -18,7 +18,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="com.cm.pikachua.MapsActivity">
+        <activity android:name="com.cm.pikachua.MapsActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +27,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.cm.pikachua.StorageActivity" />
-        <activity android:name="com.cm.pikachua.CollectionActivity" />
-        <activity android:name="com.cm.pikachua.BagActivity" />
-        <activity android:name="com.cm.pikachua.SettingsActivity" />
-        <activity android:name="com.cm.pikachua.ProfileActivity"></activity>
+        <activity android:name="com.cm.pikachua.StorageActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.cm.pikachua.CollectionActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.cm.pikachua.BagActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.cm.pikachua.SettingsActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.cm.pikachua.ProfileActivity" android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

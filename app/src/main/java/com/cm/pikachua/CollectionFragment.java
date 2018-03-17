@@ -24,13 +24,13 @@ public class CollectionFragment extends Fragment {
     ArrayList<MonsterCollection> arrayOfMonsterCollections = new ArrayList<MonsterCollection>();
 
     boolean[] gridViewHasBeenCaught = {
-            true,false,true,false,true,false,
-            true,true,true,true,false,true,
-            true,true,false,true,true,false,
-            true,false,true,false,true,false,
-            true,true,true,true,false,true,
-            true,true,false,true,true,false,
-            true
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,true,
+            false
     };
 
     int[] gridViewImageId = {
@@ -39,7 +39,7 @@ public class CollectionFragment extends Fragment {
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.mewtwo,
             R.drawable.ic_launcher_background
 
     };

@@ -114,10 +114,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(),
-                        "Mais", Toast.LENGTH_LONG)
+                        "Catch", Toast.LENGTH_LONG)
                         .show();
 
                 CatchFragment newFragment = new CatchFragment();
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.map_container, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+                Log.d("T", "DailyFor");
+            }
+        });
+
+        ImageView imageV2 = findViewById(R.id.imageV2);
+        imageV2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),
+                        "Restock", Toast.LENGTH_LONG)
+                        .show();
+
+                RestockFragment newFragment = new RestockFragment();
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
