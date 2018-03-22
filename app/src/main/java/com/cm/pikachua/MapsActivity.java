@@ -113,11 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),
-                        "Catch", Toast.LENGTH_LONG)
-                        .show();
 
-                CatchFragment newFragment = new CatchFragment();
+                CatchFragment newFragment = new CatchFragment().newInstance(Integer.toString(123));
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -136,11 +133,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         imageV2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),
-                        "Restock", Toast.LENGTH_LONG)
-                        .show();
 
-                RestockFragment newFragment = new RestockFragment();
+                RestockFragment newFragment = new RestockFragment().newInstance(Integer.toString(123));
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 

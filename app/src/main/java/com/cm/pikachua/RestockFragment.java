@@ -18,14 +18,44 @@ import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Use the {@link RestockFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
 public class RestockFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
 
-    private static final String DEBUG_TAG = "Gestures";
-    private GestureDetectorCompat mDetector;
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+
 
     public RestockFragment() {
         // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @return A new instance of fragment DetailsFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static RestockFragment newInstance(String param1) {
+        RestockFragment fragment = new RestockFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+        }
     }
 
 
@@ -35,6 +65,8 @@ public class RestockFragment extends Fragment {
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_restock, container, false);
+
+        Toast.makeText(getContext(), "PokéStop: " + mParam1, Toast.LENGTH_LONG).show();
 
         Button button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
