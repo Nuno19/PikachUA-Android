@@ -8,28 +8,30 @@
     tools:context="com.cm.pikachua.BagFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_back"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="45sp"
+        android:layout_height="45sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="20sp"
+        android:scaleType="center"
+        android:src="@drawable/btn_back_normal_white"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title1"
         android:gravity="center|top"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_height="match_parent"
         android:text="@string/bag" />
 
     <TextView
         android:id="@+id/total1"
         android:gravity="center|top"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="80sp"
         android:layout_width="match_parent"
         android:textSize="15dp"
         android:layout_height="match_parent" />
@@ -37,12 +39,12 @@
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
-        android:layout_marginTop="120dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:verticalSpacing="20dp"
+        android:layout_marginTop="120sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        android:verticalSpacing="20sp"
         android:layout_height="match_parent"
         android:divider="@color/colorBackground"
-        android:dividerHeight="10px"/>
+        android:dividerHeight="10sp"/>
 
 </android.support.constraint.ConstraintLayout>

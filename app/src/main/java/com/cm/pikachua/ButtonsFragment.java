@@ -29,18 +29,6 @@ public class ButtonsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_buttons, container, false);
 
-        ImageButton but1 = rootView.findViewById(R.id.button1);
-        but1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Menos", Toast.LENGTH_LONG)
-                        .show();
-
-                getFragmentManager().popBackStack();
-            }
-        });
-
         ImageButton but2 = rootView.findViewById(R.id.button2);
         but2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +41,7 @@ public class ButtonsFragment extends Fragment {
                 getActivity().startActivity(myIntent);
 
                 getFragmentManager().popBackStack();
-                //((StorageActivity) getActivity() ).overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+                MapsActivity.buttons = false;
             }
         });
 
@@ -69,7 +57,7 @@ public class ButtonsFragment extends Fragment {
                 getActivity().startActivity(myIntent);
 
                 getFragmentManager().popBackStack();
-                //((BagActivity) getActivity() ).overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+                MapsActivity.buttons = false;
             }
         });
 
@@ -85,6 +73,7 @@ public class ButtonsFragment extends Fragment {
                 getActivity().startActivity(myIntent);
 
                 getFragmentManager().popBackStack();
+                MapsActivity.buttons = false;
             }
         });
 
@@ -100,6 +89,7 @@ public class ButtonsFragment extends Fragment {
                 getActivity().startActivity(myIntent);
 
                 getFragmentManager().popBackStack();
+                MapsActivity.buttons = false;
             }
         });
 

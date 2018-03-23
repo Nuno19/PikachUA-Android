@@ -13,25 +13,36 @@
         android:roundIcon="@mipmap/pikachua"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="com.cm.pikachua.MapsActivity"
-            android:screenOrientation="portrait" >
+        <activity
+            android:name=".MapsActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.cm.pikachua.StorageActivity" android:screenOrientation="portrait" />
-        <activity android:name="com.cm.pikachua.CollectionActivity" android:screenOrientation="portrait" />
-        <activity android:name="com.cm.pikachua.BagActivity" android:screenOrientation="portrait" />
-        <activity android:name="com.cm.pikachua.SettingsActivity" android:screenOrientation="portrait" />
-        <activity android:name="com.cm.pikachua.ProfileActivity" android:screenOrientation="portrait" ></activity>
+        <activity
+            android:name=".StorageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CollectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BagActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RestockActivity" />
+        <activity android:name=".CatchActivity"></activity>
     </application>
 
 </manifest>

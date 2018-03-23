@@ -5,24 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.cm.pikachua.RestockFragment">
+    tools:context="com.cm.pikachua.RestockActivity">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_back"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="45sp"
+        android:layout_height="45sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="20sp"
+        android:scaleType="center"
+        android:src="@drawable/btn_back_normal_white"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title1"
         android:gravity="center|top"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_height="match_parent"
         android:text="@string/restock" />
 
@@ -31,9 +33,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginStart="80dp"
-        android:src="@drawable/ic_launcher_background"/>
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="80sp"
+        android:layout_marginEnd="80sp"
+        android:layout_marginStart="80sp"
+        android:src="@drawable/pokestop_interaction"/>
 
 </android.support.constraint.ConstraintLayout>

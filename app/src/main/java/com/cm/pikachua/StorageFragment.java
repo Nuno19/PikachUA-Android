@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.util.Log;
@@ -66,7 +67,7 @@ public class StorageFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
 
-        final Button button_search = rootView.findViewById(R.id.button_search);
+        final FloatingActionButton button_search = rootView.findViewById(R.id.button_search);
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +76,6 @@ public class StorageFragment extends Fragment {
                         .show();
 
                 if (searching == false){
-                    searching = true;
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                     final EditText edittext = new EditText(getContext());
                     edittext.setText(YouEditTextValue);
@@ -87,7 +87,8 @@ public class StorageFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             //What ever you want to do with the value
                             YouEditTextValue = edittext.getText();
-                            button_search.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+                            searching = true;
+                            button_search.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.MULTIPLY);
                         }
                     });
 
@@ -110,7 +111,7 @@ public class StorageFragment extends Fragment {
             }
         });
 
-        Button button_back = rootView.findViewById(R.id.button_back);
+        FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

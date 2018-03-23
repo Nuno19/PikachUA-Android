@@ -2,6 +2,7 @@ package com.cm.pikachua;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +30,49 @@ public class CollectionFragment extends Fragment {
             false,false,false,false,false,false,
             false,false,false,false,false,false,
             false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
+            false,false,false,false,false,false,
             false,false,false,false,false,true,
             false
     };
 
     int[] gridViewImageId = {
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
             R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
@@ -45,6 +84,25 @@ public class CollectionFragment extends Fragment {
     };
 
     int[] gridViewNotImageId = {
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
+            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
             R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
             R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
             R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
@@ -66,7 +124,7 @@ public class CollectionFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_collection, container, false);
 
-        Button button_back = rootView.findViewById(R.id.button_back);
+        FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

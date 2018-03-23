@@ -16,12 +16,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20sp"/>
 
     <Button
         android:id="@+id/button_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />

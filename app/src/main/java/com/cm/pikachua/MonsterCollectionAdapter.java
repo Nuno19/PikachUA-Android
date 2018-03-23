@@ -29,7 +29,7 @@ public class MonsterCollectionAdapter extends ArrayAdapter<MonsterCollection> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_grid_2texts, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_grid_images, parent, false);
         }
 
         ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);

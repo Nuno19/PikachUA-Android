@@ -2,6 +2,7 @@ package com.cm.pikachua;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -26,29 +27,24 @@ public class BagFragment extends Fragment {
 
     int[] listViewTotalId = {
             1,2,3,4,5,6,
-            7,8,9,10,11,12,
-            13,14,15,16,0,18
+            7,8,
     };
 
     String[] listViewStringTitle = {
-            "Alram", "Android", "Mobile", "Website", "Profile", "WordPress",
-            "Alram", "Android", "Mobile", "Website", "Profile", "WordPress",
-            "Alram", "Android", "Mobile", "Website", "Profile", "WordPress"
+            "Razz Berry", "Unkown Berry 1", "Unkown Berry 2", "Golden Razz Berry", "PokéBall", "GreatBall",
+            "UltraBall", "MasterBall",
 
     } ;
 
     String[] listViewStringSubtitle = {
             "1","2","3","4","5","6",
-            "7","8","9","10","11","12",
-            "13","14","15","16","17","18"
+            "7","8",
 
     } ;
 
     int[] listViewImageId = {
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background
-
+            R.drawable.item_0701, R.drawable.item_0702, R.drawable.item_0704, R.drawable.item_0706, R.drawable.pokeball_sprite, R.drawable.greatball_sprite,
+            R.drawable.ultraball_sprite, R.drawable.masterball_sprite,
     };
 
 
@@ -63,7 +59,7 @@ public class BagFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_bag, container, false);
 
-        Button button_back = rootView.findViewById(R.id.button_back);
+        FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -9,6 +9,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -49,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationRequest mLocationRequest;
     private double longitude;
     private double latitude;
+    public static boolean buttons = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,26 +88,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        ImageButton but = findViewById(R.id.menu);
+        FloatingActionButton but = findViewById(R.id.menu);
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),
-                        "Mais", Toast.LENGTH_LONG)
-                        .show();
+                if (buttons == false){
+                    buttons = true;
+                    Toast.makeText(getApplicationContext(),
+                            "Mais", Toast.LENGTH_LONG)
+                            .show();
 
-                ButtonsFragment newFragment = new ButtonsFragment();
+                    ButtonsFragment newFragment = new ButtonsFragment();
 
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.map_container, newFragment);
-                transaction.addToBackStack(null);
+                    // Replace whatever is in the fragment_container view with this fragment,
+                    // and add the transaction to the back stack so the user can navigate back
+                    transaction.replace(R.id.map_container, newFragment);
+                    transaction.addToBackStack(null);
 
-                // Commit the transaction
-                transaction.commit();
-                Log.d("T", "DailyFor");
+                    // Commit the transaction
+                    transaction.commit();
+                    Log.d("T", "DailyFor");
+                }
+                else {
+                    buttons = false;
+                    Toast.makeText(getApplicationContext(),
+                            "Menos", Toast.LENGTH_LONG)
+                            .show();
+
+                    getFragmentManager().popBackStack();
+                }
             }
         });
 
@@ -114,18 +127,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                CatchFragment newFragment = new CatchFragment().newInstance(Integer.toString(123));
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.map_container, newFragment);
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
-                Log.d("T", "DailyFor");
+                Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                intent.putExtra("ID", Integer.toString(123));
+                startActivity(intent);
             }
         });
 
@@ -134,18 +138,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                RestockFragment newFragment = new RestockFragment().newInstance(Integer.toString(123));
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.map_container, newFragment);
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
-                Log.d("T", "DailyFor");
+                Intent intent = new Intent(getBaseContext(), RestockActivity.class);
+                intent.putExtra("ID", Integer.toString(123));
+                startActivity(intent);
             }
         });
 

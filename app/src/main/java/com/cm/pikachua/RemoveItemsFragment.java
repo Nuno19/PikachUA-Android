@@ -4,6 +4,7 @@ package com.cm.pikachua;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +72,7 @@ public class RemoveItemsFragment extends Fragment {
         TextView t2 = rootView.findViewById(R.id.title2);
         t2.setText("How many items to delete?");
 
-        Button button_back = rootView.findViewById(R.id.button_back);
+        FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

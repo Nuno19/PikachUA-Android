@@ -8,27 +8,28 @@
 
     <ImageView
         android:id="@+id/item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="108sp"
+        android:layout_height="108sp" >
     </ImageView>
 
     <TextView
         android:id="@+id/item_text1"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="120sp"
+        android:layout_marginTop="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="15sp" >
+        android:textSize="15sp"
+        android:textStyle="bold">
     </TextView>
 
     <TextView
         android:id="@+id/item_text2"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="120sp"
+        android:layout_marginTop="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"

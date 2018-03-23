@@ -2,6 +2,7 @@ package com.cm.pikachua;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Button button_back = rootView.findViewById(R.id.button_back);
+        FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +51,7 @@ public class ProfileFragment extends Fragment {
         });
 
         String[] user = new String[] {"Raimas96", "2017-03-22", getDecimal(34378989), getDecimal(2100000000)};
-        int userInt = R.drawable.ic_launcher_background;
+        int userInt = R.drawable.jv_7adtj;
 
         TextView textViewAndroid1 = (TextView) rootView.findViewById(R.id.username);
         textViewAndroid1.setText("Username: " + user[0]);
