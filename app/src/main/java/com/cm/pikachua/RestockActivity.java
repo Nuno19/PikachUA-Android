@@ -24,9 +24,7 @@ public class RestockActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),
-                        "Voltar", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getApplicationContext(), "Voltar", Toast.LENGTH_LONG).show();
 
                 onBackPressed();
 

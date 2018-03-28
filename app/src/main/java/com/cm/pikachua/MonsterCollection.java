@@ -7,14 +7,18 @@ package com.cm.pikachua;
 public class MonsterCollection {
 
     public int monsterID;
+    public String monsterName;
     public int monsterImage;
     public int monsterNotImage;
     public boolean hasBennCaught;
+    public String monsterText;
 
-    public MonsterCollection(int monsterID, int monsterImage, int monsterNotImage, boolean hasBennCaught) {
+    public MonsterCollection(int monsterID, String monsterName, int monsterImage, int monsterNotImage, boolean hasBennCaught, String monsterText) {
         this.monsterID = monsterID;
+        this.monsterName = monsterName;
         this.monsterImage = monsterImage;
         this.monsterNotImage = monsterNotImage;
         this.hasBennCaught = hasBennCaught;
+        this.monsterText = monsterText;
     }
 }

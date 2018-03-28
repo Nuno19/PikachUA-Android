@@ -76,9 +76,7 @@ public class RemoveItemsFragment extends Fragment {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Voltar", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
 
                 getActivity().onBackPressed();
 
@@ -95,9 +93,6 @@ public class RemoveItemsFragment extends Fragment {
                     Toast.makeText(getContext(), "Empty field text", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(getContext(), mParam1 + ": " + Integer.parseInt(quantity.getText().toString())
-                        , Toast.LENGTH_LONG)
-                        .show();
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 if (Integer.parseInt(quantity.getText().toString()) <= 0){
@@ -120,6 +115,7 @@ public class RemoveItemsFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                Toast.makeText(getContext(), mParam1 + ": " + Integer.parseInt(quantity.getText().toString()), Toast.LENGTH_LONG).show();
                                 getActivity().onBackPressed();
                             }
                         });

@@ -30,9 +30,7 @@ public class CatchActivity extends AppCompatActivity {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CatchActivity.this,
-                        "Voltar", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(CatchActivity.this, "Voltar", Toast.LENGTH_LONG).show();
 
                 onBackPressed();
 
@@ -43,9 +41,7 @@ public class CatchActivity extends AppCompatActivity {
         button_balls.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CatchActivity.this,
-                        "Ball", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(CatchActivity.this, "Ball", Toast.LENGTH_LONG).show();
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(CatchActivity.this);
                 builder1.setTitle("Select Your Ball");
@@ -56,19 +52,19 @@ public class CatchActivity extends AppCompatActivity {
                         switch(item)
                         {
                             case 0:
-                                Toast.makeText(CatchActivity.this, "Normal Ball", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Normal Ball", Toast.LENGTH_LONG).show();
                                 choice_ball = 0;
                                 break;
                             case 1:
-                                Toast.makeText(CatchActivity.this, "Great Ball", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Great Ball", Toast.LENGTH_LONG).show();
                                 choice_ball = 1;
                                 break;
                             case 2:
-                                Toast.makeText(CatchActivity.this, "Ultra Ball", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Ultra Ball", Toast.LENGTH_LONG).show();
                                 choice_ball = 2;
                                 break;
                             case 3:
-                                Toast.makeText(CatchActivity.this, "Master Ball", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Master Ball", Toast.LENGTH_LONG).show();
                                 choice_ball = 3;
                                 break;
                         }
@@ -84,9 +80,7 @@ public class CatchActivity extends AppCompatActivity {
         button_berries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CatchActivity.this,
-                        "Berries", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(CatchActivity.this, "Berries", Toast.LENGTH_LONG).show();
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(CatchActivity.this);
                 builder2.setTitle("Select Your Berry");
@@ -96,23 +90,23 @@ public class CatchActivity extends AppCompatActivity {
 
                         switch (item) {
                             case 0:
-                                Toast.makeText(CatchActivity.this, "None", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "None", Toast.LENGTH_LONG).show();
                                 choice_berry = 0;
                                 break;
                             case 1:
-                                Toast.makeText(CatchActivity.this, "Razz Berry", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Razz Berry", Toast.LENGTH_LONG).show();
                                 choice_berry = 1;
                                 break;
                             case 2:
-                                Toast.makeText(CatchActivity.this, "Unkown Berry 1", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Unkown Berry 1", Toast.LENGTH_LONG).show();
                                 choice_berry = 2;
                                 break;
                             case 3:
-                                Toast.makeText(CatchActivity.this, "Unkown Berry 2", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Unkown Berry 2", Toast.LENGTH_LONG).show();
                                 choice_berry = 3;
                                 break;
                             case 4:
-                                Toast.makeText(CatchActivity.this, "Golden Razz Berry", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(CatchActivity.this, "Golden Razz Berry", Toast.LENGTH_LONG).show();
                                 choice_berry = 4;
                                 break;
                         }

@@ -33,9 +33,7 @@ public class ButtonsFragment extends Fragment {
         but2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Storage", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Storage", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(), StorageActivity.class);
                 getActivity().startActivity(myIntent);
@@ -49,9 +47,7 @@ public class ButtonsFragment extends Fragment {
         but3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Bag", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Bag", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(), BagActivity.class);
                 getActivity().startActivity(myIntent);
@@ -65,9 +61,7 @@ public class ButtonsFragment extends Fragment {
         but4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Collection", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Collection", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(), CollectionActivity.class);
                 getActivity().startActivity(myIntent);
@@ -81,9 +75,7 @@ public class ButtonsFragment extends Fragment {
         but5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Settings", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Settings", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(),SettingsActivity.class);
                 getActivity().startActivity(myIntent);

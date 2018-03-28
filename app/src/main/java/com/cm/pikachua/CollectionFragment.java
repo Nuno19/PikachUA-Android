@@ -4,6 +4,7 @@ package com.cm.pikachua;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,18 @@ import java.util.ArrayList;
 public class CollectionFragment extends Fragment {
 
     ArrayList<MonsterCollection> arrayOfMonsterCollections = new ArrayList<MonsterCollection>();
+
+    String[] gridMonsterName = {
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+            "", "", "", "", "", "MewTwo", ""
+    };
 
     boolean[] gridViewHasBeenCaught = {
             false,false,false,false,false,false,
@@ -128,9 +141,7 @@ public class CollectionFragment extends Fragment {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Voltar", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
 
                 getActivity().onBackPressed();
 
@@ -143,7 +154,7 @@ public class CollectionFragment extends Fragment {
 
         int number = 0;
         for (int i=0;i<gridViewHasBeenCaught.length;i++){
-                MonsterCollection x = new MonsterCollection(i, gridViewImageId[i], gridViewNotImageId[i], gridViewHasBeenCaught[i]);
+                MonsterCollection x = new MonsterCollection(i, gridMonsterName[i], gridViewImageId[i], gridViewNotImageId[i], gridViewHasBeenCaught[i], "");
                 adapter.add(x);
             if (gridViewHasBeenCaught[i] == true) {
                 number += 1;
@@ -160,7 +171,24 @@ public class CollectionFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
-                Toast.makeText(getContext(), "GridView Item: " + adapter.getItem(i).monsterID, Toast.LENGTH_LONG).show();
+
+                if (adapter.getItem(i).hasBennCaught == true){
+                    //Toast.makeText(getContext(), "GridView Item: " + adapter.getItem(i).monsterID, Toast.LENGTH_LONG).show();
+
+                    MonsterBioFragment newFragment = MonsterBioFragment.newInstance(adapter.getItem(i).monsterName);
+
+                    FragmentTransaction transaction =  getFragmentManager().beginTransaction();
+
+                    // Replace whatever is in the fragment_container view with this fragment,
+                    // and add the transaction to the back stack so the user can navigate back
+                    transaction.replace(R.id.fragment_container, newFragment);
+                    transaction.addToBackStack(null);
+
+                    arrayOfMonsterCollections.clear();
+
+                    // Commit the transaction
+                    transaction.commit();
+                }
             }
         });
 

@@ -1,27 +1,25 @@
 package com.cm.pikachua;
 
-
-import android.os.Bundle;
+import android.app.Activity;
+import android.app.Dialog;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class BagFragment extends Fragment {
+public class BagNumberPicker extends Activity implements NumberPicker.OnValueChangeListener
+{
+    private TextView tv;
+    static Dialog d ;
 
     ArrayList<Item> arrayOfItems = new ArrayList<Item>();
 
@@ -48,30 +46,24 @@ public class BagFragment extends Fragment {
     };
 
 
-    public BagFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_bag, container, false);
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_bag);
 
-        FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
+        FloatingActionButton button_back = findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
 
-                getActivity().onBackPressed();
-
+                onBackPressed();
             }
         });
 
 
-        final ItemAdapter adapter = new ItemAdapter(getContext(), arrayOfItems);
+        final ItemAdapter adapter = new ItemAdapter(this, arrayOfItems);
 
         Log.d("T","e");
 
@@ -86,10 +78,10 @@ public class BagFragment extends Fragment {
 
         int total = 200;
 
-        TextView t = rootView.findViewById(R.id.total1);
+        TextView t = findViewById(R.id.total1);
         t.setText("Max: " + number + "/" + total);
 
-        final ListView androidListView = (ListView) rootView.findViewById(R.id.list_view);
+        final ListView androidListView = (ListView) findViewById(R.id.list_view);
         androidListView.setAdapter(adapter);
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -98,23 +90,46 @@ public class BagFragment extends Fragment {
                                     int i, long id) {
                 //Toast.makeText(getContext(), "ListView Item: " + adapter.getItem(i).itemID, Toast.LENGTH_LONG).show();
 
-                RemoveItemsFragment newFragment = RemoveItemsFragment.newInstance(adapter.getItem(i).itemName);
-
-                FragmentTransaction transaction =  getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack(null);
-
-                arrayOfItems.clear();
-
-                // Commit the transaction
-                transaction.commit();
+                show(Integer.toString(adapter.getItem(i).itemID));
             }
         });
+    }
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
-        return rootView;
+        Log.i("value is",""+newVal);
+
     }
 
+    public void show(String i)
+    {
+
+        final Dialog d = new Dialog(this);
+        d.setTitle("How many " + i + " to delete?");
+        d.setContentView(R.layout.numberpicker);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(200); // max value 100
+        np.setMinValue(1);   // min value 1
+        np.setWrapSelectorWheel(false);
+        np.setOnValueChangedListener(this);
+        b1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                d.dismiss(); // dismiss the dialog
+            }
+        });
+        d.show();
+
+
+    }
 }

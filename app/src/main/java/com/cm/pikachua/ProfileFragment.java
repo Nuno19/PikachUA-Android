@@ -41,9 +41,7 @@ public class ProfileFragment extends Fragment {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Voltar", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
 
                 getActivity().onBackPressed();
 
@@ -71,9 +69,7 @@ public class ProfileFragment extends Fragment {
         imageViewAndroid.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "És feio, esperavas o quê?", Toast.LENGTH_LONG)
-                        .show();
+                Toast.makeText(getContext(), "És feio, esperavas o quê?", Toast.LENGTH_LONG).show();
             }
         });
 

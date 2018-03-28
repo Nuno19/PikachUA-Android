@@ -79,9 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         but_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),
-                        "Profile", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getApplicationContext(), "Profile", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(myIntent);
@@ -94,9 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View view) {
                 if (buttons == false){
                     buttons = true;
-                    Toast.makeText(getApplicationContext(),
-                            "Mais", Toast.LENGTH_LONG)
-                            .show();
+                    //Toast.makeText(getApplicationContext(), "Mais", Toast.LENGTH_LONG).show();
 
                     ButtonsFragment newFragment = new ButtonsFragment();
 
@@ -113,9 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 else {
                     buttons = false;
-                    Toast.makeText(getApplicationContext(),
-                            "Menos", Toast.LENGTH_LONG)
-                            .show();
+                    //Toast.makeText(getApplicationContext(), "Menos", Toast.LENGTH_LONG).show();
 
                     getFragmentManager().popBackStack();
                 }

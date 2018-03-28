@@ -71,9 +71,7 @@ public class StorageFragment extends Fragment {
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Search", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Search", Toast.LENGTH_LONG).show();
 
                 if (searching == false){
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
@@ -115,9 +113,7 @@ public class StorageFragment extends Fragment {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Voltar", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
 
                 getActivity().onBackPressed();
             }
@@ -145,7 +141,7 @@ public class StorageFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
-                Toast.makeText(getContext(), "ListView Item: " + adapter.getItem(i).monsterId, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "ListView Item: " + adapter.getItem(i).monsterId, Toast.LENGTH_LONG).show();
 
                 int selectedIndex = adapter.selectedPositions.indexOf(i);
 
@@ -250,9 +246,7 @@ public class StorageFragment extends Fragment {
         button_sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Sort", Toast.LENGTH_LONG)
-                        .show();
+                //Toast.makeText(getContext(), "Sort", Toast.LENGTH_LONG).show();
 
                 CreateAlertDialogWithRadioButtonGroup();
             }
@@ -273,15 +267,15 @@ public class StorageFragment extends Fragment {
                 switch(item)
                 {
                     case 0:
-                        Toast.makeText(getContext(), "Sort By Alphabetic Order", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "Sort By Alphabetic Order", Toast.LENGTH_LONG).show();
                         choice = 0;
                         break;
                     case 1:
-                        Toast.makeText(getContext(), "Sort By Number", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "Sort By Number", Toast.LENGTH_LONG).show();
                         choice = 1;
                         break;
                     case 2:
-                        Toast.makeText(getContext(), "Sort By Better Stat", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "Sort By Better Stat", Toast.LENGTH_LONG).show();
                         choice = 2;
                         break;
                 }
