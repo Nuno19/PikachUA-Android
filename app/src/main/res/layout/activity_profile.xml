@@ -1,21 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     tools:context="com.cm.pikachua.ProfileActivity">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_back"
+        android:layout_width="45sp"
+        android:layout_height="45sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="20sp"
+        android:scaleType="center"
+        android:src="@drawable/btn_back_normal_white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title1"
+        android:gravity="center|top"
+        android:layout_marginTop="20sp"
+        android:layout_width="match_parent"
+        android:textSize="30sp"
+        android:layout_height="match_parent"
+        android:text="@string/profile" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="200sp"
+        android:layout_height="200sp"
+        android:layout_marginTop="100sp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_camera"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:layout_marginLeft="60sp"
+        android:layout_marginTop="250sp"
+        android:src="@android:drawable/ic_menu_camera"
+        android:text="Change photo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_change"
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:layout_marginRight="60sp"
+        android:layout_marginTop="250sp"
+        android:src="@android:drawable/ic_menu_upload"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="Change photo" />
+
+    <TextView
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container"
-        tools:context="com.cm.nuno.weatherapp.ProfileActivity">
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="330sp"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"></TextView>
 
-    </FrameLayout>
+    <TextView
+        android:id="@+id/startDate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="370sp"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"></TextView>
 
+    <TextView
+        android:id="@+id/totalMonstersCaught"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="410sp"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"></TextView>
+
+    <TextView
+        android:id="@+id/totalEXP"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40sp"
+        android:layout_marginTop="450sp"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"></TextView>
 
 </android.support.constraint.ConstraintLayout>

@@ -75,6 +75,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
+        ImageView imageViewAndroid = (ImageView) findViewById(R.id.button_profile);
+        imageViewAndroid.setImageResource(R.drawable.jv_7adtj);
+
+
         ImageButton but_profile = findViewById(R.id.button_profile);
         but_profile.setOnClickListener(new View.OnClickListener() {
             @Override

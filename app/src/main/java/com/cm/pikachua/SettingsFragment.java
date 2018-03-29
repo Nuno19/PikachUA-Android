@@ -1,6 +1,7 @@
 package com.cm.pikachua;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,18 @@ public class SettingsFragment extends Fragment {
                 //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
 
                 getActivity().onBackPressed();
+
+            }
+        });
+
+        Button login = rootView.findViewById(R.id.button_login);
+        button_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(), "Login", Toast.LENGTH_LONG).show();
+
+                Intent myIntent = new Intent(getActivity(),LoginActivity.class);
+                getActivity().startActivity(myIntent);
 
             }
         });
