@@ -2,18 +2,26 @@ package com.cm.pikachua;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,17 +30,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE = 100;
-    private static final int CAMERA_REQUEST = 1888;
     private ImageView imageViewAndroid;
     private boolean isTwoPane = false;
+
+    File file;
+    Uri uri;
+    Intent CamIntent,GalIntent,CropIntent;
+    final int RequestPermissionCode=1;
+    DisplayMetrics displayMetrics;
+    int width,height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +96,8 @@ public class ProfileActivity extends AppCompatActivity {
         button_change.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent gallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(gallery, PICK_IMAGE);
+                GalIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(Intent.createChooser(GalIntent,"Select Image from Gallery"),2);
             }
         });
 
@@ -89,11 +105,33 @@ public class ProfileActivity extends AppCompatActivity {
         button_camera.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                int permissionCheck = ContextCompat.checkSelfPermission(ProfileActivity.this, android.Manifest.permission.CAMERA);
+                if(permissionCheck == PackageManager.PERMISSION_DENIED)
+                    RequestRuntimePermission();
+
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+
+                CamIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                file = new File(Environment.getExternalStorageDirectory(),
+                        "PikachUA/" + timeStamp + ".jpg");
+                uri = Uri.fromFile(file);
+                CamIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+                CamIntent.putExtra("return-data",true);
+                startActivityForResult(CamIntent,0);
             }
         });
 
+    }
+
+    private void RequestRuntimePermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this, android.Manifest.permission.CAMERA))
+            Toast.makeText(this,"CAMERA permission allows us to access CAMERA app",Toast.LENGTH_SHORT).show();
+        else
+        {
+            ActivityCompat.requestPermissions(ProfileActivity.this,new String[]{android.Manifest.permission.CAMERA},RequestPermissionCode);
+        }
     }
 
     private void determinePaneLayout() {
@@ -115,15 +153,62 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            Uri imageUri = data.getData();
-            imageViewAndroid.setImageURI(imageUri);
+        if(requestCode == 0 && resultCode == RESULT_OK)
+            CropImage();
+
+        else if(requestCode == 2 && resultCode == RESULT_OK)
+        {
+            if(data != null)
+            {
+                uri = data.getData();
+                CropImage();
+            }
         }
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap photo = (Bitmap) extras.get("data");
-            imageViewAndroid.setImageBitmap(photo);
+        else if (requestCode == 1 && resultCode == RESULT_OK)
+        {
+            if(data != null)
+            {
+                Bundle bundle = data.getExtras();
+                Bitmap bitmap = bundle.getParcelable("data");
+                imageViewAndroid.setImageBitmap(bitmap);
+            }
+        }
+    }
+
+    private void CropImage() {
+
+        try{
+            CropIntent = new Intent("com.android.camera.action.CROP");
+            CropIntent.setDataAndType(uri,"image/*");
+
+            CropIntent.putExtra("crop","true");
+            CropIntent.putExtra("outputX",200);
+            CropIntent.putExtra("outputY",200);
+            CropIntent.putExtra("aspectX",4);
+            CropIntent.putExtra("aspectY",4);
+            CropIntent.putExtra("return-data",true);
+
+            startActivityForResult(CropIntent,1);
+        }
+        catch (ActivityNotFoundException ex)
+        {
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case RequestPermissionCode:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this,"Permission Canceled",Toast.LENGTH_SHORT).show();
+            }
+            break;
         }
     }
 }

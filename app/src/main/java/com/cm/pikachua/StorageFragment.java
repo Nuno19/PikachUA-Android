@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class StorageFragment extends Fragment {
 
     ArrayList<MonsterStorage> arrayOfMonsterStorage = new ArrayList<MonsterStorage>();
-    private ArrayList<String> selectedStrings;
+    ArrayList<String> selectedStrings = new ArrayList<String>();
     CharSequence[] values = {" Sort By Alphabetic Order "," Sort By Number "," Sort By Better Stat "};
     AlertDialog alertDialog1;
     Editable YouEditTextValue;
@@ -120,7 +120,6 @@ public class StorageFragment extends Fragment {
         });
 
         final MonsterStorageAdapter adapter = new MonsterStorageAdapter(getContext(), arrayOfMonsterStorage);
-        selectedStrings = new ArrayList<>();
 
         Log.d("T","e");
 

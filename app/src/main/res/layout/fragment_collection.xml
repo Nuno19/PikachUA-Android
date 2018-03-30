@@ -44,8 +44,6 @@
         android:layout_marginTop="120sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp"
-        android:layout_marginBottom="20sp"
-        android:verticalSpacing="10sp"
         android:horizontalSpacing="10sp"
         android:layout_height="match_parent" />
 
