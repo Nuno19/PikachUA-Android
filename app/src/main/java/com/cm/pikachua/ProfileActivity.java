@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton button_camera = findViewById(R.id.button_camera);
+        /*FloatingActionButton button_camera = findViewById(R.id.button_camera);
         button_camera.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -121,7 +121,7 @@ public class ProfileActivity extends AppCompatActivity {
                 CamIntent.putExtra("return-data",true);
                 startActivityForResult(CamIntent,0);
             }
-        });
+        });*/
 
     }
 
@@ -153,24 +153,29 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 0 && resultCode == RESULT_OK)
-            CropImage();
+            //CropImage();
+            requestCode = 1;
 
-        else if(requestCode == 2 && resultCode == RESULT_OK)
+        else if(requestCode == 2)
         {
             if(data != null)
             {
                 uri = data.getData();
-                CropImage();
+                requestCode = 1;
+                //CropImage();
             }
         }
-        else if (requestCode == 1 && resultCode == RESULT_OK)
+
+        if (requestCode == 1)
         {
             if(data != null)
             {
-                Bundle bundle = data.getExtras();
+                /*Bundle bundle = data.getExtras();
                 Bitmap bitmap = bundle.getParcelable("data");
-                imageViewAndroid.setImageBitmap(bitmap);
+                imageViewAndroid.setImageBitmap(bitmap);*/
+                imageViewAndroid.setImageURI(uri);
             }
         }
     }
@@ -180,7 +185,8 @@ public class ProfileActivity extends AppCompatActivity {
         try{
             CropIntent = new Intent("com.android.camera.action.CROP");
             CropIntent.setDataAndType(uri,"image/*");
-
+            CropIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            CropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             CropIntent.putExtra("crop","true");
             CropIntent.putExtra("outputX",200);
             CropIntent.putExtra("outputY",200);
