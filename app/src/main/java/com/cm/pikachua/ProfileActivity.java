@@ -56,9 +56,9 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView imageViewAndroid;
     private boolean isTwoPane = false;
 
-    File file;
-    Uri uri;
     final int RequestPermissionCode = 1;
+    private Intent CropIntent;
+    private Uri uri, uri2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
-
                 onBackPressed();
-
             }
         });
 
@@ -107,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(gallery, Crop.REQUEST_PICK);
+                startActivityForResult(gallery, 0);
             }
         });
 
@@ -123,11 +121,9 @@ public class ProfileActivity extends AppCompatActivity {
                 StrictMode.setVmPolicy(builder.build());
 
                 Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                file = new File(getExternalCacheDir(),
-                        String.valueOf(System.currentTimeMillis()));
-                uri = Uri.fromFile(file);
+                uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "PikachUA/" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg"));
                 camera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(camera, 99);
+                startActivityForResult(camera, 1);
             }
         });
 
@@ -163,100 +159,39 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
-            if (requestCode == Crop.REQUEST_PICK){
-                Uri source_uri = data.getData();
-                Uri destination_uri = Uri.fromFile(new File(getCacheDir(),"cropped"));
-                Crop.of(source_uri, destination_uri).asSquare().start(this);
-                imageViewAndroid.setImageURI(Crop.getOutput(data));
+        if (requestCode == 0 && resultCode == RESULT_OK){
+            if (data != null){
+                uri = data.getData();
+                CropImage();
             }
+        }
 
-            else if (requestCode == Crop.REQUEST_CROP){
-                handle_crop(resultCode,data);
-            }
+        else if (requestCode == 1){
+            CropImage();
+        }
 
-            else if (requestCode == 99){
-                Uri destination_uri = Uri.fromFile(new File(getCacheDir(),String.valueOf(System.currentTimeMillis())));
-                Crop.of(uri, destination_uri).asSquare().start(this);
-                Bitmap bm = decodeFile(destination_uri.getPath());
-                imageViewAndroid.setImageBitmap(bm);
-            }
+        else if (requestCode == 2){
+            imageViewAndroid.setImageURI(uri2);
         }
     }
 
-    public  Bitmap decodeFile(String path) {//you can provide file path here
-        int orientation;
-        try {
-            if (path == null) {
-                return null;
-            }
-            // decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            // Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE = 70;
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;
-            int scale = 0;
-            while (true) {
-                if (width_tmp / 2 < REQUIRED_SIZE
-                        || height_tmp / 2 < REQUIRED_SIZE)
-                    break;
-                width_tmp /= 2;
-                height_tmp /= 2;
-                scale++;
-            }
-            // decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            Bitmap bm = BitmapFactory.decodeFile(path, o2);
-            Bitmap bitmap = bm;
+    private void CropImage() {
 
-            ExifInterface exif = new ExifInterface(path);
-
-            orientation = exif
-                    .getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-
-            Log.e("ExifInteface .........", "rotation ="+orientation);
-
-//          exif.setAttribute(ExifInterface.ORIENTATION_ROTATE_90, 90);
-
-            Log.e("orientation", "" + orientation);
-            Matrix m = new Matrix();
-
-            if ((orientation == ExifInterface.ORIENTATION_ROTATE_180)) {
-                m.postRotate(180);
-//              m.postScale((float) bm.getWidth(), (float) bm.getHeight());
-                // if(m.preRotate(90)){
-                Log.e("in orientation", "" + orientation);
-                bitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
-                        bm.getHeight(), m, true);
-                return bitmap;
-            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
-                m.postRotate(90);
-                Log.e("in orientation", "" + orientation);
-                bitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
-                        bm.getHeight(), m, true);
-                return bitmap;
-            }
-            else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
-                m.postRotate(270);
-                Log.e("in orientation", "" + orientation);
-                bitmap = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(),
-                        bm.getHeight(), m, true);
-                return bitmap;
-            }
-            return bitmap;
-        } catch (Exception e) {
-            return null;
+        try{
+            CropIntent = new Intent("com.android.camera.action.CROP");
+            CropIntent.setDataAndType(uri,"image/*");
+            CropIntent.putExtra("crop","true");
+            CropIntent.putExtra("outputX",200);
+            CropIntent.putExtra("outputY",200);
+            CropIntent.putExtra("aspectX",1);
+            CropIntent.putExtra("aspectY",1);
+            CropIntent.putExtra("return-data",true);
+            uri2 = Uri.fromFile(new File(getExternalCacheDir(), new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg"));
+            CropIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri2);
+            startActivityForResult(CropIntent,2);
         }
+        catch (ActivityNotFoundException ex) {
 
-    }
-
-    public void handle_crop(int resultCode, Intent result) {
-        if (resultCode == RESULT_OK) {
-            imageViewAndroid.setImageURI(Crop.getOutput(result));
-        } else if (resultCode == Crop.RESULT_ERROR) {
-            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
