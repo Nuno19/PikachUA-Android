@@ -13,8 +13,8 @@
         android:layout_marginTop="20sp"
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
-        android:layout_height="match_parent">
-    </ImageView>
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/item_text1"

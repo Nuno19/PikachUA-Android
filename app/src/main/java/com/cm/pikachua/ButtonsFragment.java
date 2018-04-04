@@ -87,5 +87,4 @@ public class ButtonsFragment extends Fragment {
 
         return rootView;
     }
-
 }

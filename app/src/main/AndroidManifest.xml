@@ -11,8 +11,10 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -25,8 +27,13 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="google-signin-client_id"
+            android:value="@string/server_client_id" />
+
         <activity
-            android:name=".MapsActivity"
+            android:name=".GoogleLoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,48 +43,40 @@
         </activity>
         <activity
             android:name=".StorageActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".CollectionActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".BagActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".ProfileActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".RestockActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".CatchActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
 
-        <activity
-            android:name=".SignupActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+        <activity android:name=".MapsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
     </application>
 
 </manifest>

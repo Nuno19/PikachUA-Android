@@ -1,45 +1,80 @@
 package com.cm.pikachua;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import java.util.concurrent.Executor;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private boolean isTwoPane = false;
+    GoogleSignInClient mGoogleSignInClient;
+
+    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        determinePaneLayout();
 
-        if (findViewById(R.id.fragment_container) != null) {
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
+        FloatingActionButton button_back = findViewById(R.id.button_back);
+        button_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
+                onBackPressed();
             }
+        });
 
-            // Create a new Fragment to be placed in the activity layout
-            SettingsFragment firstFragment = new SettingsFragment();
-
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
-        }
+        Button button_sign_out = findViewById(R.id.button_sign_out);
+        button_sign_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.button_sign_out:
+                        signOut();
+                        break;
+                }
+            }
+        });
     }
 
-    private void determinePaneLayout() {
-        FrameLayout fragmentItemDetail = (FrameLayout) findViewById(R.id.flDetailContainer);
-        // If there is a second pane for details
-        if (fragmentItemDetail != null) {
-            isTwoPane = true;
-        }
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent signOutIntent = new Intent(getBaseContext(), GoogleLoginActivity.class);
+                        signOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(signOutIntent);
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        mGoogleSignInClient.revokeAccess()
+                .addOnCompleteListener( this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
     }
 }

@@ -20,6 +20,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 
@@ -29,21 +36,22 @@ import java.util.ArrayList;
 public class StorageFragment extends Fragment {
 
     ArrayList<MonsterStorage> arrayOfMonsterStorage = new ArrayList<MonsterStorage>();
-    ArrayList<String> selectedStrings = new ArrayList<String>();
+    private ArrayList<Integer> selectedMonsters;
     CharSequence[] values = {" Sort By Alphabetic Order "," Sort By Number "," Sort By Better Stat "};
     AlertDialog alertDialog1;
     Editable YouEditTextValue;
     boolean searching = false;
 
+
     int choice = 0;
 
-    int[] gridViewStat = {
+    /*int[] gridViewStat = {
             100,100,100,100,100,100,
             100,100,100,100,100,100,
             100,100,100,100,100,100,
-    };
+    };*/
 
-    String[] gridViewString = {
+    /*String[] ViewString = {
             "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo",
             "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo",
             "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo"
@@ -54,7 +62,13 @@ public class StorageFragment extends Fragment {
             R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo,
             R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo
 
-    };
+    };*/
+
+    String[] gridViewStat = {};
+    String[] gridViewString = {};
+    int[] gridViewImageId = {R.drawable.mewtwo, R.drawable.mewtwo};
+
+    int index = 0;
 
     public StorageFragment() {
         // Required empty public constructor
@@ -65,13 +79,17 @@ public class StorageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         final View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
 
         final FloatingActionButton button_search = rootView.findViewById(R.id.button_search);
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Search", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),
+                        "Search", Toast.LENGTH_LONG)
+                        .show();
+
 
                 if (searching == false){
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
@@ -103,9 +121,6 @@ public class StorageFragment extends Fragment {
                     button_search.getBackground().clearColorFilter();
                     YouEditTextValue = null;
                 }
-
-
-
             }
         });
 
@@ -119,19 +134,15 @@ public class StorageFragment extends Fragment {
             }
         });
 
+
         final MonsterStorageAdapter adapter = new MonsterStorageAdapter(getContext(), arrayOfMonsterStorage);
+        selectedMonsters = new ArrayList<>();
 
         Log.d("T","e");
 
-        for (int i=0;i<gridViewString.length;i++){
-            MonsterStorage x = new MonsterStorage(i, gridViewString[i], gridViewImageId[i], gridViewStat[i]);
-            adapter.add(x);
-        }
+        loadStorage(rootView, adapter);
 
         int total = 200;
-
-        TextView t = rootView.findViewById(R.id.total1);
-        t.setText("Max: " + adapter.getCount() + "/" + total);
 
 
         final GridView androidGridView = (GridView) rootView.findViewById(R.id.gridView);
@@ -146,10 +157,10 @@ public class StorageFragment extends Fragment {
 
                 if (selectedIndex > -1) {
                     adapter.selectedPositions.remove(selectedIndex);
-                    selectedStrings.remove(Integer.toString(adapter.getItem(i).monsterId));
+                    selectedMonsters.remove(adapter.getItem(i));
                 } else {
                     adapter.selectedPositions.add(i);
-                    selectedStrings.add(Integer.toString(adapter.getItem(i).monsterId));
+                    selectedMonsters.add(adapter.getItem(i).monsterId);
                 }
                 adapter.getView(i,view,parent);
             }
@@ -161,17 +172,15 @@ public class StorageFragment extends Fragment {
             public void onClick(View view) {
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                if (selectedStrings.isEmpty()){
-                    Toast.makeText(getContext(),
-                            "No monsters selected!", Toast.LENGTH_LONG)
-                            .show();
+                if (selectedMonsters.isEmpty()){
+                    Toast.makeText(getContext(), "No monsters selected!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                else if (selectedStrings.size() == 1){
+                else if (selectedMonsters.size() == 1){
                     builder1.setMessage("Do you want to transfer 1 monster?");
                 }
                 else {
-                    builder1.setMessage("Do you want to transfer " + selectedStrings.size() + " monsters?");
+                    builder1.setMessage("Do you want to transfer " + selectedMonsters.size() + " monsters?");
                 }
 
                 builder1.setCancelable(true);
@@ -180,6 +189,10 @@ public class StorageFragment extends Fragment {
                         "Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                for (int i = 0; i < selectedMonsters.size(); i++){
+                                    transferMonster(String.valueOf(selectedMonsters.get(i)));
+                                }
+                                arrayOfMonsterStorage.clear();
                                 dialog.cancel();
                             }
                         });
@@ -204,17 +217,15 @@ public class StorageFragment extends Fragment {
             public void onClick(View view) {
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                if (selectedStrings.isEmpty()){
-                    Toast.makeText(getContext(),
-                            "No monsters selected!", Toast.LENGTH_LONG)
-                            .show();
+                if (selectedMonsters.isEmpty()){
+                    Toast.makeText(getContext(), "No monsters selected!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                else if (selectedStrings.size() == 1){
+                else if (selectedMonsters.size() == 1){
                     builder1.setMessage("Do you want to trade 1 monster?");
                 }
                 else {
-                    builder1.setMessage("Do you want to trade " + selectedStrings.size() + " monsters?");
+                    builder1.setMessage("Do you want to trade " + selectedMonsters.size() + " monsters?");
                 }
 
                 builder1.setCancelable(true);
@@ -245,7 +256,9 @@ public class StorageFragment extends Fragment {
         button_sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Sort", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),
+                        "Sort", Toast.LENGTH_LONG)
+                        .show();
 
                 CreateAlertDialogWithRadioButtonGroup();
             }
@@ -285,5 +298,61 @@ public class StorageFragment extends Fragment {
         alertDialog1.show();
 
     }
+
+    public void loadStorage(final View rootView, final MonsterStorageAdapter adapter){
+
+        DatabaseReference pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst");
+
+        ValueEventListener listenerPokemonInst = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                PokemonInst pokemon_inst = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    pokemon_inst = postSnapshot.getValue(PokemonInst.class);
+                    if(pokemon_inst.getUser_id().equals("1")){
+                        MonsterStorage x = new MonsterStorage(Integer.parseInt(pokemon_inst.getId()), pokemon_inst.getNickname(), pokemon_inst.getImage(), Integer.parseInt(pokemon_inst.getValue()));
+                        adapter.add(x);
+                    }
+
+                }
+                int total = 200;
+
+                TextView t = rootView.findViewById(R.id.total1);
+                t.setText("Max: " + adapter.getCount() + "/" + total);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        pokemonsInst.addValueEventListener(listenerPokemonInst);
+    }
+
+
+    public void transferMonster(final String id){
+
+        DatabaseReference pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst");
+        Query monsterToTransfer = pokemonsInst.child(id);
+
+        monsterToTransfer.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataSnapshot.getRef().removeValue();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("loadPost:onCancelled", databaseError.toException());
+            }
+        });
+
+    }
+
 
 }
