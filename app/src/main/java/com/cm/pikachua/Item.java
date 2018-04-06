@@ -6,13 +6,13 @@ package com.cm.pikachua;
 
 public class Item {
 
-    public int itemID;
+    public String itemID;
     public String itemName;
     public String itemDescription;
     public String itemImage;
     public int itemQuantity;
 
-    public Item(int itemID, String itemName, String itemDescription, String itemImage, int itemQuantity) {
+    public Item(String itemID, String itemName, String itemDescription, String itemImage, int itemQuantity) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;

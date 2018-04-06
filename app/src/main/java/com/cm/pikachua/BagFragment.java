@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 public class BagFragment extends Fragment {
 
     ArrayList<Item> arrayOfItems = new ArrayList<Item>();
+    int number = 0;
+    private String personID;
 
     public BagFragment() {
         // Required empty public constructor
@@ -39,6 +43,11 @@ public class BagFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_bag, container, false);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+        if (acct != null) {
+            personID = acct.getId();
+        }
 
         FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +71,7 @@ public class BagFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
-                RemoveItemsFragment newFragment = RemoveItemsFragment.newInstance(adapter.getItem(i).itemName);
+                RemoveItemsFragment newFragment = RemoveItemsFragment.newInstance(adapter.getItem(i).itemID);
 
                 FragmentTransaction transaction =  getFragmentManager().beginTransaction();
 
@@ -72,6 +81,7 @@ public class BagFragment extends Fragment {
                 transaction.addToBackStack(null);
 
                 arrayOfItems.clear();
+                number=0;
 
                 // Commit the transaction
                 transaction.commit();
@@ -93,16 +103,19 @@ public class BagFragment extends Fragment {
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
-                    if(item_inst.getUser_id().equals("1")){
-                        Item x = new Item(Integer.parseInt(item_inst.getId()), item_inst.getName(), item_inst.getDescription(), item_inst.getImage(), Integer.parseInt(item_inst.getAmount()));
-                        adapter.add(x);
+                    if(item_inst.getUser_id().equals(personID)){
+                        if (item_inst.getAmount() > 0){
+                            Item x = new Item(item_inst.getId(), item_inst.getName(), item_inst.getDescription(), item_inst.getImage(), item_inst.getAmount());
+                            adapter.add(x);
+                        }
+                        number+=item_inst.getAmount();
                     }
 
                 }
                 int total = 200;
 
                 TextView t = rootView.findViewById(R.id.total1);
-                t.setText("Max: " + adapter.getCount() + "/" + total);
+                t.setText("Max: " + number + "/" + total);
             }
 
             @Override

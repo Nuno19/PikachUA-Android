@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,10 +30,11 @@ import java.util.ArrayList;
 public class CollectionFragment extends Fragment {
 
     int number = 0;
-    PokedexInst mon = new PokedexInst();
 
     ArrayList<MonsterCollection> arrayOfMonsterCollections = new ArrayList<MonsterCollection>();
-    ArrayList<PokedexInst> list_pokedex = new ArrayList<PokedexInst>();
+    ArrayList<String> list_pokedex = new ArrayList<String>();
+    private String personID;
+    PokedexInst mon;
 
     public CollectionFragment() {
         // Required empty public constructor
@@ -43,6 +46,11 @@ public class CollectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_collection, container, false);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+        if (acct != null) {
+            personID = acct.getId();
+        }
 
         FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +73,8 @@ public class CollectionFragment extends Fragment {
                                     int i, long id) {
 
                 if (adapter.getItem(i).hasBennCaught == true){
-                    //Toast.makeText(getContext(), "GridView Item: " + adapter.getItem(i).monsterID, Toast.LENGTH_LONG).show();
 
-                    MonsterBioFragment newFragment = MonsterBioFragment.newInstance(Integer.toString(adapter.getItem(i).monsterID));
+                    MonsterBioFragment newFragment = MonsterBioFragment.newInstance(adapter.getItem(i).monsterID);
 
                     FragmentTransaction transaction =  getFragmentManager().beginTransaction();
 
@@ -77,6 +84,7 @@ public class CollectionFragment extends Fragment {
                     transaction.addToBackStack(null);
 
                     arrayOfMonsterCollections.clear();
+                    number=0;
 
                     // Commit the transaction
                     transaction.commit();
@@ -97,9 +105,10 @@ public class CollectionFragment extends Fragment {
                 mon = null;
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-//                    if(mon.getUser_id().equals("1")) {
-                        mon = postSnapshot.getValue(PokedexInst.class);
-  //                  }
+                    mon = postSnapshot.getValue(PokedexInst.class);
+                    if(mon.getUser_id().equals(personID)) {
+                        list_pokedex.add(mon.getPokemon_id());
+                    }
                 }
             }
 
@@ -120,23 +129,23 @@ public class CollectionFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 Pokemon pokemon = null;
 
-                //Toast.makeText(getContext(), pokemons_p.getKey(), Toast.LENGTH_LONG).show();
-
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     pokemon = postSnapshot.getValue(Pokemon.class);
-                        if( mon.getPokemon_id().equals(pokemon.getId())) {
-                            MonsterCollection x = new MonsterCollection(Integer.parseInt(pokemon.getId()), pokemon.getImage(), true);
+                        if( list_pokedex.contains(pokemon.getId())) {
+                            MonsterCollection x = new MonsterCollection(pokemon.getId(), pokemon.getImage(), true);
                             adapter.add(x);
                             number++;
                         }
                         else{
-                            MonsterCollection x = new MonsterCollection(Integer.parseInt(pokemon.getId()), pokemon.getImage(), false);
+                            MonsterCollection x = new MonsterCollection(pokemon.getId(), pokemon.getImage(), false);
                             adapter.add(x);
                         }
                 }
 
                 TextView t = rootView.findViewById(R.id.total1);
                 t.setText("Max: " + number + "/" + adapter.getCount());
+
+                list_pokedex.clear();
             }
 
             @Override

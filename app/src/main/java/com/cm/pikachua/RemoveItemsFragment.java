@@ -12,8 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 /**
@@ -64,10 +75,39 @@ public class RemoveItemsFragment extends Fragment {
         // Inflate the layout for this fragment
 
 
-        View rootView = inflater.inflate(R.layout.fragment_remove_items, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_remove_items, container, false);
 
-        TextView t1 = rootView.findViewById(R.id.title1);
-        t1.setText(mParam1);
+        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("items_inst");
+
+        ValueEventListener listenerItemInst = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                ItemInst item_inst = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    item_inst = postSnapshot.getValue(ItemInst.class);
+                    if(item_inst.getId().equals(mParam1)){
+                        TextView t1 = rootView.findViewById(R.id.title1);
+                        t1.setText(item_inst.getName());
+
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(item_inst.getImage());
+                        ImageView imageViewAndroid = rootView.findViewById(R.id.image);
+                        // Load the image using Glide
+
+                        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        itemsInst.addValueEventListener(listenerItemInst);
 
         TextView t2 = rootView.findViewById(R.id.title2);
         t2.setText("How many items to delete?");

@@ -6,14 +6,15 @@ package com.cm.pikachua;
 
 public class ItemInst {
 
-    private String id, item_id, user_id, name, description, amount;
+    private String id, item_id, user_id, name, description;
+    private int amount;
     private String image;
 
     public ItemInst(){
 
     }
 
-    public  ItemInst(String id, String item_id, String user_id, String name, String description, String amount, String image){
+    public  ItemInst(String id, String item_id, String user_id, String name, String description, int amount, String image){
         this.id = id;
         this.item_id = item_id;
         this.user_id = user_id;
@@ -44,13 +45,13 @@ public class ItemInst {
         return description;
     }
 
-    public String getAmount() { return amount; }
+    public int getAmount() { return amount; }
 
     public String getImage() {
         return image;
     }
 
     public void setAmount(int num){
-        amount = String.valueOf(num);
+        amount = num;
     }
 }

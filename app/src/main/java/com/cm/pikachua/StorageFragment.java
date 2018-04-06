@@ -20,6 +20,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +52,7 @@ public class StorageFragment extends Fragment {
     int[] gridViewImageId = {R.drawable.mewtwo, R.drawable.mewtwo};
 
     int index = 0;
+    private String personID;
 
     public StorageFragment() {
         // Required empty public constructor
@@ -63,14 +66,15 @@ public class StorageFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
 
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+        if (acct != null) {
+            personID = acct.getId();
+        }
+
         final FloatingActionButton button_search = rootView.findViewById(R.id.button_search);
         button_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),
-                        "Search", Toast.LENGTH_LONG)
-                        .show();
-
 
                 if (searching == false){
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
@@ -138,7 +142,7 @@ public class StorageFragment extends Fragment {
                     selectedMonsters.remove(adapter.getItem(i));
                 } else {
                     adapter.selectedPositions.add(i);
-                    selectedMonsters.add(Integer.toString(adapter.getItem(i).monsterId));
+                    selectedMonsters.add(adapter.getItem(i).monsterId);
                 }
                 adapter.getView(i,view,parent);
             }
@@ -289,8 +293,8 @@ public class StorageFragment extends Fragment {
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     pokemon_inst = postSnapshot.getValue(PokemonInst.class);
-                    if(pokemon_inst.getUser_id().equals("1")){
-                        MonsterStorage x = new MonsterStorage(Integer.parseInt(pokemon_inst.getId()), pokemon_inst.getNickname(), pokemon_inst.getImage(), Integer.parseInt(pokemon_inst.getValue()));
+                    if(pokemon_inst.getUser_id().equals(personID)){
+                        MonsterStorage x = new MonsterStorage(pokemon_inst.getId(), pokemon_inst.getNickname(), pokemon_inst.getImage(), Integer.parseInt(pokemon_inst.getValue()));
                         adapter.add(x);
                     }
 

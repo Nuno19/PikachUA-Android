@@ -1,12 +1,11 @@
 package com.cm.pikachua;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +15,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,11 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CatchActivity extends AppCompatActivity {
 
@@ -41,12 +38,18 @@ public class CatchActivity extends AppCompatActivity {
     Pokemon pokemonToCatch = null;
     String cp = "0";
     int next_id = 0;
+    private String personID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catch);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            personID = acct.getId();
+        }
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokemons");
 
@@ -187,8 +190,8 @@ public class CatchActivity extends AppCompatActivity {
 
 
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsInst");
-                    PokemonInst pokemon_inst = new PokemonInst(String.valueOf(next_id),pokemonToCatch.getId(), "1", pokemonToCatch.getName(), cp, pokemonToCatch.getImage());
-                    database.child(String.valueOf(next_id)).setValue(pokemon_inst);
+                    PokemonInst pokemon_inst = new PokemonInst(personID + "_" + next_id, pokemonToCatch.getId(), personID, pokemonToCatch.getName(), cp, pokemonToCatch.getImage());
+                    database.child(personID + "_" + next_id).setValue(pokemon_inst);
 
                     onBackPressed();
                 }
@@ -233,10 +236,13 @@ public class CatchActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 PokemonInst pokemon = null;
+                next_id = 0;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     pokemon = postSnapshot.getValue(PokemonInst.class);
+                    if (pokemon.getUser_id().equals(personID)){
+                        next_id = Integer.parseInt(pokemon.getId().split("_")[1]) + 1;
+                    }
                 }
-                next_id = Integer.parseInt(pokemon.getId())+1;
             }
 
             @Override

@@ -6,12 +6,12 @@ package com.cm.pikachua;
 
 public class MonsterStorage {
 
-    public int monsterId;
+    public String monsterId;
     public String monsterName;
     public String monsterImage;
     public int stat;
 
-    public MonsterStorage(int monsterId, String monsterName, String monsterImage, int stat) {
+    public MonsterStorage(String monsterId, String monsterName, String monsterImage, int stat) {
         this.monsterId = monsterId;
         this.monsterName = monsterName;
         this.monsterImage = monsterImage;

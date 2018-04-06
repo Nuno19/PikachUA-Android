@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,6 +42,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -56,6 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentPos;
     private static int[] markerPokemon = new int[3];
     private static Marker[] pokemonMarkers = new Marker[3];
+    private Uri personPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +85,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        ImageView imageViewAndroid = (ImageView) findViewById(R.id.button_profile);
-        imageViewAndroid.setImageResource(R.drawable.jv_7adtj);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            personPhoto = acct.getPhotoUrl();
+
+            ImageView imageViewAndroid = findViewById(R.id.button_profile);
+            Picasso.with(this).load(personPhoto).into(imageViewAndroid);
+        }
 
 
         ImageButton but_profile = findViewById(R.id.button_profile);
@@ -193,7 +203,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //marker.icon(BitmapDescriptorFactory.fromAsset("001.webp"));
         LatLng home_mewtwo = new LatLng(40.625745, -8.647508);
 
-            pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
+            pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(ua).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
             pokemonMarkers[0].setTag(0);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override

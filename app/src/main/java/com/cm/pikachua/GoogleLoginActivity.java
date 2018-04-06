@@ -20,7 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
@@ -129,17 +131,19 @@ public class GoogleLoginActivity extends AppCompatActivity implements
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // Get Post object and use the values to update the UI
-                    User users = null;
-                    list_users = new ArrayList<User>();
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        users = postSnapshot.getValue(User.class);
-                        list_users.add(users);
 
-                        if (users.getId().equals(user.getId())) {
-                            Intent signInIntent = new Intent(getBaseContext(), MapsActivity.class);
-                            signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(signInIntent);
-                        }
+                    if (!dataSnapshot.child("user_id").equals(user.getId())){
+                        User user_inst = new User(user.getId(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()), "0", "0");
+                        mFirebaseDatabase.child(user.getId()).setValue(user_inst);
+                        createUser(user);
+                        Intent signInIntent = new Intent(getBaseContext(), MapsActivity.class);
+                        signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(signInIntent);
+                    }
+                    else {
+                        Intent signInIntent = new Intent(getBaseContext(), MapsActivity.class);
+                        signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(signInIntent);
                     }
                 }
                 @Override
@@ -158,17 +162,6 @@ public class GoogleLoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
-
-        /*if (list_users != null){
-            if (!list_users.contains(user.getId())){*/
-                /*User user_inst = new User(Integer.toString(next_idUser), new SimpleDateFormat("yyyy-MM-dd").format(new Date()), "0", "0");
-                mFirebaseDatabase.child(String.valueOf(user.getId())).setValue(user_inst);
-                createUser(user);
-                Intent signInIntent = new Intent(getBaseContext(), MapsActivity.class);
-                signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(signInIntent);*/
-            /*}
-        }*/
     }
 
     private void createUser(GoogleSignInAccount user){
@@ -185,7 +178,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("items");
 
         ValueEventListener postListener = new ValueEventListener() {
-            public String amount;
+            public int amount = 0;
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -195,14 +188,14 @@ public class GoogleLoginActivity extends AppCompatActivity implements
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item = postSnapshot.getValue(ItemFirebase.class);
-                    /*if (user_id + "_" + item.getId() == user_id + "_1"){
-                        amount = "10";
+                    if (item.getId().equals("0")){
+                        amount = 10;
                     }
                     else{
-                        amount = "0";
-                    }*/
-                    ItemInst items_inst = new ItemInst(Integer.toString(next_idItem), item.getId(), user_id, item.getName(), item.getDescription(), "0", item.getImage());
-                    iFirebaseDatabase.child(Integer.toString(next_idItem)).setValue(items_inst);
+                        amount = 0;
+                    }
+                    ItemInst items_inst = new ItemInst(user_id + "_" + item.getId(), item.getId(), user_id, item.getName(), item.getDescription(), amount, item.getImage());
+                    iFirebaseDatabase.child(user_id + "_" + item.getId()).setValue(items_inst);
                     next_idItem++;
                 }
             }

@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title1"
+        android:id="@+id/name"
         android:gravity="center|top"
         android:layout_marginTop="20sp"
         android:layout_width="match_parent"
@@ -39,10 +39,44 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/nickname"
         android:layout_marginLeft="40sp"
         android:layout_marginRight="40sp"
         android:layout_marginTop="400sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/height"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginTop="440sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/weight"
+        android:layout_marginLeft="200sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginTop="440sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="20sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/pokedex"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginTop="480sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintLeft_toLeftOf="parent"

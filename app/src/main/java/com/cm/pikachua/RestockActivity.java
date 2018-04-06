@@ -1,13 +1,11 @@
 package com.cm.pikachua;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -150,7 +148,7 @@ public class RestockActivity extends AppCompatActivity {
 
                         if(item_inst.getUser_id().equals("1") && item_inst.getItem_id().equals(item.getId())){
                             DatabaseReference database = FirebaseDatabase.getInstance().getReference("items_inst");
-                            item_inst.setAmount(Integer.parseInt(item_inst.getAmount())+1);
+                            item_inst.setAmount(item_inst.getAmount()+1);
                             database.child(String.valueOf(item_inst.getId())).setValue(item_inst);
                         }
                     }

@@ -6,11 +6,11 @@ package com.cm.pikachua;
 
 public class MonsterCollection {
 
-    public int monsterID;
+    public String monsterID;
     public String monsterImage;
     public boolean hasBennCaught;
 
-    public MonsterCollection(int monsterID, String monsterImage, boolean hasBennCaught) {
+    public MonsterCollection(String monsterID, String monsterImage, boolean hasBennCaught) {
         this.monsterID = monsterID;
         this.monsterImage = monsterImage;
         this.hasBennCaught = hasBennCaught;
