@@ -190,8 +190,8 @@ public class CatchActivity extends AppCompatActivity {
 
 
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsInst");
-                    PokemonInst pokemon_inst = new PokemonInst(personID + "_" + next_id, pokemonToCatch.getId(), personID, pokemonToCatch.getName(), cp, pokemonToCatch.getImage());
-                    database.child(personID + "_" + next_id).setValue(pokemon_inst);
+                    PokemonInst pokemon_inst = new PokemonInst(personID + "_" + String.format("%012d", next_id), pokemonToCatch.getId(), personID, pokemonToCatch.getName(), cp, pokemonToCatch.getImage());
+                    database.child(personID + "_" + String.format("%012d", next_id)).setValue(pokemon_inst);
 
                     onBackPressed();
                 }

@@ -2,18 +2,20 @@ package com.cm.pikachua;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,10 +57,22 @@ public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
         }
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(monsterStorage.monsterImage);
-        ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);
+        final ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);
         // Load the image using Glide
 
-        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                // Pass it to Picasso to download, show in ImageView and caching
+                Picasso.with(getContext()).load(uri.toString()).into(imageViewAndroid);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
         return convertView;
     }

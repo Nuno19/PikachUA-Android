@@ -29,8 +29,8 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_marginLeft="40sp"
-        android:layout_marginRight="40sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
         android:layout_marginTop="80sp"
         android:layout_width="300sp"
         android:layout_height="300sp"
@@ -40,8 +40,8 @@
 
     <TextView
         android:id="@+id/nickname"
-        android:layout_marginLeft="40sp"
-        android:layout_marginRight="40sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
         android:layout_marginTop="400sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,8 +52,8 @@
 
     <TextView
         android:id="@+id/height"
-        android:layout_marginLeft="40sp"
-        android:layout_marginRight="40sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
         android:layout_marginTop="440sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,7 +64,7 @@
     <TextView
         android:id="@+id/weight"
         android:layout_marginLeft="200sp"
-        android:layout_marginRight="40sp"
+        android:layout_marginRight="20sp"
         android:layout_marginTop="440sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,8 +74,8 @@
 
     <TextView
         android:id="@+id/pokedex"
-        android:layout_marginLeft="40sp"
-        android:layout_marginRight="40sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
         android:layout_marginTop="480sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

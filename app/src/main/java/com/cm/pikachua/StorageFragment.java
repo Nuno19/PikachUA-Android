@@ -139,7 +139,7 @@ public class StorageFragment extends Fragment {
 
                 if (selectedIndex > -1) {
                     adapter.selectedPositions.remove(selectedIndex);
-                    selectedMonsters.remove(adapter.getItem(i));
+                    selectedMonsters.remove(adapter.getItem(i).monsterId);
                 } else {
                     adapter.selectedPositions.add(i);
                     selectedMonsters.add(adapter.getItem(i).monsterId);
@@ -173,8 +173,10 @@ public class StorageFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 for (int i = 0; i < selectedMonsters.size(); i++){
                                     transferMonster(String.valueOf(selectedMonsters.get(i)));
+                                    selectedMonsters.remove(i);
                                 }
                                 arrayOfMonsterStorage.clear();
+
                                 dialog.cancel();
                             }
                         });
