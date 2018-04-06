@@ -6,13 +6,10 @@ import android.widget.FrameLayout;
 
 public class StorageActivity extends AppCompatActivity {
 
-    private boolean isTwoPane = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
-        determinePaneLayout();
 
         if (findViewById(R.id.fragment_container) != null) {
 
@@ -34,19 +31,4 @@ public class StorageActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
         }
     }
-
-    private void determinePaneLayout() {
-        FrameLayout fragmentItemDetail = (FrameLayout) findViewById(R.id.flDetailContainer);
-        // If there is a second pane for details
-        if (fragmentItemDetail != null) {
-            isTwoPane = true;
-        }
-    }
-
-    /*@Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
-    }
-    }*/
 }

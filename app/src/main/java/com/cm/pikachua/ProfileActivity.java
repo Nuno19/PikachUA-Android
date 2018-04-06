@@ -1,17 +1,11 @@
 package com.cm.pikachua;
 
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -20,28 +14,20 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.soundcloud.android.crop.Crop;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -49,22 +35,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static android.media.ExifInterface.ORIENTATION_ROTATE_90;
-
 public class ProfileActivity extends AppCompatActivity {
 
     private ImageView imageViewAndroid;
-    private boolean isTwoPane = false;
 
     final int RequestPermissionCode = 1;
     private Intent CropIntent;
     private Uri uri, uri2;
 
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        determinePaneLayout();
 
         FloatingActionButton button_back = findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
@@ -75,10 +60,35 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        String[] user = new String[] {"Raimas96", "2017-03-22", getDecimal(34378989), getDecimal(2100000000)};
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+
+
+        // app_title change listener
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                User user = null;
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    user = postSnapshot.getValue(User.class);
+                }
+
+                updateUser(getWindow().getDecorView().getRootView(),getApplicationContext(),user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mFirebaseDatabase.addValueEventListener(postListener);
+
         int userInt = R.drawable.jv_7adtj;
 
-        TextView textViewAndroid1 = (TextView) findViewById(R.id.username);
+        /*TextView textViewAndroid1 = (TextView) findViewById(R.id.username);
         textViewAndroid1.setText("Username: " + user[0]);
 
         TextView textViewAndroid2 = (TextView) findViewById(R.id.startDate);
@@ -88,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
         textViewAndroid3.setText("Total monsters caught: " + user[2]);
 
         TextView textViewAndroid4 = (TextView) findViewById(R.id.totalEXP);
-        textViewAndroid4.setText("Total EXP earned: " + user[3]);
+        textViewAndroid4.setText("Total EXP earned: " + user[3]);*/
 
         imageViewAndroid = (ImageView) findViewById(R.id.image);
         imageViewAndroid.setImageResource(userInt);
@@ -121,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
                 StrictMode.setVmPolicy(builder.build());
 
                 Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "PikachUA/" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg"));
+                uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "Pictures/PikachUA/" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg"));
                 camera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(camera, 1);
             }
@@ -135,14 +145,6 @@ public class ProfileActivity extends AppCompatActivity {
         else
         {
             ActivityCompat.requestPermissions(ProfileActivity.this,new String[]{android.Manifest.permission.CAMERA},RequestPermissionCode);
-        }
-    }
-
-    private void determinePaneLayout() {
-        FrameLayout fragmentItemDetail = (FrameLayout) findViewById(R.id.flDetailContainer);
-        // If there is a second pane for details
-        if (fragmentItemDetail != null) {
-            isTwoPane = true;
         }
     }
 
@@ -208,5 +210,23 @@ public class ProfileActivity extends AppCompatActivity {
             }
             break;
         }
+    }
+
+    public void updateUser(View view, Context context, User user){
+        TextView textViewAndroid1 = (TextView)view.findViewById(R.id.username);
+        textViewAndroid1.setText("Username: " + user.getUsername());
+
+        TextView textViewAndroid2 = (TextView) view.findViewById(R.id.startDate);
+        textViewAndroid2.setText("Member since: " + user.getStartDate());
+
+        TextView textViewAndroid3 = (TextView) view.findViewById(R.id.totalMonstersCaught);
+        textViewAndroid3.setText("Total monsters caught: " + user.getMonstersCaught());
+
+        TextView textViewAndroid4 = (TextView) view.findViewById(R.id.totalEXP);
+        textViewAndroid4.setText("Total EXP earned: " + user.getTotalXP());
+
+        //ImageView imageViewAndroid = (ImageView) view.findViewById(R.id.image);
+        //Picasso.with(context).load(new File(user)).into(imageViewAndroid);
+
     }
 }

@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 public class RestockActivity extends AppCompatActivity {
 
-    private boolean isTwoPane = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +45,6 @@ public class RestockActivity extends AppCompatActivity {
             }
 
         });
-    }
-
-    private void determinePaneLayout() {
-        FrameLayout fragmentItemDetail = (FrameLayout) findViewById(R.id.flDetailContainer);
-        // If there is a second pane for details
-        if (fragmentItemDetail != null) {
-            isTwoPane = true;
-        }
     }
 }
 

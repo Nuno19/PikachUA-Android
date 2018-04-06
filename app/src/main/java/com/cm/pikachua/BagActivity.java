@@ -6,13 +6,10 @@ import android.widget.FrameLayout;
 
 public class BagActivity extends AppCompatActivity {
 
-    private boolean isTwoPane = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bag);
-        determinePaneLayout();
 
         if (findViewById(R.id.fragment_container) != null) {
 
@@ -32,14 +29,6 @@ public class BagActivity extends AppCompatActivity {
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
-        }
-    }
-
-    private void determinePaneLayout() {
-        FrameLayout fragmentItemDetail = (FrameLayout) findViewById(R.id.flDetailContainer);
-        // If there is a second pane for details
-        if (fragmentItemDetail != null) {
-            isTwoPane = true;
         }
     }
 }

@@ -8,10 +8,10 @@ public class MonsterStorage {
 
     public int monsterId;
     public String monsterName;
-    public int monsterImage;
+    public String monsterImage;
     public int stat;
 
-    public MonsterStorage(int monsterId, String monsterName, int monsterImage, int stat) {
+    public MonsterStorage(int monsterId, String monsterName, String monsterImage, int stat) {
         this.monsterId = monsterId;
         this.monsterName = monsterName;
         this.monsterImage = monsterImage;

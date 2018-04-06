@@ -8,6 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -39,7 +45,7 @@ public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
         textViewAndroid1.setText(monsterStorage.monsterName);
 
         TextView textViewAndroid2 = (TextView) convertView.findViewById(R.id.item_text2);
-        textViewAndroid2.setText(String.valueOf(monsterStorage.stat) + "%");
+        textViewAndroid2.setText("Value: " + String.valueOf(monsterStorage.stat));
 
         if (selectedPositions.contains(i)){
             convertView.setBackgroundColor(Color.rgb(255,255,153));
@@ -48,8 +54,11 @@ public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
             convertView.setBackgroundColor(Color.rgb(242,242,242));
         }
 
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(monsterStorage.monsterImage);
         ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);
-        imageViewAndroid.setImageResource(monsterStorage.monsterImage);
+        // Load the image using Glide
+
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
 
         return convertView;
     }

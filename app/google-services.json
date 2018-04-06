@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "660272664555",
+    "firebase_url": "https://pikachua-95fce.firebaseio.com",
+    "project_id": "pikachua-95fce",
+    "storage_bucket": "pikachua-95fce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660272664555:android:21de0b39a11caa98",
+        "android_client_info": {
+          "package_name": "com.cm.pikachua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660272664555-ifggj3jvas4530bpl5mt0m5moda66a6h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVER2MRAcChskxLUZrZUBrhV-UgycKyvU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
