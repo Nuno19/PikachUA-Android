@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.cm.pikachua.AR.UnityPlayerActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,9 +33,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
@@ -51,7 +55,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double longitude;
     private double latitude;
     public static boolean buttons = false;
-
+    private Marker currentPos;
+    private static int[] markerPokemon = new int[3];
+    private static Marker[] pokemonMarkers = new Marker[3];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,16 +126,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        ImageView imageV = findViewById(R.id.imageV);
-        imageV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(getBaseContext(), CatchActivity.class);
-                intent.putExtra("ID", Integer.toString(123));
-                startActivity(intent);
-            }
-        });
 
         ImageView imageV2 = findViewById(R.id.imageV2);
         imageV2.setOnClickListener(new View.OnClickListener() {
@@ -184,11 +181,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         //LatLng home = new LatLng(40.580764, -8.680022);
         LatLng ua = new LatLng(40.633115, -8.659362);
-       // MarkerOptions marker = new MarkerOptions().position(ua);
+        //MarkerOptions marker = new MarkerOptions().position(ua);
         //marker.icon(BitmapDescriptorFactory.fromAsset("001.webp"));
-        //mMap.addMarker(marker);
+        LatLng home_mewtwo = new LatLng(40.625745, -8.647508);
 
-
+        if(markerPokemon[0] == 0) {
+            pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
+            pokemonMarkers[0].setTag(0);
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
+                    intent.putExtra("ID", 150);
+                    intent.putExtra("markerID", (int) marker.getTag());
+                    startActivity(intent);
+                    return false;
+                }
+            });
+        }
         //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Curr"));
        // mMap.addMarker(new MarkerOptions().position(current_coords).title("HOME"));
 
@@ -196,6 +206,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMaxZoomPreference(21);
 
     }
+    public static boolean setMarkerState(int markerID,int state) {
+        Log.d("MAP","STATE: " + state);
+        markerPokemon[markerID] = state;
+        return true;
+    }
+
 
 
     //Getting current location
@@ -312,6 +328,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
                 latLng).zoom(12).build();
+        if(currentPos != null){
+            currentPos.remove();
+        }
+
+        currentPos = mMap.addMarker(new MarkerOptions().position(latLng));
+
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
