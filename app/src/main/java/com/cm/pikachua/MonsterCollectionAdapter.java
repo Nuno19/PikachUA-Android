@@ -7,7 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.cm.pikachua.MonsterCollection;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -32,12 +36,16 @@ public class MonsterCollectionAdapter extends ArrayAdapter<MonsterCollection> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_grid_images, parent, false);
         }
 
+
         ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);
+
         if (monsterCollection.hasBennCaught == true){
-            imageViewAndroid.setImageResource(monsterCollection.monsterImage);
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(monsterCollection.monsterImage);
+            // Load the image using Glide
+            Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
         }
         else {
-            imageViewAndroid.setImageResource(monsterCollection.monsterNotImage);
+            imageViewAndroid.setImageResource(R.drawable.ic_launcher_background);
         }
 
         return convertView;

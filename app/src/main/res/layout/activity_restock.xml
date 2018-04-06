@@ -21,22 +21,45 @@
 
     <TextView
         android:id="@+id/title1"
+        android:layout_width="384dp"
+        android:layout_height="match_parent"
         android:gravity="center|top"
-        android:layout_marginTop="20sp"
-        android:layout_width="match_parent"
+        android:text="@string/restock"
         android:textSize="30sp"
-        android:layout_height="match_parent"
-        android:text="@string/restock" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp" />
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/pokestop"
+        android:layout_width="209dp"
+        android:layout_height="220dp"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
         android:scaleType="fitCenter"
-        android:layout_marginBottom="80sp"
-        android:layout_marginEnd="80sp"
-        android:layout_marginStart="80sp"
-        android:src="@drawable/pokestop_interaction"/>
+        android:src="@drawable/pokestop_interaction"
+        app:backgroundTint="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/gridViewItems"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.641"></android.support.design.widget.FloatingActionButton>
+
+    <GridView
+        android:id="@+id/gridViewItems"
+        android:layout_width="342dp"
+        android:layout_height="214dp"
+        android:layout_marginBottom="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/title1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

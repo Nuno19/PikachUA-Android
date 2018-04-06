@@ -1,61 +1,66 @@
 package com.cm.pikachua;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private ImageView imageViewAndroid;
-
     final int RequestPermissionCode = 1;
     private Intent CropIntent;
-    private Uri uri, uri2;
+    private Uri personPhoto;
+    String personGivenName, personFamilyName, personID;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            personPhoto = acct.getPhotoUrl();
+            personGivenName = acct.getGivenName();
+            personFamilyName = acct.getFamilyName();
+            personID = acct.getId();
+
+            ImageView imageViewAndroid = findViewById(R.id.image);
+            Picasso.with(this).load(personPhoto).into(imageViewAndroid);
+
+            TextView textViewAndroid1 = findViewById(R.id.name);
+            textViewAndroid1.setText("Name: " + personGivenName + " " + personFamilyName);
+        }
+
         FloatingActionButton button_back = findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
                 onBackPressed();
             }
         });
@@ -72,9 +77,10 @@ public class ProfileActivity extends AppCompatActivity {
                 User user = null;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     user = postSnapshot.getValue(User.class);
+                    if(user.getId().equals(personID)){
+                        updateUser(getWindow().getDecorView().getRootView(),getApplicationContext(),user);
+                    }
                 }
-
-                updateUser(getWindow().getDecorView().getRootView(),getApplicationContext(),user);
             }
 
             @Override
@@ -86,31 +92,7 @@ public class ProfileActivity extends AppCompatActivity {
         };
         mFirebaseDatabase.addValueEventListener(postListener);
 
-        int userInt = R.drawable.jv_7adtj;
-
-        /*TextView textViewAndroid1 = (TextView) findViewById(R.id.username);
-        textViewAndroid1.setText("Username: " + user[0]);
-
-        TextView textViewAndroid2 = (TextView) findViewById(R.id.startDate);
-        textViewAndroid2.setText("Member since: " + user[1]);
-
-        TextView textViewAndroid3 = (TextView) findViewById(R.id.totalMonstersCaught);
-        textViewAndroid3.setText("Total monsters caught: " + user[2]);
-
-        TextView textViewAndroid4 = (TextView) findViewById(R.id.totalEXP);
-        textViewAndroid4.setText("Total EXP earned: " + user[3]);*/
-
-        imageViewAndroid = (ImageView) findViewById(R.id.image);
-        imageViewAndroid.setImageResource(userInt);
-
-        imageViewAndroid.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "És feio, esperavas o quê?", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        FloatingActionButton button_change = findViewById(R.id.button_change);
+        /*FloatingActionButton button_change = findViewById(R.id.button_change);
         button_change.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -135,18 +117,18 @@ public class ProfileActivity extends AppCompatActivity {
                 camera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(camera, 1);
             }
-        });
+        });*/
 
     }
 
-    private void RequestRuntimePermission() {
+    /*private void RequestRuntimePermission() {
         if(ActivityCompat.shouldShowRequestPermissionRationale(ProfileActivity.this, android.Manifest.permission.CAMERA))
             Toast.makeText(this,"CAMERA permission allows us to access CAMERA app",Toast.LENGTH_SHORT).show();
         else
         {
             ActivityCompat.requestPermissions(ProfileActivity.this,new String[]{android.Manifest.permission.CAMERA},RequestPermissionCode);
         }
-    }
+    }*/
 
     public String getDecimal (int number) {
         DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(Locale.US);
@@ -157,7 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
         return format.format(number);
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -210,12 +192,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
             break;
         }
-    }
+    }*/
 
-    public void updateUser(View view, Context context, User user){
-        TextView textViewAndroid1 = (TextView)view.findViewById(R.id.username);
-        textViewAndroid1.setText("Username: " + user.getUsername());
-
+    public void updateUser(View view, Context context, User user)
+    {
         TextView textViewAndroid2 = (TextView) view.findViewById(R.id.startDate);
         textViewAndroid2.setText("Member since: " + user.getStartDate());
 
@@ -224,9 +204,5 @@ public class ProfileActivity extends AppCompatActivity {
 
         TextView textViewAndroid4 = (TextView) view.findViewById(R.id.totalEXP);
         textViewAndroid4.setText("Total EXP earned: " + user.getTotalXP());
-
-        //ImageView imageViewAndroid = (ImageView) view.findViewById(R.id.image);
-        //Picasso.with(context).load(new File(user)).into(imageViewAndroid);
-
     }
 }

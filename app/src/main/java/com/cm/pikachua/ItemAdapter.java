@@ -9,6 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 /**
@@ -37,8 +42,11 @@ public class ItemAdapter extends ArrayAdapter<Item> {
         TextView textViewAndroid2 = (TextView) convertView.findViewById(R.id.item_text2);
         textViewAndroid2.setText(item.itemDescription);
 
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(item.itemImage);
         ImageView imageViewAndroid = (ImageView) convertView.findViewById(R.id.item_image);
-        imageViewAndroid.setImageResource(item.itemImage);
+        // Load the image using Glide
+
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
 
         return convertView;
     }

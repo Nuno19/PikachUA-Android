@@ -16,8 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-import com.cm.pikachua.AR.UnityPlayerActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -58,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentPos;
     private static int[] markerPokemon = new int[3];
     private static Marker[] pokemonMarkers = new Marker[3];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +125,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        ImageView imageV = findViewById(R.id.imageV);
+        imageV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                intent.putExtra("ID", Integer.toString(123));
+                startActivity(intent);
+            }
+        });
 
         ImageView imageV2 = findViewById(R.id.imageV2);
         imageV2.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +193,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //marker.icon(BitmapDescriptorFactory.fromAsset("001.webp"));
         LatLng home_mewtwo = new LatLng(40.625745, -8.647508);
 
-        if(markerPokemon[0] == 0) {
             pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
             pokemonMarkers[0].setTag(0);
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -193,12 +200,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public boolean onMarkerClick(Marker marker) {
                     Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
                     intent.putExtra("ID", 150);
-                    intent.putExtra("markerID", (int) marker.getTag());
+                    intent.putExtra("markerID", 0);
                     startActivity(intent);
                     return false;
                 }
             });
-        }
+
         //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Curr"));
        // mMap.addMarker(new MarkerOptions().position(current_coords).title("HOME"));
 
@@ -206,12 +213,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMaxZoomPreference(21);
 
     }
+
     public static boolean setMarkerState(int markerID,int state) {
         Log.d("MAP","STATE: " + state);
         markerPokemon[markerID] = state;
         return true;
     }
-
 
 
     //Getting current location

@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class StorageFragment extends Fragment {
 
     ArrayList<MonsterStorage> arrayOfMonsterStorage = new ArrayList<MonsterStorage>();
-    private ArrayList<Integer> selectedMonsters;
+    private ArrayList<String> selectedMonsters;
     CharSequence[] values = {" Sort By Alphabetic Order "," Sort By Number "," Sort By Better Stat "};
     AlertDialog alertDialog1;
     Editable YouEditTextValue;
@@ -44,25 +44,6 @@ public class StorageFragment extends Fragment {
 
 
     int choice = 0;
-
-    /*int[] gridViewStat = {
-            100,100,100,100,100,100,
-            100,100,100,100,100,100,
-            100,100,100,100,100,100,
-    };*/
-
-    /*String[] ViewString = {
-            "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo",
-            "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo",
-            "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo", "Mewtwo"
-
-    } ;
-    int[] gridViewImageId = {
-            R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo,
-            R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo,
-            R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo, R.drawable.mewtwo
-
-    };*/
 
     String[] gridViewStat = {};
     String[] gridViewString = {};
@@ -142,9 +123,6 @@ public class StorageFragment extends Fragment {
 
         loadStorage(rootView, adapter);
 
-        int total = 200;
-
-
         final GridView androidGridView = (GridView) rootView.findViewById(R.id.gridView);
         androidGridView.setAdapter(adapter);
         androidGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -160,7 +138,7 @@ public class StorageFragment extends Fragment {
                     selectedMonsters.remove(adapter.getItem(i));
                 } else {
                     adapter.selectedPositions.add(i);
-                    selectedMonsters.add(adapter.getItem(i).monsterId);
+                    selectedMonsters.add(Integer.toString(adapter.getItem(i).monsterId));
                 }
                 adapter.getView(i,view,parent);
             }

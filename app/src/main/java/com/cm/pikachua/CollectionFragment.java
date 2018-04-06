@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -23,108 +27,11 @@ import java.util.ArrayList;
  */
 public class CollectionFragment extends Fragment {
 
+    int number = 0;
+    PokedexInst mon = new PokedexInst();
+
     ArrayList<MonsterCollection> arrayOfMonsterCollections = new ArrayList<MonsterCollection>();
-
-    String[] gridMonsterName = {
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-            "", "", "", "", "", "MewTwo", ""
-    };
-
-    boolean[] gridViewHasBeenCaught = {
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,false,
-            false,false,false,false,false,true,
-            false
-    };
-
-    int[] gridViewImageId = {
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.mewtwo,
-            R.drawable.ic_launcher_background
-
-    };
-
-    int[] gridViewNotImageId = {
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background, R.drawable.not_ic_launcher_background,
-            R.drawable.not_ic_launcher_background
-    };
-
+    ArrayList<PokedexInst> list_pokedex = new ArrayList<PokedexInst>();
 
     public CollectionFragment() {
         // Required empty public constructor
@@ -141,28 +48,13 @@ public class CollectionFragment extends Fragment {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
-
                 getActivity().onBackPressed();
-
             }
         });
 
         final MonsterCollectionAdapter adapter = new MonsterCollectionAdapter(getContext(), arrayOfMonsterCollections);
 
-        Log.d("T","e");
-
-        int number = 0;
-        for (int i=0;i<gridViewHasBeenCaught.length;i++){
-                MonsterCollection x = new MonsterCollection(i, gridMonsterName[i], gridViewImageId[i], gridViewNotImageId[i], gridViewHasBeenCaught[i], "");
-                adapter.add(x);
-            if (gridViewHasBeenCaught[i] == true) {
-                number += 1;
-            }
-        }
-
-        TextView t = rootView.findViewById(R.id.total1);
-        t.setText("Max: " + number + "/" + gridViewHasBeenCaught.length);
+        loadPokedex(rootView, adapter);
 
         final GridView androidGridView = (GridView) rootView.findViewById(R.id.gridView);
         androidGridView.setAdapter(adapter);
@@ -175,7 +67,7 @@ public class CollectionFragment extends Fragment {
                 if (adapter.getItem(i).hasBennCaught == true){
                     //Toast.makeText(getContext(), "GridView Item: " + adapter.getItem(i).monsterID, Toast.LENGTH_LONG).show();
 
-                    MonsterBioFragment newFragment = MonsterBioFragment.newInstance(adapter.getItem(i).monsterName);
+                    MonsterBioFragment newFragment = MonsterBioFragment.newInstance(Integer.toString(adapter.getItem(i).monsterID));
 
                     FragmentTransaction transaction =  getFragmentManager().beginTransaction();
 
@@ -193,6 +85,68 @@ public class CollectionFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void loadPokedex(final View rootView, final MonsterCollectionAdapter adapter){
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokedex");
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                mon = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+//                    if(mon.getUser_id().equals("1")) {
+                        mon = postSnapshot.getValue(PokedexInst.class);
+  //                  }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        reference.addValueEventListener(postListener);
+
+
+        final DatabaseReference pokemons_p = FirebaseDatabase.getInstance().getReference("pokemons");
+        ValueEventListener listenerpokemons_P = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                Pokemon pokemon = null;
+
+                //Toast.makeText(getContext(), pokemons_p.getKey(), Toast.LENGTH_LONG).show();
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    pokemon = postSnapshot.getValue(Pokemon.class);
+                        if( mon.getPokemon_id().equals(pokemon.getId())) {
+                            MonsterCollection x = new MonsterCollection(Integer.parseInt(pokemon.getId()), pokemon.getImage(), true);
+                            adapter.add(x);
+                            number++;
+                        }
+                        else{
+                            MonsterCollection x = new MonsterCollection(Integer.parseInt(pokemon.getId()), pokemon.getImage(), false);
+                            adapter.add(x);
+                        }
+                }
+
+                TextView t = rootView.findViewById(R.id.total1);
+                t.setText("Max: " + number + "/" + adapter.getCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        pokemons_p.addValueEventListener(listenerpokemons_P);
     }
 
 }

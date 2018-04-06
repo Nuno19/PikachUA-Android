@@ -9,28 +9,24 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
 
-    private String username;
+    private String id;
     private String startDate;
     private String totalXP;
     private String monstersCaught;
-    private String image;
 
     // Default constructor required for calls to
     // DataSnapshot.getValue(User.class)
     public User() {
     }
 
-    public User(String username, String startDate, String totalXP, String monstersCaught, String image) {
-        this.username = username;
+    public User(String id, String startDate, String totalXP, String monstersCaught) {
+        this.id = id;
         this.startDate = startDate;
         this.totalXP = totalXP;
         this.monstersCaught = monstersCaught;
-        this.image = image;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getId() { return id; }
 
     public String getStartDate() {
         return startDate;
@@ -43,11 +39,6 @@ public class User {
     public String getMonstersCaught() {
         return monstersCaught;
     }
-
-    public String getImage(){
-        return image;
-    }
-
 }
 
 

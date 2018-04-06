@@ -1,6 +1,7 @@
 package com.cm.pikachua;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,6 +35,17 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+            Toast.makeText(getApplicationContext(), personId, Toast.LENGTH_LONG).show();
+        }
 
         FloatingActionButton button_back = findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {

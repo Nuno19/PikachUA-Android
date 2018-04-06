@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -24,29 +28,6 @@ import java.util.ArrayList;
 public class BagFragment extends Fragment {
 
     ArrayList<Item> arrayOfItems = new ArrayList<Item>();
-
-    int[] listViewTotalId = {
-            1,2,3,4,5,6,
-            7,8,
-    };
-
-    String[] listViewStringTitle = {
-            "Razz Berry", "Unkown Berry 1", "Unkown Berry 2", "Golden Razz Berry", "PokéBall", "GreatBall",
-            "UltraBall", "MasterBall",
-
-    } ;
-
-    String[] listViewStringSubtitle = {
-            "1","2","3","4","5","6",
-            "7","8",
-
-    } ;
-
-    int[] listViewImageId = {
-            R.drawable.item_0701, R.drawable.item_0702, R.drawable.item_0704, R.drawable.item_0706, R.drawable.pokeball_sprite, R.drawable.greatball_sprite,
-            R.drawable.ultraball_sprite, R.drawable.masterball_sprite,
-    };
-
 
     public BagFragment() {
         // Required empty public constructor
@@ -63,10 +44,7 @@ public class BagFragment extends Fragment {
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Voltar", Toast.LENGTH_LONG).show();
-
                 getActivity().onBackPressed();
-
             }
         });
 
@@ -75,19 +53,7 @@ public class BagFragment extends Fragment {
 
         Log.d("T","e");
 
-        int number = 0;
-        for (int i=0;i<listViewTotalId.length;i++){
-            if (listViewTotalId[i] > 0) {
-                Item x = new Item(i, listViewStringTitle[i], listViewStringSubtitle[i], listViewImageId[i], listViewTotalId[i]);
-                adapter.add(x);
-                number += listViewTotalId[i];
-            }
-        }
-
-        int total = 200;
-
-        TextView t = rootView.findViewById(R.id.total1);
-        t.setText("Max: " + number + "/" + total);
+        loadItems(rootView, adapter);
 
         final ListView androidListView = (ListView) rootView.findViewById(R.id.list_view);
         androidListView.setAdapter(adapter);
@@ -96,8 +62,6 @@ public class BagFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int i, long id) {
-                //Toast.makeText(getContext(), "ListView Item: " + adapter.getItem(i).itemID, Toast.LENGTH_LONG).show();
-
                 RemoveItemsFragment newFragment = RemoveItemsFragment.newInstance(adapter.getItem(i).itemName);
 
                 FragmentTransaction transaction =  getFragmentManager().beginTransaction();
@@ -115,6 +79,40 @@ public class BagFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void loadItems(final View rootView, final ItemAdapter adapter){
+
+        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("items_inst");
+
+        ValueEventListener listenerItemInst = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                ItemInst item_inst = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    item_inst = postSnapshot.getValue(ItemInst.class);
+                    if(item_inst.getUser_id().equals("1")){
+                        Item x = new Item(Integer.parseInt(item_inst.getId()), item_inst.getName(), item_inst.getDescription(), item_inst.getImage(), Integer.parseInt(item_inst.getAmount()));
+                        adapter.add(x);
+                    }
+
+                }
+                int total = 200;
+
+                TextView t = rootView.findViewById(R.id.total1);
+                t.setText("Max: " + adapter.getCount() + "/" + total);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        itemsInst.addValueEventListener(listenerItemInst);
     }
 
 }
