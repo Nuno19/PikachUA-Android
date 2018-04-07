@@ -2,9 +2,12 @@ package com.cm.pikachua;
 
 import android.Manifest;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,6 +38,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,6 +47,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
@@ -85,9 +95,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if (acct != null) {
-            personPhoto = acct.getPhotoUrl();
+
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+            if (acct != null) {
+                personPhoto = acct.getPhotoUrl();
 
             ImageView imageViewAndroid = findViewById(R.id.button_profile);
             Picasso.with(this).load(personPhoto).into(imageViewAndroid);
@@ -140,23 +151,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getBaseContext(), CatchActivity.class);
-                intent.putExtra("ID", Integer.toString(123));
-                startActivity(intent);
+             // CoordinatesLocation.getCoordinates(40.633115, -8.659362);
+              //  CoordinatesLocation.getCoordinates(latitude, longitude);
             }
         });
-
-        ImageView imageV2 = findViewById(R.id.imageV2);
-        imageV2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getBaseContext(), RestockActivity.class);
-                intent.putExtra("ID", Integer.toString(123));
-                startActivity(intent);
-            }
-        });
-
 
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -176,6 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -201,17 +200,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng ua = new LatLng(40.633115, -8.659362);
         //MarkerOptions marker = new MarkerOptions().position(ua);
         //marker.icon(BitmapDescriptorFactory.fromAsset("001.webp"));
-        LatLng home_mewtwo = new LatLng(40.625745, -8.647508);
+        LatLng home_mewtwo = new LatLng(40.736886, -8.368381);
 
-            pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(ua).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
-            pokemonMarkers[0].setTag(0);
+            pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
+            pokemonMarkers[0].setTitle(Integer.toString(150));
+
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
-                    intent.putExtra("ID", 150);
-                    intent.putExtra("markerID", 0);
-                    startActivity(intent);
+
+                    if( Integer.valueOf(marker.getTitle()) > 151){
+                        Intent intent = new Intent(getBaseContext(), RestockActivity.class);
+                        intent.putExtra("ID", marker.getTitle());
+                        startActivity(intent);
+
+                        return true;
+                    }else{
+
+                        Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
+                        intent.putExtra("ID", Integer.valueOf(marker.getTitle()));
+                        intent.putExtra("markerID", 0);
+                        startActivity(intent);
+
+                    }
                     return false;
                 }
             });
@@ -221,7 +233,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
-
+        loadPokeStops();
     }
 
     public static boolean setMarkerState(int markerID,int state) {
@@ -229,6 +241,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerPokemon[markerID] = state;
         return true;
     }
+
+    public void loadPokeStops(){
+
+        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("pokestops");
+
+        ValueEventListener listenerItemInst = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                Coordinates coords = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    coords = postSnapshot.getValue(Coordinates.class);
+
+                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop))
+                                .position(new LatLng(coords.getLatitude(),coords.getLongitude())).draggable(false).title(coords.getId()));
+                    Log.d("POKESTOP","pokestop");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        itemsInst.addValueEventListener(listenerItemInst);
+    }
+
 
 
     //Getting current location
@@ -282,7 +324,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     new String[]{ Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             Log.e(TAG,"No Permission!");
-            return;
+
         }
 
         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
