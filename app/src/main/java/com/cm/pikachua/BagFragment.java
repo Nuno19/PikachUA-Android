@@ -100,9 +100,11 @@ public class BagFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 ItemInst item_inst = null;
+                adapter.clear();
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
+
                     if(item_inst.getUser_id().equals(personID)){
                         if (item_inst.getAmount() > 0){
                             Item x = new Item(item_inst.getId(), item_inst.getName(), item_inst.getDescription(), item_inst.getImage(), item_inst.getAmount());
@@ -110,7 +112,6 @@ public class BagFragment extends Fragment {
                         }
                         number+=item_inst.getAmount();
                     }
-
                 }
                 int total = 200;
 
@@ -127,5 +128,4 @@ public class BagFragment extends Fragment {
         };
         itemsInst.addValueEventListener(listenerItemInst);
     }
-
 }

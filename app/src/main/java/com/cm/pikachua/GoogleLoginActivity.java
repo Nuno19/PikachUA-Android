@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,8 +32,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    private DatabaseReference mFirebaseDatabase;
-    private FirebaseDatabase mFirebaseInstance;
+    private DatabaseReference mFirebaseDatabase, mFirebaseDatabase2;
+    private FirebaseDatabase mFirebaseInstance, mFirebaseInstance2;
 
     private DatabaseReference iFirebaseDatabase;
     private FirebaseDatabase iFirebaseInstance;
@@ -48,7 +47,6 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     GoogleSignInClient mGoogleSignInClient;
 
     int next_idItem = 0;
-    int next_idUser = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,20 +109,15 @@ public class GoogleLoginActivity extends AppCompatActivity implements
     }
 
     private void updateUI(final GoogleSignInAccount user) {
-        //hideProgressDialog();
         if (user != null) {
-            //mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            //mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-            Toast.makeText(getApplicationContext(), user.getId(), Toast.LENGTH_LONG).show();
-
-            //getnextIDUser();
-            //getnextIDItem();
 
             mFirebaseInstance = FirebaseDatabase.getInstance();
-            mFirebaseDatabase = mFirebaseInstance.getReference("users");
+            mFirebaseDatabase = mFirebaseInstance.getReference("users").child(user.getId());
+
+            mFirebaseInstance2 = FirebaseDatabase.getInstance();
+            mFirebaseDatabase2 = mFirebaseInstance.getReference("users");
 
             // app_title change listener
             ValueEventListener postListener = new ValueEventListener() {
@@ -132,10 +125,10 @@ public class GoogleLoginActivity extends AppCompatActivity implements
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // Get Post object and use the values to update the UI
 
-                    if (!dataSnapshot.child("user_id").equals(user.getId())){
+                    if (!dataSnapshot.exists()){
                         User user_inst = new User(user.getId(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()), "0", "0");
-                        mFirebaseDatabase.child(user.getId()).setValue(user_inst);
-                        createUser(user);
+                        mFirebaseDatabase2.child(user.getId()).setValue(user_inst);
+                        getBalls(user.getId());
                         Intent signInIntent = new Intent(getBaseContext(), MapsActivity.class);
                         signInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(signInIntent);
@@ -156,18 +149,9 @@ public class GoogleLoginActivity extends AppCompatActivity implements
             mFirebaseDatabase.addValueEventListener(postListener);
 
         } else {
-            //mStatusTextView.setText(R.string.signed_out);
-            //mDetailTextView.setText(null);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
-    }
-
-    private void createUser(GoogleSignInAccount user){
-
-        getBalls(user.getId());
-
     }
 
     private void getBalls(final String user_id){
@@ -208,55 +192,5 @@ public class GoogleLoginActivity extends AppCompatActivity implements
             }
         };
         reference.addValueEventListener(postListener);
-    }
-
-    public void getnextIDItem(){
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("items_inst");
-        final ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                ItemInst item_i = null;
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    item_i = postSnapshot.getValue(ItemInst.class);
-                }
-                next_idItem = Integer.parseInt(item_i.getId())+1;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        reference.addValueEventListener(postListener);
-
-    }
-
-    public void getnextIDUser(){
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        final ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                User user_i = null;
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    user_i = postSnapshot.getValue(User.class);
-                }
-                next_idUser = Integer.parseInt(user_i.getId())+1;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        reference.addValueEventListener(postListener);
-
     }
 }
