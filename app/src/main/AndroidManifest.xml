@@ -9,6 +9,7 @@
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,6 +18,12 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-sdk android:minSdkVersion="16"/>
+
+    <uses-feature android:name="android.hardware.nfc" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
