@@ -101,6 +101,7 @@ public class BagFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 ItemInst item_inst = null;
                 adapter.clear();
+                number=0;
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);

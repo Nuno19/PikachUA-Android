@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 
 /**
@@ -33,7 +32,6 @@ public class ButtonsFragment extends Fragment {
         but2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Storage", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(), StorageActivity.class);
                 getActivity().startActivity(myIntent);
@@ -47,7 +45,6 @@ public class ButtonsFragment extends Fragment {
         but3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Bag", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(), BagActivity.class);
                 getActivity().startActivity(myIntent);
@@ -61,7 +58,6 @@ public class ButtonsFragment extends Fragment {
         but4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Collection", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(), CollectionActivity.class);
                 getActivity().startActivity(myIntent);
@@ -75,7 +71,6 @@ public class ButtonsFragment extends Fragment {
         but5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(getContext(), "Settings", Toast.LENGTH_LONG).show();
 
                 Intent myIntent = new Intent(getActivity(),SettingsActivity.class);
                 getActivity().startActivity(myIntent);

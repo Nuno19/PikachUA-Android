@@ -128,6 +128,7 @@ public class CollectionFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 Pokemon pokemon = null;
+                number=0;
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     pokemon = postSnapshot.getValue(Pokemon.class);

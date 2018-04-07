@@ -28,6 +28,29 @@
         android:layout_height="match_parent"
         android:text="@string/settings" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_height="200sp"
+        android:layout_marginTop="100sp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        app:srcCompat="@drawable/ic_launcher_background"/>
+
+    <TextView
+        android:id="@+id/textPersonID"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginTop="330sp"
+        android:textSize="15sp" />
+
     <Button
         android:id="@+id/button_sign_out"
         android:layout_width="wrap_content"
