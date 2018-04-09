@@ -119,7 +119,7 @@ public class CollectionFragment extends Fragment {
                 // ...
             }
         };
-        reference.addValueEventListener(postListener);
+        reference.addListenerForSingleValueEvent(postListener);
 
 
         final DatabaseReference pokemons_p = FirebaseDatabase.getInstance().getReference("pokemons");
@@ -156,7 +156,7 @@ public class CollectionFragment extends Fragment {
                 // ...
             }
         };
-        pokemons_p.addValueEventListener(listenerpokemons_P);
+        pokemons_p.addListenerForSingleValueEvent(listenerpokemons_P);
     }
 
 }

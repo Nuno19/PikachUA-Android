@@ -10,6 +10,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class User {
 
     private String id;
+    private String name;
     private String startDate;
     private String totalXP;
     private String monstersCaught;
@@ -19,14 +20,17 @@ public class User {
     public User() {
     }
 
-    public User(String id, String startDate, String totalXP, String monstersCaught) {
+    public User(String id, String name, String startDate, String totalXP, String monstersCaught) {
         this.id = id;
+        this.name = name;
         this.startDate = startDate;
         this.totalXP = totalXP;
         this.monstersCaught = monstersCaught;
     }
 
     public String getId() { return id; }
+
+    public String getName() { return name; }
 
     public String getStartDate() {
         return startDate;

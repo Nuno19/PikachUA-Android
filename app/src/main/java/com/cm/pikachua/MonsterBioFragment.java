@@ -125,7 +125,7 @@ public class MonsterBioFragment extends Fragment {
                 // ...
             }
         };
-        reference.addValueEventListener(postListener);
+        reference.addListenerForSingleValueEvent(postListener);
 
         return rootView;
     }

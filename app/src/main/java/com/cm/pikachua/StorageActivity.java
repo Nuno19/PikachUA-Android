@@ -307,7 +307,7 @@ public class StorageActivity extends AppCompatActivity implements NfcAdapter.Cre
                 // ...
             }
         };
-        pokemonsInst.addValueEventListener(listenerPokemonInst);
+        pokemonsInst.addListenerForSingleValueEvent(listenerPokemonInst);
     }
 
 

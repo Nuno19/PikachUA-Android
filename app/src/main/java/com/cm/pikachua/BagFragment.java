@@ -127,6 +127,6 @@ public class BagFragment extends Fragment {
                 // ...
             }
         };
-        itemsInst.addValueEventListener(listenerItemInst);
+        itemsInst.addListenerForSingleValueEvent(listenerItemInst);
     }
 }

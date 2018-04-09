@@ -134,7 +134,7 @@ public class RemoveItemsFragment extends Fragment {
                 // ...
             }
         };
-        itemsInst.addValueEventListener(listenerItemInst);
+        itemsInst.addListenerForSingleValueEvent(listenerItemInst);
 
         FloatingActionButton button_back = rootView.findViewById(R.id.button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +233,7 @@ public class RemoveItemsFragment extends Fragment {
                 // ...
             }
         };
-        iFirebaseDatabase.addValueEventListener(postListener);
+        iFirebaseDatabase.addListenerForSingleValueEvent(postListener);
     }
 
     public static void hideSoftKeyboard(Activity activity) {

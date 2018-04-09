@@ -126,7 +126,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
                     // Get Post object and use the values to update the UI
 
                     if (!dataSnapshot.exists()){
-                        User user_inst = new User(user.getId(), new SimpleDateFormat("yyyy-MM-dd").format(new Date()), "0", "0");
+                        User user_inst = new User(user.getId(), user.getGivenName() + " " + user.getFamilyName(),new SimpleDateFormat("yyyy-MM-dd").format(new Date()), "0", "0");
                         mFirebaseDatabase2.child(user.getId()).setValue(user_inst);
                         getBalls(user.getId());
                         Intent signInIntent = new Intent(getBaseContext(), MapsActivity.class);
@@ -146,7 +146,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements
                     // ...
                 }
             };
-            mFirebaseDatabase.addValueEventListener(postListener);
+            mFirebaseDatabase.addListenerForSingleValueEvent(postListener);
 
         } else {
 
@@ -191,6 +191,6 @@ public class GoogleLoginActivity extends AppCompatActivity implements
                 // ...
             }
         };
-        reference.addValueEventListener(postListener);
+        reference.addListenerForSingleValueEvent(postListener);
     }
 }

@@ -31,7 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
     final int RequestPermissionCode = 1;
     private Intent CropIntent;
     private Uri personPhoto;
-    String personGivenName, personFamilyName, personID;
+    private String personID;
 
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
@@ -46,15 +46,10 @@ public class ProfileActivity extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
             personPhoto = acct.getPhotoUrl();
-            personGivenName = acct.getGivenName();
-            personFamilyName = acct.getFamilyName();
             personID = acct.getId();
 
             ImageView imageViewAndroid = findViewById(R.id.image);
             Picasso.with(this).load(personPhoto).into(imageViewAndroid);
-
-            TextView textViewAndroid1 = findViewById(R.id.name);
-            textViewAndroid1.setText("Name: " + personGivenName + " " + personFamilyName);
         }
 
         FloatingActionButton button_back = findViewById(R.id.button_back);
@@ -90,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
                 // ...
             }
         };
-        mFirebaseDatabase.addValueEventListener(postListener);
+        mFirebaseDatabase.addListenerForSingleValueEvent(postListener);
 
         /*FloatingActionButton button_change = findViewById(R.id.button_change);
         button_change.setOnClickListener(new View.OnClickListener(){
@@ -196,6 +191,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void updateUser(View view, Context context, User user)
     {
+        TextView textViewAndroid1 = findViewById(R.id.name);
+        textViewAndroid1.setText("Name: " + user.getName());
+
         TextView textViewAndroid2 = (TextView) view.findViewById(R.id.startDate);
         textViewAndroid2.setText("Member since: " + user.getStartDate());
 
