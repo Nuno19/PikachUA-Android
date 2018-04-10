@@ -61,10 +61,20 @@
         android:inputType="number" />
 
     <Button
-        android:id="@+id/button_confirm"
+        android:id="@+id/button_all"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="80sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300sp"
+        android:text="All"/>
+
+    <Button
+        android:id="@+id/button_confirm"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="80sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="300sp"

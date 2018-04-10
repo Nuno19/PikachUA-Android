@@ -86,7 +86,7 @@ public class RemoveItemsFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_remove_items, container, false);
 
-        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("items_inst");
+        final DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("items_inst");
 
         ValueEventListener listenerItemInst = new ValueEventListener() {
             @Override
@@ -146,6 +146,14 @@ public class RemoveItemsFragment extends Fragment {
         });
 
         final EditText quantity  = (EditText) rootView.findViewById(R.id.editText);
+
+        Button button_all = rootView.findViewById(R.id.button_all);
+        button_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quantity.setText(String.valueOf(totalAmount));
+            }
+        });
 
         Button button_confirm = rootView.findViewById(R.id.button_confirm);
         button_confirm.setOnClickListener(new View.OnClickListener() {
@@ -219,9 +227,10 @@ public class RemoveItemsFragment extends Fragment {
                     item_inst = postSnapshot.getValue(ItemInst.class);
 
                     if(item_inst.getId().equals(mParam1) && (delete[0] == true)) {
-                        ItemInst items_inst = new ItemInst(item_inst.getId(), item_inst.getId(), item_inst.getUser_id(), item_inst.getName(), item_inst.getDescription(), item_inst.getAmount()-quantity, item_inst.getImage());
-                        iFirebaseDatabase.child(item_inst.getId()).setValue(items_inst);
+                        postSnapshot.getRef().child("amount").setValue(item_inst.getAmount()-quantity);
                         delete[0] = false;
+                        hideSoftKeyboard(getActivity());
+                        getActivity().onBackPressed();
                     }
                 }
             }
