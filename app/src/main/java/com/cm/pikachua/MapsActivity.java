@@ -2,12 +2,9 @@ package com.cm.pikachua;
 
 import android.Manifest;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,7 +34,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,6 +48,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -76,6 +73,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        //generatePokemons();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -95,17 +94,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
+        ImageButton but_profile = findViewById(R.id.button_profile);
 
-            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-            if (acct != null) {
-                personPhoto = acct.getPhotoUrl();
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (acct != null) {
+            personPhoto = acct.getPhotoUrl();
 
-            ImageView imageViewAndroid = findViewById(R.id.button_profile);
-            Picasso.with(this).load(personPhoto).into(imageViewAndroid);
+            Picasso.with(this).load(personPhoto).into(but_profile);
         }
 
 
-        ImageButton but_profile = findViewById(R.id.button_profile);
+
         but_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -234,6 +233,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
         loadPokeStops();
+        loadPokemons();
     }
 
     public static boolean setMarkerState(int markerID,int state) {
@@ -270,6 +270,93 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
         itemsInst.addValueEventListener(listenerItemInst);
     }
+
+    public void loadPokemons(){
+
+        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("pokemonsMap");
+
+        ValueEventListener listenerItemInst = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                PokemonMap pokemon = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    pokemon = postSnapshot.getValue(PokemonMap.class);
+
+                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokemon))
+                            .position(new LatLng(Double.parseDouble(pokemon.getLatitude()),Double.parseDouble(pokemon.getLongitude()))).draggable(false).title(pokemon.getPokemon_id()));
+                    Log.d("POKEMON","pokemon");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        itemsInst.addValueEventListener(listenerItemInst);
+    }
+
+
+
+
+    public void generatePokemons(){
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokemons");
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                ArrayList<Pokemon> list_pokemons = new ArrayList<Pokemon>();
+                Pokemon mon = null;
+                int i=0;
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    list_pokemons.add(postSnapshot.getValue(Pokemon.class));
+                }
+
+                for(int j=0;j<10;j++) {
+                    int random = (int) (Math.random() * 100 + 1);
+
+                    int k = 0;
+                    for (Pokemon pokemon : list_pokemons) {
+                        int v = (int) (Double.parseDouble(pokemon.getSpawnRate()) * 100) + k;
+                        k = v;
+                        k++;
+                        if (random <= v) {
+                            addPokemon(pokemon,j);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        reference.addValueEventListener(postListener);
+
+
+
+    }
+
+
+    public void addPokemon(Pokemon pokemon, int id){
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), "40.580644", "-8.679886");
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
+        database.child(String.valueOf(id)).setValue(pokemon_map);
+
+    }
+
+
 
 
 
