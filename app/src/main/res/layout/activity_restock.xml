@@ -21,13 +21,12 @@
 
     <TextView
         android:id="@+id/title1"
-        android:layout_width="384dp"
-        android:layout_height="match_parent"
         android:gravity="center|top"
-        android:text="@string/restock"
+        android:layout_marginTop="20sp"
+        android:layout_width="match_parent"
         android:textSize="30sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_height="match_parent"
+        android:text="@string/restock" />
 
 
     <android.support.design.widget.FloatingActionButton

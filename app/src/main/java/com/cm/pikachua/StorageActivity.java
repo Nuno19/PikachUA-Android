@@ -230,7 +230,7 @@ public class StorageActivity extends AppCompatActivity {
         Query pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild(string);
 
         if (searching == true){
-            pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild("nickname").startAt(substring).endAt(substring+"\uf8ff");
+            pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild("nickname").startAt(substring.substring(0, 1).toUpperCase() + substring.substring(1,substring.length()-1).toLowerCase()).endAt(substring.substring(0, 1).toUpperCase() + substring.substring(1,substring.length()-1).toLowerCase()+"\uf8ff");
         }
 
         ValueEventListener listenerPokemonInst = new ValueEventListener() {

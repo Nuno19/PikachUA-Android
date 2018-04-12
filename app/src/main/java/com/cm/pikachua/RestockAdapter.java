@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -36,7 +35,7 @@ public class RestockAdapter extends BaseAdapter {
 
             convertView = LayoutInflater.from(context).inflate(R.layout.restock_grid, parent, false);
 
-            Toast.makeText(context, items.get(0).getName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, items.get(0).getName(), Toast.LENGTH_SHORT).show();
 
             TextView textView = (TextView) convertView.findViewById(R.id.item_name);
             textView.setText(items.get(position).getName());

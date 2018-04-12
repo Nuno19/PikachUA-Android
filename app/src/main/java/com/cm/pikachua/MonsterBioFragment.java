@@ -114,7 +114,7 @@ public class MonsterBioFragment extends Fragment {
                         t4.setText(mon.getPokedex());
 
                         TextView t5 = rootView.findViewById(R.id.nickname);
-                        t5.setText("Type: " + mon.getNickname());
+                        t5.setText(mon.getNickname());
                     }
                 }
             }
