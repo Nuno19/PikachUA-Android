@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -145,16 +144,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        ImageView imageV = findViewById(R.id.imageV);
-        imageV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-             // CoordinatesLocation.getCoordinates(40.633115, -8.659362);
-              //  CoordinatesLocation.getCoordinates(latitude, longitude);
-            }
-        });
-
 
         googleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -204,7 +193,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
             pokemonMarkers[0].setTitle(Integer.toString(150));
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            /*mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -225,7 +214,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                     return false;
                 }
-            });
+            });*/
 
         //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Curr"));
        // mMap.addMarker(new MarkerOptions().position(current_coords).title("HOME"));
