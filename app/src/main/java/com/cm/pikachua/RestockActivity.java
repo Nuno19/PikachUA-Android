@@ -55,7 +55,7 @@ public class RestockActivity extends AppCompatActivity {
                 gridView = (GridView) findViewById(R.id.gridViewItems);
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                Query query = reference.child("items_inst").orderByChild("user_id").startAt(person_id).endAt(person_id+"\uf8ff");
+                Query query = reference.child("items_inst").orderByChild("user_id").startAt(person_id).endAt(person_id + "\uf8ff");
                 ValueEventListener postListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,7 +78,7 @@ public class RestockActivity extends AppCompatActivity {
                             }
 
                             else{
-                                Toast.makeText(getApplicationContext(), "Your bag is full !", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Your bag is full!", Toast.LENGTH_LONG).show();
                             }
                         }
                     }
