@@ -190,31 +190,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //marker.icon(BitmapDescriptorFactory.fromAsset("001.webp"));
         LatLng home_mewtwo = new LatLng(40.736886, -8.368381);
 
-            pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
-            pokemonMarkers[0].setTitle(Integer.toString(150));
+        //pokemonMarkers[0] = mMap.addMarker(new MarkerOptions().position(home_mewtwo).icon(BitmapDescriptorFactory.fromResource(R.drawable.mewtwo)));
+        //pokemonMarkers[0].setTitle(Integer.toString(150));
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
-                @Override
-                public boolean onMarkerClick(Marker marker) {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
 
-                    if( Integer.valueOf(marker.getTitle()) > 151){
-                        Intent intent = new Intent(getBaseContext(), RestockActivity.class);
-                        intent.putExtra("ID", marker.getTitle());
-                        startActivity(intent);
+                if( Integer.valueOf(marker.getTitle()) > 151) {
+                    Intent intent = new Intent( getBaseContext(), RestockActivity.class );
+                    intent.putExtra( "ID", marker.getTitle() );
+                    startActivity( intent );
 
-                        return true;
-                    }else{
-
-                        Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
-                        intent.putExtra("ID", Integer.valueOf(marker.getTitle()));
-                        intent.putExtra("markerID", 0);
-                        startActivity(intent);
-
-                    }
-                    return false;
+                    return true;
                 }
-            });
+                else if( Integer.valueOf(marker.getTitle()) == 150) {
+
+                }
+                else{
+
+                    Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
+                    intent.putExtra("ID", Integer.valueOf(marker.getTitle()));
+                    intent.putExtra("markerID", 0);
+                    startActivity(intent);
+
+                }
+                return false;
+            }
+        });
 
         //mMap.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title("Curr"));
        // mMap.addMarker(new MarkerOptions().position(current_coords).title("HOME"));
@@ -307,7 +311,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     list_pokemons.add(postSnapshot.getValue(Pokemon.class));
                 }
 
-                for(int j=0;j<10;j++) {
+                for(int j=0;j<100;j++) {
                     int random = (int) (Math.random() * 100 + 1);
 
                     int k = 0;
@@ -338,7 +342,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void addPokemon(Pokemon pokemon, int id){
-        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), "40.632945", "-8.659606");
+        double ramdomLatitude = (0.5-Math.random())/50;
+        double ramdomLongitude = (0.5-Math.random())/50;
+
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(40.632945 + ramdomLatitude), Double.toString(-8.659606 + ramdomLongitude));
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
         database.child(String.valueOf(id)).setValue(pokemon_map);
@@ -467,7 +474,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             currentPos.remove();
         }
 
-        currentPos = mMap.addMarker(new MarkerOptions().position(latLng));
+        currentPos = mMap.addMarker(new MarkerOptions().position(latLng).title("You"));
 
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
