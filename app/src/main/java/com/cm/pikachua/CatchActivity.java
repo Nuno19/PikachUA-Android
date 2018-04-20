@@ -122,7 +122,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
         }
 
         final String id = getIntent().getStringExtra( "ID" );
-        Toast.makeText(CatchActivity.this, "Pokémon: " + id, Toast.LENGTH_LONG).show();
+        //Toast.makeText(CatchActivity.this, "Pokémon: " + id, Toast.LENGTH_LONG).show();
         virtualObject = new ObjectRenderer( String.format( "%03d", Integer.parseInt(id) ) + "/" + String.format( "%03d", Integer.parseInt(id) ) + ".obj");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference( "pokemons" );
@@ -269,7 +269,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     public void setPokemon(View view, Pokemon pokemon) {
         TextView text = (TextView) view.findViewById( R.id.title1 );
         int random_cp = (int) (Math.random() * 2000 + 1);
-        text.setText( pokemon.getName() + " " + random_cp );
+        text.setText( pokemon.getName() + ": " + random_cp );
         cp = String.valueOf( random_cp );
     }
 

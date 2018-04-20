@@ -276,7 +276,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     pokemon = postSnapshot.getValue(PokemonMap.class);
 
-                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokemon))
+                    String name = "m" + String.format( "%03d", Integer.parseInt(pokemon.getPokemon_id()) );
+                    int resource = getResources().getIdentifier(name, "drawable", getPackageName());
+
+                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(resource))
                             .position(new LatLng(Double.parseDouble(pokemon.getLatitude()),Double.parseDouble(pokemon.getLongitude()))).draggable(false).title(pokemon.getPokemon_id()));
                     Log.d("POKEMON","pokemon");
                 }
@@ -341,8 +344,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void addPokemon(Pokemon pokemon, int id){
-        double ramdomLatitude = (0.5-Math.random())/50;
-        double ramdomLongitude = (0.5-Math.random())/50;
+        double ramdomLatitude = (0.5-Math.random())/75;
+        double ramdomLongitude = (0.5-Math.random())/75;
 
         PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(40.630848 + ramdomLatitude), Double.toString(-8.608003 + ramdomLongitude));
 
