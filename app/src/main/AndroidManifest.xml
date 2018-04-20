@@ -31,9 +31,14 @@
         tools:replace="android:icon,android:theme"
         android:icon="@mipmap/pikachua"
         android:label="@string/app_name"
+        android:exported="true"
         android:roundIcon="@mipmap/pikachua"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />

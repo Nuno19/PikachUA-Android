@@ -72,7 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        generatePokemons();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -210,9 +209,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 else{
 
-                    Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
-                    intent.putExtra("ID", Integer.valueOf(marker.getTitle()));
-                    intent.putExtra("markerID", 0);
+                    Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                    intent.putExtra("ID",marker.getTitle());
                     startActivity(intent);
 
                 }
@@ -226,6 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
         loadPokeStops();
+        generatePokemons();
         loadPokemons();
     }
 
@@ -345,7 +344,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double ramdomLatitude = (0.5-Math.random())/50;
         double ramdomLongitude = (0.5-Math.random())/50;
 
-        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(40.632945 + ramdomLatitude), Double.toString(-8.659606 + ramdomLongitude));
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(40.630848 + ramdomLatitude), Double.toString(-8.608003 + ramdomLongitude));
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
         database.child(String.valueOf(id)).setValue(pokemon_map);

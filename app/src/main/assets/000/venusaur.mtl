@@ -1,0 +1,32 @@
+# 
+# Wavefront material file
+# Created with Kaydara FBX
+# 
+
+newmtl Material__63
+map_Kd pm0003_00_BodyB1.png
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+illum 1
+Tr 1.000000
+
+newmtl Material__61
+map_Kd pm0003_00_Eye1.png
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+illum 1
+Tr 1.000000
+
+newmtl Material__62
+map_Kd pm0003_00_BodyA1.png
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+illum 1
+Tr 1.000000
+
+newmtl Material__60
+map_Kd pm0003_00_BodyC1.png
+Ka 0.000000 0.000000 0.000000
+Kd 0.588000 0.588000 0.588000
+illum 1
+Tr 1.000000

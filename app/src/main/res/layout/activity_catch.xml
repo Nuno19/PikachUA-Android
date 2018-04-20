@@ -7,6 +7,12 @@
     android:background="@color/colorBackground"
     tools:context="com.cm.pikachua.CatchActivity">
 
+    <android.opengl.GLSurfaceView
+        android:id="@+id/surfaceview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="top"/>
+
     <!-- TODO: Update blank fragment layout -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_back"
@@ -21,11 +27,11 @@
 
     <TextView
         android:id="@+id/title1"
-        android:gravity="center|top"
-        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
-        android:textSize="30sp"
-        android:layout_height="match_parent" />
+        android:layout_height="100sp"
+        android:background="@color/colorBackground"
+        android:gravity="center"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/button_balls"
@@ -67,7 +73,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.07" />
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/pokemonImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -79,6 +85,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pokemonInfo"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/ic_launcher_background" />-->
 
 </android.support.constraint.ConstraintLayout>
