@@ -198,16 +198,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                if( Integer.valueOf(marker.getTitle()) > 151) {
+                if(marker.getTitle().equals("You")) {
+
+                }
+
+                else if( Integer.valueOf(marker.getTitle()) > 151) {
                     Intent intent = new Intent( getBaseContext(), RestockActivity.class );
                     intent.putExtra( "ID", marker.getTitle() );
                     startActivity( intent );
 
                     return true;
                 }
-                else if( Integer.valueOf(marker.getTitle()) == 150) {
 
-                }
                 else{
                     ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(getApplicationContext());
                     if (availability.isSupported()) {
@@ -267,7 +269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // ...
             }
         };
-        itemsInst.addValueEventListener(listenerItemInst);
+        itemsInst.addListenerForSingleValueEvent(listenerItemInst);
     }
 
     public void loadPokemons(){
@@ -299,13 +301,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // ...
             }
         };
-        itemsInst.addValueEventListener(listenerItemInst);
+        itemsInst.addListenerForSingleValueEvent(listenerItemInst);
     }
 
 
 
 
-  /*  public void generatePokemons(){
+    public void generatePokemons(){
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokemons");
 
@@ -343,24 +345,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // ...
             }
         };
-        reference.addValueEventListener(postListener);
+        reference.addListenerForSingleValueEvent(postListener);
 
 
 
     }
-*/
 
-  /*  public void addPokemon(Pokemon pokemon, int id){
-        double ramdomLatitude = (0.5-Math.random())/75;
-        double ramdomLongitude = (0.5-Math.random())/75;
 
-        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(latitude + ramdomLatitude), Double.toString(longitude + ramdomLongitude),pokemon.);
+    public void addPokemon(Pokemon pokemon, int id){
+        double ramdomLatitude = (0.5-Math.random())/200;
+        double ramdomLongitude = (0.5-Math.random())/200;
+
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(Double.parseDouble("40.630848") + ramdomLatitude), Double.toString(Double.parseDouble("-8.608003") + ramdomLongitude),"NaN");
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
         database.child(String.valueOf(id)).setValue(pokemon_map);
 
     }
-*/
+
 
 
     //Getting current location
