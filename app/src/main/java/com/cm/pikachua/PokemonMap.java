@@ -13,11 +13,11 @@ public class PokemonMap {
     private String pokemon_id;
     private String name;
     private String image;
-    private String latitude, longitude;
+    private double latitude, longitude;
 
     public PokemonMap(){}
 
-    public PokemonMap(String id, String pokemon_id, String name, String image, String latitude, String longitude){
+    public PokemonMap(String id, String pokemon_id, String name, String image, double latitude, double longitude){
         this.id = id;
         this.pokemon_id = pokemon_id;
         this.name = name;
@@ -43,11 +43,11 @@ public class PokemonMap {
         return image;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 }

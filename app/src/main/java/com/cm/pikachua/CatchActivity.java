@@ -121,9 +121,10 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             personID = acct.getId();
         }
 
-        final String id = getIntent().getStringExtra( "ID" );
+        pokemon_id = getIntent().getStringExtra( "ID" );
         //Toast.makeText(CatchActivity.this, "Pokémon: " + id, Toast.LENGTH_LONG).show();
-        virtualObject = new ObjectRenderer( String.format( "%03d", Integer.parseInt(id) ) + "/" + String.format( "%03d", Integer.parseInt(id) ) + ".obj");
+        virtualObject = new ObjectRenderer( String.format( "%03d", Integer.parseInt(pokemon_id) ) + "/" + String.format( "%03d", Integer.parseInt(pokemon_id) ) + ".obj");
+        //virtualObject = new ObjectRenderer( "007/007.obj");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference( "pokemons" );
 
@@ -133,7 +134,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 Pokemon mon = null;
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     mon = postSnapshot.getValue(Pokemon.class);
-                    if(mon.getId().equals(id)) {
+                    if(mon.getId().equals(pokemon_id)) {
                         setPokemon( getWindow().getDecorView().getRootView(), mon );
                         pokemon_name = mon.getName();
                         pokemonToCatch = mon;
@@ -574,7 +575,20 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                     session.getAllTrackables( Plane.class ), camera.getDisplayOrientedPose(), projmtx );
 
             // Visualize anchors created by touch.
-            float scaleFactor = 0.0025f;
+            float scaleFactor = 0.005f;
+
+            if (pokemon_id.equals("0")){
+                scaleFactor = 0.0025f;
+            }
+
+            else if (pokemon_id.equals("5")){
+                scaleFactor = 0.0001f;
+            }
+
+            else if (pokemon_id.equals("9")){
+                scaleFactor = 0.0025f;
+            }
+
             for (Anchor anchor : anchors) {
                 if (anchor.getTrackingState() != TrackingState.TRACKING) {
                     continue;

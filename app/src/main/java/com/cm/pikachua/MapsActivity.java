@@ -150,6 +150,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .addApi(LocationServices.API)
                     .build();
 
+        generatePokemons();
+
     }
 
     /**
@@ -197,15 +199,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                if( Integer.valueOf(marker.getTitle()) > 151) {
+                if( marker.getTitle().equals("You")) {
+
+                }
+
+                else if( Integer.valueOf(marker.getTitle()) > 151) {
                     Intent intent = new Intent( getBaseContext(), RestockActivity.class );
                     intent.putExtra( "ID", marker.getTitle() );
                     startActivity( intent );
 
                     return true;
-                }
-                else if( Integer.valueOf(marker.getTitle()) == 150) {
-
                 }
                 else{
 
@@ -224,7 +227,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
         loadPokeStops();
-        generatePokemons();
         loadPokemons();
     }
 
@@ -280,7 +282,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     int resource = getResources().getIdentifier(name, "drawable", getPackageName());
 
                     mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(resource))
-                            .position(new LatLng(Double.parseDouble(pokemon.getLatitude()),Double.parseDouble(pokemon.getLongitude()))).draggable(false).title(pokemon.getPokemon_id()));
+                            .position(new LatLng(pokemon.getLatitude(),pokemon.getLongitude())).draggable(false).title(pokemon.getPokemon_id()));
                     Log.d("POKEMON","pokemon");
                 }
             }
@@ -344,10 +346,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void addPokemon(Pokemon pokemon, int id){
-        double ramdomLatitude = (0.5-Math.random())/75;
-        double ramdomLongitude = (0.5-Math.random())/75;
+        double ramdomLatitude = (0.5-Math.random())/150;
+        double ramdomLongitude = (0.5-Math.random())/150;
 
-        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(40.630848 + ramdomLatitude), Double.toString(-8.608003 + ramdomLongitude));
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), 40.630848 + ramdomLatitude, -8.608003 + ramdomLongitude);
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
         database.child(String.valueOf(id)).setValue(pokemon_map);
