@@ -14,18 +14,21 @@ public class PokemonMap {
     private String name;
     private String image;
     private String latitude, longitude;
+    private String time;
 
     public PokemonMap(){}
 
-    public PokemonMap(String id, String pokemon_id, String name, String image, String latitude, String longitude){
+    public PokemonMap(String id, String pokemon_id, String name, String image, String latitude, String longitude,String time){
         this.id = id;
         this.pokemon_id = pokemon_id;
         this.name = name;
         this.image = image;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.time = time;
     }
 
+    public String getTime() { return time; }
 
     public String getId() {
         return id;

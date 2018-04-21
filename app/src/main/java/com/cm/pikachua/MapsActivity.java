@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.ar.core.ArCoreApk;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -208,10 +209,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
                 else{
-
-                    Intent intent = new Intent(getBaseContext(), CatchActivity.class);
-                    intent.putExtra("ID",marker.getTitle());
-                    startActivity(intent);
+                    ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(getApplicationContext());
+                    if (availability.isSupported()) {
+                        Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                        intent.putExtra("ID", marker.getTitle());
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
+                        intent.putExtra("markerID", marker.getTitle());
+                        startActivity(intent);
+                    }
 
                 }
                 return false;
@@ -224,7 +231,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
         loadPokeStops();
-        generatePokemons();
+        //generatePokemons();
         loadPokemons();
     }
 
@@ -248,7 +255,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     coords = postSnapshot.getValue(Coordinates.class);
 
                     mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop))
-                                .position(new LatLng(coords.getLatitude(),coords.getLongitude())).draggable(false).title(coords.getId()));
+                            .position(new LatLng(coords.getLatitude(),coords.getLongitude())).draggable(false).title(coords.getId()));
                     Log.d("POKESTOP","pokestop");
                 }
             }
@@ -298,7 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-    public void generatePokemons(){
+  /*  public void generatePokemons(){
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokemons");
 
@@ -341,21 +348,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+*/
 
-
-    public void addPokemon(Pokemon pokemon, int id){
+  /*  public void addPokemon(Pokemon pokemon, int id){
         double ramdomLatitude = (0.5-Math.random())/75;
         double ramdomLongitude = (0.5-Math.random())/75;
 
-        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(40.630848 + ramdomLatitude), Double.toString(-8.608003 + ramdomLongitude));
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(latitude + ramdomLatitude), Double.toString(longitude + ramdomLongitude),pokemon.);
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
         database.child(String.valueOf(id)).setValue(pokemon_map);
 
     }
-
-
-
+*/
 
 
     //Getting current location
