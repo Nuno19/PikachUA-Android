@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -68,6 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int[] markerPokemon = new int[3];
     private static Marker[] pokemonMarkers = new Marker[3];
     private Uri personPhoto;
+    private float bearing = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         try {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
+            mMap.getUiSettings().setTiltGesturesEnabled(false);
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
@@ -233,8 +236,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
         loadPokeStops();
-        //generatePokemons();
+        generatePokemons();
         loadPokemons();
+
+        final Handler handler = new Handler();
+        // Define the code block to be executed
+        Runnable runnableCode = new Runnable() {
+            @Override
+            public void run() {
+                // Do something here on the main thread
+                mMap.clear();
+                loadPokeStops();
+                //generatePokemons();
+                loadPokemons();
+                handler.postDelayed(this, 15000);
+            }
+        };
+        // Start the initial runnable task by posting through the handler
+        handler.post(runnableCode);
     }
 
     public static boolean setMarkerState(int markerID,int state) {
@@ -477,8 +496,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //        .draggable(true)
           //      .title("Marker in India"));
 
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(
-                latLng).zoom(12).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(latLng)
+                .zoom(mMap.getCameraPosition().zoom)
+                .bearing(mMap.getCameraPosition().bearing)
+                .tilt(60)
+                .build();
+
         if(currentPos != null){
             currentPos.remove();
         }
@@ -489,8 +513,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-
     }
 
 
@@ -509,8 +531,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-
-
-
 }
