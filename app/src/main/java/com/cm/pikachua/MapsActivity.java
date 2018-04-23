@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -69,7 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int[] markerPokemon = new int[3];
     private static Marker[] pokemonMarkers = new Marker[3];
     private Uri personPhoto;
-    private float bearing = 0;
+    private String personID;
+    private int total_monsters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +102,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
             personPhoto = acct.getPhotoUrl();
+            personID = acct.getId();
 
             Picasso.with(this).load(personPhoto).into(but_profile);
         }
 
-
+        total_storage();
 
         but_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,17 +217,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 else{
-                    ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(getApplicationContext());
-                    if (availability.isSupported()) {
-                        Intent intent = new Intent(getBaseContext(), CatchActivity.class);
-                        intent.putExtra("ID", marker.getTitle());
-                        startActivity(intent);
-                    }else{
-                        Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
-                        intent.putExtra("markerID", marker.getTitle());
-                        startActivity(intent);
+                    if (total_monsters < 200){
+                        ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(getApplicationContext());
+                        if (availability.isSupported()) {
+                            Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                            intent.putExtra("ID", marker.getTitle());
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
+                            intent.putExtra("markerID", marker.getTitle());
+                            startActivity(intent);
+                        }
                     }
-
+                    else {
+                        Toast.makeText(MapsActivity.this, "Storage full!", Toast.LENGTH_LONG).show();
+                    }
                 }
                 return false;
             }
@@ -530,5 +537,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void onResume() {
+        super.onResume();
+        total_storage();
+    }
+
+    public void total_storage(){
+        DatabaseReference pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst");
+
+        ValueEventListener listenerPokemonInst = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                PokemonInst pokemon_inst = null;
+                total_monsters = 0;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    pokemon_inst = postSnapshot.getValue(PokemonInst.class);
+                    if(pokemon_inst.getUser_id().equals(personID)){
+                        total_monsters++;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        pokemonsInst.addListenerForSingleValueEvent(listenerPokemonInst);
     }
 }

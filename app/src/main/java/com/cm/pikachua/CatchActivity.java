@@ -48,6 +48,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
@@ -83,8 +84,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     private final ArrayList<Anchor> anchors = new ArrayList<>();
 
     AlertDialog alertDialog1, alertDialog2;
-    CharSequence[] values_ball = {" PokeBall (0) ", " Great Ball (1) ", " Ultra Ball (2)"};
-    CharSequence[] values_berry = {"None (0) ", "Razz Berry (1) ", " Golden Razz Berry (2) "};
+    CharSequence[] values_ball = {" PokeBall: 0 ", " Great Ball: 0 ", " Ultra Ball: 0 "};
+    CharSequence[] values_berry = {" None", " Razz Berry: 0 ", " Golden Razz Berry: 0 "};
     int choice_ball = 0;
     int choice_berry = 0;
     Pokemon pokemonToCatch = null;
@@ -93,6 +94,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     private String personID;
     private String pokemon_id;
     private String pokemon_name;
+    private int[] num_items_bag = {0,0,0,0,0};
+    private boolean with_berry, valid_berry, valid_ball;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -125,6 +128,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
         //Toast.makeText(CatchActivity.this, "Pokémon: " + id, Toast.LENGTH_LONG).show();
         virtualObject = new ObjectRenderer( String.format( "%03d", Integer.parseInt(pokemon_id) ) + "/" + String.format( "%03d", Integer.parseInt(pokemon_id) ) + ".obj");
         //virtualObject = new ObjectRenderer( "007/007.obj");
+
+        number_of_items();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference( "pokemons" );
 
@@ -172,6 +177,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             public void onClick(View view) {
                 //Toast.makeText(CatchActivity.this, "Ball", Toast.LENGTH_LONG).show();
 
+                number_of_items();
+
                 AlertDialog.Builder builder1 = new AlertDialog.Builder( CatchActivity.this );
                 builder1.setTitle( "Select Your Ball" );
                 builder1.setSingleChoiceItems( values_ball, choice_ball, new DialogInterface.OnClickListener() {
@@ -206,6 +213,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             public void onClick(View view) {
                 //Toast.makeText(CatchActivity.this, "Berries", Toast.LENGTH_LONG).show();
 
+                number_of_items();
+
                 AlertDialog.Builder builder2 = new AlertDialog.Builder( CatchActivity.this );
                 builder2.setTitle( "Select Your Berry" );
                 builder2.setSingleChoiceItems( values_berry, choice_berry, new DialogInterface.OnClickListener() {
@@ -221,7 +230,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                                 //Toast.makeText(CatchActivity.this, "Razz Berry", Toast.LENGTH_LONG).show();
                                 choice_berry = 1;
                                 break;
-                            case 4:
+                            case 2:
                                 //Toast.makeText(CatchActivity.this, "Golden Razz Berry", Toast.LENGTH_LONG).show();
                                 choice_berry = 2;
                                 break;
@@ -247,6 +256,11 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                             "Got it!", Toast.LENGTH_LONG )
                             .show();
 
+                    updatePlayer(1000,true);
+
+                    DatabaseReference database2 = FirebaseDatabase.getInstance().getReference( "pokedex" );
+                    PokedexInst pokedex_inst = new PokedexInst(personID + "_" + String.format( "%03d", Integer.parseInt(pokemonToCatch.getId())), pokemonToCatch.getId(), personID, pokemonToCatch.getName(), pokemonToCatch.getImage());
+                    database2.child(personID + "_" + String.format( "%03d", Integer.parseInt(pokemonToCatch.getId()) )).setValue(pokedex_inst);
 
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference( "pokemonsInst" );
                     PokemonInst pokemon_inst = new PokemonInst( personID + "_" + String.format( "%012d", next_id ), pokemonToCatch.getId(), personID, pokemonToCatch.getName(), cp, pokemonToCatch.getImage() );
@@ -257,10 +271,13 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                     Toast.makeText( CatchActivity.this,
                             "Oh No! It escaped!", Toast.LENGTH_LONG )
                             .show();
-                } else {
+                    number_of_items();
+
+                } else if (catchSimValue == 3) {
                     Toast.makeText( CatchActivity.this,
                             "Oh No! It ran away!", Toast.LENGTH_LONG )
                             .show();
+                    updatePlayer(250,false);
                     onBackPressed();
                 }
             }
@@ -305,6 +322,44 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
 
     public int catchSimulation(Pokemon pokemon, int berry, int ball) {
+
+        number_of_items();
+
+        if (berry != 0){
+            with_berry = true;
+            if (num_items_bag[berry+2] != 0){
+                valid_berry = true;
+            }
+            else{
+                Toast.makeText( this, "Out of these berries", Toast.LENGTH_LONG ).show();
+                valid_berry = false;
+            }
+        }
+        else{
+            with_berry = false;
+            valid_berry = true;
+        }
+
+        if (num_items_bag[ball] != 0){
+            valid_ball = true;
+        }
+        else{
+            Toast.makeText( this, "Out of these pokéballs", Toast.LENGTH_LONG ).show();
+            valid_ball = false;
+        }
+
+        if (valid_berry == true && valid_ball == true){
+            if (with_berry == true){
+                updateBag(Integer.toString(berry+2));
+            }
+
+            updateBag(Integer.toString(ball));
+        }
+        else {
+            return 4;
+        }
+
+
         int catchRate = (int) (Double.parseDouble( pokemon.getCatchRate() ) * 100);
         int fleeRate = (int) (Double.parseDouble( pokemon.getFleeRate() ) * 100);
         switch (berry) {
@@ -608,5 +663,95 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             // Avoid crashing the application due to unhandled exceptions.
             Log.e( TAG, "Exception on the OpenGL thread", t );
         }
+    }
+
+    public void number_of_items(){
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child("items_inst").orderByChild("user_id").startAt(personID).endAt(personID + "\uf8ff");
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                ItemInst item_inst = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    item_inst = postSnapshot.getValue(ItemInst.class);
+                    num_items_bag[Integer.parseInt( item_inst.getItem_id() )] = item_inst.getAmount();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        query.addListenerForSingleValueEvent(postListener);
+
+        values_ball = new CharSequence[]{" PokeBall: " + num_items_bag[0], " Great Ball: " + num_items_bag[1], " Ultra Ball: " + num_items_bag[2]};
+        values_berry = new CharSequence[]{" None", " Razz Berry: " + num_items_bag[3], " Golden Razz Berry: " + +num_items_bag[4]};
+    }
+
+    public void updateBag(final String k){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("items_inst");
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                ItemInst item_inst = null;
+
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    item_inst = postSnapshot.getValue(ItemInst.class);
+
+                    if(item_inst.getUser_id().equals(personID) && item_inst.getItem_id().equals(k)){
+                        postSnapshot.getRef().child("amount").setValue(item_inst.getAmount()-1);
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        reference.addListenerForSingleValueEvent(postListener);
+    }
+
+    public void updatePlayer(final int xp, final boolean caught_monster){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                User user = null;
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    user = postSnapshot.getValue(User.class);
+
+                    if(user.getId().equals(personID)){
+                        postSnapshot.getRef().child("totalXP").setValue(String.valueOf(Integer.parseInt(user.getTotalXP())+xp));
+                        if (caught_monster == true){
+                            postSnapshot.getRef().child("monstersCaught").setValue(String.valueOf(Integer.parseInt(user.getMonstersCaught())+1));
+                        }
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        reference.addListenerForSingleValueEvent(postListener);
     }
 }
