@@ -258,7 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 loadPokeStops();
                 //generatePokemons();
                 loadPokemons();
-                handler.postDelayed(this, 15000);
+                handler.postDelayed(this, 30000);
             }
         };
         // Start the initial runnable task by posting through the handler
@@ -384,7 +384,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double ramdomLatitude = (0.5-Math.random())/200;
         double ramdomLongitude = (0.5-Math.random())/200;
 
-        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(Double.parseDouble("40.630848") + ramdomLatitude), Double.toString(Double.parseDouble("-8.608003") + ramdomLongitude),"NaN");
+        PokemonMap pokemon_map = new PokemonMap(String.valueOf(id), pokemon.getId(), pokemon.getName(), pokemon.getImage(), Double.toString(latitude + ramdomLatitude), Double.toString(longitude + ramdomLongitude),"NaN");
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference("pokemonsMap");
         database.child(String.valueOf(id)).setValue(pokemon_map);

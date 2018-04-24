@@ -263,7 +263,7 @@ public class StorageActivity extends AppCompatActivity {
                 // ...
             }
         };
-        pokemonsInst.addListenerForSingleValueEvent(listenerPokemonInst);
+        pokemonsInst.addValueEventListener(listenerPokemonInst);
     }
 
 
