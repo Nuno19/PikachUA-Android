@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -72,6 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Uri personPhoto;
     private String personID;
     private int total_monsters;
+    private Point touchPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -572,4 +574,63 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
         pokemonsInst.addListenerForSingleValueEvent(listenerPokemonInst);
     }
+
+    /*
+    public boolean onTouchEvent(MotionEvent eve) {
+        touchPoint = new Point();  //first point on screen the user's finger touches
+        final int action = MotionEventCompat.getActionMasked(eve);
+        int pointerIndex = MotionEventCompat.getActionIndex(eve);
+        GestureDetector g = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener());
+        g.onTouchEvent(eve);
+        switch (action){
+            case MotionEvent.ACTION_DOWN:
+                // get the point the user's finger touches
+                touchPoint.x =(int) MotionEventCompat.getX(eve,pointerIndex);
+                touchPoint.y =(int) MotionEventCompat.getY(eve,pointerIndex);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if(eve.getPointerCount()<2) {   // leave two finger gestures for other actions
+                    final Point newTouchPoint = new Point();  // the new position of user's finger on screen after movement is detected
+                    newTouchPoint.x = (int) MotionEventCompat.getX(eve, pointerIndex);
+                    newTouchPoint.y = (int) MotionEventCompat.getY(eve, pointerIndex);
+                    Point centerOfMap = getCurrentLocation();   // center of map(as Point object) for calculation of angle
+                    // now you need to calculate the angle betwwen 2 lines with centerOfMap as center:
+                    //line 1: imaginary line between first touch detection on screen - and the center of the map
+                    //line 2: imaginary line between last place finger moved on screen - and the center of the map
+                    final float angle = angleBetweenLines(centerOfMap, touchPoint, newTouchPoint);
+                    final LatLng latlng = new LatLng(latitude, longitude);  //set camera movement to that position
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // move the camera (NOT animateCamera() ) to new position with "bearing" updated
+                            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latlng).tilt(60).zoom(mMap.getCameraPosition().zoom).bearing(mMap.getCameraPosition().bearing - angle).build()));
+                        }
+                    });
+                    touchPoint = newTouchPoint; // update touchPoint value
+                    return true;
+                }else{
+                    break;
+                }
+        }
+        return true;
+    }
+
+    // convert center of map from Latln object to Point object
+    public Point getCurrentLocation(){
+        Projection projection = mMap.getProjection();
+        return projection.toScreenLocation(new LatLng(latitude, longitude));
+    }
+
+    public float angleBetweenLines(Point center,Point endLine1,Point endLine2){
+        float a = endLine1.x - center.x;
+        float b = endLine1.y - center.y;
+        float c = endLine2.x - center.x;
+        float d = endLine2.y - center.y;
+
+        float atan1 = (float) Math.atan2(a,b);
+        float atan2 = (float) Math.atan2(c,d);
+
+        return (float) ((atan1 - atan2) * 180 / Math.PI);
+    }
+    */
 }

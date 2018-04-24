@@ -60,7 +60,7 @@ public class StorageActivity extends AppCompatActivity {
 
         final MonsterStorageAdapter adapter = new MonsterStorageAdapter(StorageActivity.this, arrayOfMonsterStorage);
         selectedMonsters = new ArrayList<>();
-        TextView text_selected = findViewById(R.id.selected);
+        final TextView text_selected = findViewById(R.id.selected);
         text_selected.setText(selectedMonsters.size() + " selected");
 
         final FloatingActionButton button_search = findViewById(R.id.button_search);
@@ -164,8 +164,10 @@ public class StorageActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 for (int i = 0; i < selectedMonsters.size(); i++){
                                     transferMonster(String.valueOf(selectedMonsters.get(i)));
-                                    selectedMonsters.remove(i);
                                 }
+                                selectedMonsters.clear();
+                                adapter.selectedPositions.clear();
+                                text_selected.setText(selectedMonsters.size() + " selected");
                                 loadStorage(adapter);
                                 dialog.cancel();
                             }

@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +73,6 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
     private final BackgroundRenderer backgroundRenderer = new BackgroundRenderer();
     private ObjectRenderer virtualObject = null;
-    private final ObjectRenderer virtualObjectShadow = null;
     private final PlaneRenderer planeRenderer = new PlaneRenderer();
     private final PointCloudRenderer pointCloudRenderer = new PointCloudRenderer();
 
@@ -93,7 +92,6 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     int next_id = 0;
     private String personID;
     private String pokemon_id;
-    private String pokemon_name;
     private int[] num_items_bag = {0,0,0,0,0};
     private boolean with_berry, valid_berry, valid_ball;
 
@@ -141,7 +139,6 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                     mon = postSnapshot.getValue(Pokemon.class);
                     if(mon.getId().equals(pokemon_id)) {
                         setPokemon( getWindow().getDecorView().getRootView(), mon );
-                        pokemon_name = mon.getName();
                         pokemonToCatch = mon;
                     }
                 }
@@ -160,7 +157,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
         //String s = pokemonToCatch.getName();
 
-        FloatingActionButton button_back = findViewById( R.id.button_back );
+        final FloatingActionButton button_back = findViewById( R.id.button_back );
         button_back.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,7 +168,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             }
         } );
 
-        Button button_balls = findViewById( R.id.button_balls );
+        final ImageButton button_balls = findViewById( R.id.button_balls );
         button_balls.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,14 +186,23 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                             case 0:
                                 //Toast.makeText(CatchActivity.this, "PokeBall", Toast.LENGTH_LONG).show();
                                 choice_ball = 0;
+
+                                button_balls.setImageResource(R.drawable.pokeball_sprite);
+
                                 break;
                             case 1:
                                 //Toast.makeText(CatchActivity.this, "Great Ball", Toast.LENGTH_LONG).show();
                                 choice_ball = 1;
+
+                                button_balls.setImageResource(R.drawable.greatball_sprite);
+
                                 break;
                             case 2:
                                 //Toast.makeText(CatchActivity.this, "Ultra Ball", Toast.LENGTH_LONG).show();
                                 choice_ball = 2;
+
+                                button_balls.setImageResource(R.drawable.ultraball_sprite);
+
                                 break;
                         }
                         alertDialog1.dismiss();
@@ -207,7 +213,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             }
         } );
 
-        Button button_berries = findViewById( R.id.button_berries );
+        final ImageButton button_berries = findViewById( R.id.button_berries );
         button_berries.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,13 +231,21 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                             case 0:
                                 //Toast.makeText(CatchActivity.this, "None", Toast.LENGTH_LONG).show();
                                 choice_berry = 0;
+
+                                button_berries.setImageResource(R.drawable.ic_launcher_background);
+
                                 break;
                             case 1:
                                 //Toast.makeText(CatchActivity.this, "Razz Berry", Toast.LENGTH_LONG).show();
                                 choice_berry = 1;
+
+                                button_berries.setImageResource(R.drawable.item_0701);
+
                                 break;
                             case 2:
-                                //Toast.makeText(CatchActivity.this, "Golden Razz Berry", Toast.LENGTH_LONG).show();
+
+                                button_berries.setImageResource(R.drawable.item_0706);
+
                                 choice_berry = 2;
                                 break;
                         }

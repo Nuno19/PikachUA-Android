@@ -33,21 +33,23 @@
         android:gravity="center"
         android:textSize="30sp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_balls"
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:layout_gravity="bottom"
-        android:text="Balls"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/pokeball_sprite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_berries"
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:layout_gravity="bottom"
-        android:text="Berries"
+        app:srcCompat="@drawable/ic_launcher_background"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
