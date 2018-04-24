@@ -702,7 +702,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 // ...
             }
         };
-        query.addListenerForSingleValueEvent(postListener);
+        query.addValueEventListener(postListener);
 
         values_ball = new CharSequence[]{" PokeBall: " + num_items_bag[0], " Great Ball: " + num_items_bag[1], " Ultra Ball: " + num_items_bag[2]};
         values_berry = new CharSequence[]{" None", " Razz Berry: " + num_items_bag[3], " Golden Razz Berry: " + +num_items_bag[4]};

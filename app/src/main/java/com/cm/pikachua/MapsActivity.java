@@ -256,7 +256,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Do something here on the main thread
                 mMap.clear();
                 loadPokeStops();
-                //generatePokemons();
+                generatePokemons();
                 loadPokemons();
                 handler.postDelayed(this, 30000);
             }
