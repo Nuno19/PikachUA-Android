@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.entities;
 
 /**
  * Created by PedroRaimundo on 2018-03-13.

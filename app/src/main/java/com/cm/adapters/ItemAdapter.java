@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cm.entities.Item;
+import com.cm.pikachua.R;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,7 +34,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_grid_2texts, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate( R.layout.row_grid_2texts, parent, false);
         }
 
         TextView textViewAndroid1 = (TextView) convertView.findViewById(R.id.item_text1);

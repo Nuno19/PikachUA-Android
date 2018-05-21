@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cm.pikachua.MonsterStorage;
+import com.cm.pikachua.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,7 +42,7 @@ public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_grid, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate( R.layout.row_grid, parent, false);
         }
 
         TextView textViewAndroid1 = (TextView) convertView.findViewById(R.id.item_text1);

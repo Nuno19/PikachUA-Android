@@ -2,8 +2,10 @@ package com.cm.pikachua;
 
 import android.util.Log;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.cm.entities.Pokemon;
+import com.cm.instances.ItemInst;
+import com.cm.instances.PokedexInst;
+import com.cm.instances.PokemonInst;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

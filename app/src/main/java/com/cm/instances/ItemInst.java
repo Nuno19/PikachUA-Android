@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.instances;
 
 /**
  * Created by Eduardo on 03/04/2018.

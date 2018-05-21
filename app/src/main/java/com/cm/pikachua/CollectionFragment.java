@@ -13,6 +13,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.cm.adapters.MonsterCollectionAdapter;
+import com.cm.entities.Pokemon;
+import com.cm.instances.PokedexInst;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;

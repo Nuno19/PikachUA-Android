@@ -20,6 +20,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.cm.entities.Coordinates;
+import com.cm.entities.Pokemon;
+import com.cm.entities.PokemonMap;
+import com.cm.instances.PokemonInst;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
@@ -226,7 +230,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             intent.putExtra("ID", marker.getTitle());
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(getBaseContext(), LaunchUnity.class);
+                            Intent intent = new Intent(getBaseContext(), CatchNoModelActivity.class);
                             intent.putExtra("markerID", marker.getTitle());
                             startActivity(intent);
                         }
@@ -245,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(18);
         mMap.setMaxZoomPreference(21);
         loadPokeStops();
-        generatePokemons();
+        //generatePokemons();
         loadPokemons();
 
         final Handler handler = new Handler();
@@ -256,7 +260,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Do something here on the main thread
                 mMap.clear();
                 loadPokeStops();
-                generatePokemons();
+                //generatePokemons();
                 loadPokemons();
                 handler.postDelayed(this, 30000);
             }

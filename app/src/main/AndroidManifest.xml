@@ -88,7 +88,10 @@
             android:name=".CatchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
-
+        <activity
+            android:name=".CatchNoModelActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity android:name=".MapsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />

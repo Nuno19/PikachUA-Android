@@ -3,8 +3,10 @@ package com.cm.pikachua;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cm.adapters.MonsterStorageAdapter;
+import com.cm.instances.PokemonInst;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +33,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static android.nfc.NfcAdapter.getDefaultAdapter;
 
 
 /**
@@ -60,8 +66,8 @@ public class StorageActivity extends AppCompatActivity {
 
         final MonsterStorageAdapter adapter = new MonsterStorageAdapter(StorageActivity.this, arrayOfMonsterStorage);
         selectedMonsters = new ArrayList<>();
-        final TextView text_selected = findViewById(R.id.selected);
-        text_selected.setText(selectedMonsters.size() + " selected");
+        //final TextView text_selected = findViewById(R.id.selected);
+        //text_selected.setText(selectedMonsters.size() + " selected");
 
         final FloatingActionButton button_search = findViewById(R.id.button_search);
         button_search.setOnClickListener(new View.OnClickListener() {
@@ -134,8 +140,50 @@ public class StorageActivity extends AppCompatActivity {
                     selectedMonsters.add(adapter.getItem(i).monsterId);
                 }
                 adapter.getView(i,view,parent);
-                TextView text_selected = findViewById(R.id.selected);
-                text_selected.setText(selectedMonsters.size() + " selected");
+                //TextView text_selected = findViewById(R.id.selected);
+                //text_selected.setText(selectedMonsters.size() + " selected");
+            }
+        });
+
+        Button button_exchange = findViewById(R.id.button_exchange);
+        button_exchange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(StorageActivity.this);
+                if (selectedMonsters.isEmpty()){
+                    Toast.makeText(StorageActivity.this, "No monsters selected!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else if (selectedMonsters.size() == 1){
+                    builder1.setMessage("Do you want to trade 1 monster?");
+                }
+                else {
+                    builder1.setMessage("Do you want to trade " + selectedMonsters.size() + " monsters?");
+                }
+
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                trade_nfc();
+                                dialog.cancel();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+
             }
         });
 
@@ -167,7 +215,7 @@ public class StorageActivity extends AppCompatActivity {
                                 }
                                 selectedMonsters.clear();
                                 adapter.selectedPositions.clear();
-                                text_selected.setText(selectedMonsters.size() + " selected");
+                                //text_selected.setText(selectedMonsters.size() + " selected");
                                 loadStorage(adapter);
                                 dialog.cancel();
                             }
@@ -286,4 +334,64 @@ public class StorageActivity extends AppCompatActivity {
         });
 
     }
+
+   public void trade_nfc(){
+        NfcAdapter mAdapter = getDefaultAdapter(StorageActivity.this);
+        if (mAdapter == null) {
+            Toast.makeText(StorageActivity.this, "Sorry this device does not have NFC.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        else if (!mAdapter.isEnabled()) {
+            Toast.makeText(StorageActivity.this, "Please enable NFC via Settings.", Toast.LENGTH_LONG).show();
+        }
+
+        else {
+            Intent intent =new Intent();
+            System.out.println(getNfcAdapterExtraID(intent));
+        }
+
+        //mAdapter.setNdefPushMessageCallback( this , StorageActivity.this);
+    }
+
+    /**
+     * Ndef Record that will be sent over via NFC
+     * @param nfcEvent
+     * @return
+     */
+    //@Override
+    /*public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
+        NdefRecord ndefRecord = NdefRecord.createMime("text/plain", personID.getBytes());
+        NdefMessage ndefMessage = new NdefMessage(ndefRecord);
+        return ndefMessage;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Intent intent = getIntent();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Parcelable[] rawMessages = intent.getParcelableArrayExtra(
+                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+
+            NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
+            Toast.makeText(StorageActivity.this, message.toString(), Toast.LENGTH_LONG).show();
+
+        } else {
+            Toast.makeText(StorageActivity.this,"Waiting for NDEF Message", Toast.LENGTH_LONG).show();
+        }
+
+    }*/
+
+    /**
+     * Returns the TagId. Needs an Intent. So you have to get you intent from your "main" activity and give it to the method -> just add the following   *lines in your "main class"
+     *Intent intent =new Intent();
+     *System.out.println(com.example.StatusMessage.getNfcAdapterExtraID(intent));
+     *@author Falkenstein
+     */
+    public String getNfcAdapterExtraID(Intent intent) {
+        byte[] byte_id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+        return byte_id.toString();
+    }
 }
+

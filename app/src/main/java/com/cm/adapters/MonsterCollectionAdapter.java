@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.adapters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.cm.pikachua.MonsterCollection;
+import com.cm.pikachua.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,7 +37,7 @@ public class MonsterCollectionAdapter extends ArrayAdapter<MonsterCollection> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_grid_images, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate( R.layout.row_grid_images, parent, false);
         }
 
 

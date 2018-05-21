@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cm.entities.ItemFirebase;
+import com.cm.pikachua.R;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,7 +35,7 @@ public class RestockAdapter extends BaseAdapter {
         View gridView;
         if (convertView == null) {
 
-            convertView = LayoutInflater.from(context).inflate(R.layout.restock_grid, parent, false);
+            convertView = LayoutInflater.from(context).inflate( R.layout.restock_grid, parent, false);
 
             //Toast.makeText(context, items.get(0).getName(), Toast.LENGTH_SHORT).show();
 

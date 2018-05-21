@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.entities;
 
 public class Coordinates{
     private double latitude;

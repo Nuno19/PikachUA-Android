@@ -1,4 +1,4 @@
-package com.cm.pikachua;
+package com.cm.entities;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
