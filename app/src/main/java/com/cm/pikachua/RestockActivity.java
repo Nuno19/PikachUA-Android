@@ -76,13 +76,13 @@ public class RestockActivity extends AppCompatActivity {
                             if(num_items_bag <= 200){
                                 generateItems();
                                 updateXP(500);
-                                Toast.makeText(getApplicationContext(), "Got 500 XP", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.xp_500), Toast.LENGTH_LONG).show();
                                 gotItems = true;
                                 pokestop.setImageResource(R.drawable.pokestop_used);
                             }
 
                             else{
-                                Toast.makeText(getApplicationContext(), "Your bag is full!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.bag_full), Toast.LENGTH_LONG).show();
                             }
                         }
                     }

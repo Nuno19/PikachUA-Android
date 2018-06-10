@@ -3,10 +3,8 @@ package com.cm.pikachua;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -34,8 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static android.nfc.NfcAdapter.getDefaultAdapter;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,10 +40,10 @@ public class StorageActivity extends AppCompatActivity {
 
     ArrayList<MonsterStorage> arrayOfMonsterStorage = new ArrayList<MonsterStorage>();
     private ArrayList<String> selectedMonsters;
-    CharSequence[] values = {" Sort By Date "," Sort By Alphabetic Order "};
     AlertDialog alertDialog1;
     Editable YouEditTextValue;
     boolean searching = false;
+    CharSequence[] values;
 
     int choice = 0;
     String string = "id";
@@ -59,6 +55,8 @@ public class StorageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
 
+        values = new CharSequence[]{" " + getString(R.string.sort_date) + " "," " + getString(R.string.sort_alphabetic) + " "};
+
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(StorageActivity.this);
         if (acct != null) {
             personID = acct.getId();
@@ -66,8 +64,13 @@ public class StorageActivity extends AppCompatActivity {
 
         final MonsterStorageAdapter adapter = new MonsterStorageAdapter(StorageActivity.this, arrayOfMonsterStorage);
         selectedMonsters = new ArrayList<>();
-        //final TextView text_selected = findViewById(R.id.selected);
-        //text_selected.setText(selectedMonsters.size() + " selected");
+        final TextView text_selected = findViewById(R.id.selected);
+        if (selectedMonsters.size() == 1){
+            text_selected.setText(selectedMonsters.size() + " " + getString(R.string.selected_one));
+        }
+        else {
+            text_selected.setText(selectedMonsters.size() + " " + getString(R.string.selected_more));
+        }
 
         final FloatingActionButton button_search = findViewById(R.id.button_search);
         button_search.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +81,11 @@ public class StorageActivity extends AppCompatActivity {
                     AlertDialog.Builder alert = new AlertDialog.Builder(StorageActivity.this);
                     final EditText edittext = new EditText(StorageActivity.this);
                     edittext.setText(YouEditTextValue);
-                    alert.setTitle("Search");
+                    alert.setTitle(getString(R.string.search));
 
                     alert.setView(edittext);
 
-                    alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    alert.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             //What ever you want to do with the value
                             YouEditTextValue = edittext.getText();
@@ -93,7 +96,7 @@ public class StorageActivity extends AppCompatActivity {
                         }
                     });
 
-                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    alert.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
 
                         }
@@ -140,12 +143,17 @@ public class StorageActivity extends AppCompatActivity {
                     selectedMonsters.add(adapter.getItem(i).monsterId);
                 }
                 adapter.getView(i,view,parent);
-                //TextView text_selected = findViewById(R.id.selected);
-                //text_selected.setText(selectedMonsters.size() + " selected");
+                TextView text_selected = findViewById(R.id.selected);
+                if (selectedMonsters.size() == 1){
+                    text_selected.setText(selectedMonsters.size() + " " + getString(R.string.selected_one));
+                }
+                else {
+                    text_selected.setText(selectedMonsters.size() + " " + getString(R.string.selected_more));
+                }
             }
         });
 
-        Button button_exchange = findViewById(R.id.button_exchange);
+        /*Button button_exchange = findViewById(R.id.button_exchange);
         button_exchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,7 +193,7 @@ public class StorageActivity extends AppCompatActivity {
                 alert11.show();
 
             }
-        });
+        });*/
 
         Button button_transfer = findViewById(R.id.button_transfer);
         button_transfer.setOnClickListener(new View.OnClickListener() {
@@ -194,20 +202,20 @@ public class StorageActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(StorageActivity.this);
                 if (selectedMonsters.isEmpty()){
-                    Toast.makeText(StorageActivity.this, "No monsters selected!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StorageActivity.this, getString(R.string.no_monsters), Toast.LENGTH_LONG).show();
                     return;
                 }
                 else if (selectedMonsters.size() == 1){
-                    builder1.setMessage("Do you want to transfer 1 monster?");
+                    builder1.setMessage(getString(R.string.transfer_monsters) + " 1 " + getString(R.string.monsters_singular) + "?");
                 }
                 else {
-                    builder1.setMessage("Do you want to transfer " + selectedMonsters.size() + " monsters?");
+                    builder1.setMessage(getString(R.string.transfer_monsters) + " " + selectedMonsters.size() + " " + getString(R.string.monsters_plural) + "?");
                 }
 
                 builder1.setCancelable(true);
 
                 builder1.setPositiveButton(
-                        "Yes",
+                        getString(R.string.yes),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 for (int i = 0; i < selectedMonsters.size(); i++){
@@ -215,14 +223,19 @@ public class StorageActivity extends AppCompatActivity {
                                 }
                                 selectedMonsters.clear();
                                 adapter.selectedPositions.clear();
-                                //text_selected.setText(selectedMonsters.size() + " selected");
+                                if (selectedMonsters.size() == 1){
+                                    text_selected.setText(selectedMonsters.size() + " " + getString(R.string.selected_one));
+                                }
+                                else {
+                                    text_selected.setText(selectedMonsters.size() + " " + getString(R.string.selected_more));
+                                }
                                 loadStorage(adapter);
                                 dialog.cancel();
                             }
                         });
 
                 builder1.setNegativeButton(
-                        "No",
+                        getString(R.string.no),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -247,7 +260,7 @@ public class StorageActivity extends AppCompatActivity {
     public void CreateAlertDialogWithRadioButtonGroup(final MonsterStorageAdapter adapter){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(StorageActivity.this);
-        builder.setTitle("Select Your Choice");
+        builder.setTitle(getString(R.string.select_choice));
         builder.setSingleChoiceItems(values, choice, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
@@ -301,7 +314,7 @@ public class StorageActivity extends AppCompatActivity {
                 int total = 200;
 
                 TextView t = findViewById(R.id.total1);
-                t.setText("Max: " + adapter.getCount() + "/" + total);
+                t.setText(getString(R.string.total) + " " + adapter.getCount() + "/" + total);
             }
 
             @Override
@@ -335,24 +348,20 @@ public class StorageActivity extends AppCompatActivity {
 
     }
 
-   public void trade_nfc(){
-        NfcAdapter mAdapter = getDefaultAdapter(StorageActivity.this);
-        if (mAdapter == null) {
-            Toast.makeText(StorageActivity.this, "Sorry this device does not have NFC.", Toast.LENGTH_LONG).show();
+    /*public void trade_nfc(){
+        NfcAdapter nfcAdapter = getDefaultAdapter(this);
+        if (nfcAdapter != null) {
+            Intent intent =new Intent();
+            System.out.println(getNfcAdapterExtraID(intent));
             return;
         }
 
-        else if (!mAdapter.isEnabled()) {
-            Toast.makeText(StorageActivity.this, "Please enable NFC via Settings.", Toast.LENGTH_LONG).show();
-        }
-
         else {
-            Intent intent =new Intent();
-            System.out.println(getNfcAdapterExtraID(intent));
+            Toast.makeText(StorageActivity.this, "Sorry this device does not have NFC.", Toast.LENGTH_LONG).show();
         }
 
         //mAdapter.setNdefPushMessageCallback( this , StorageActivity.this);
-    }
+    }*/
 
     /**
      * Ndef Record that will be sent over via NFC
@@ -389,9 +398,9 @@ public class StorageActivity extends AppCompatActivity {
      *System.out.println(com.example.StatusMessage.getNfcAdapterExtraID(intent));
      *@author Falkenstein
      */
-    public String getNfcAdapterExtraID(Intent intent) {
+    /*public String getNfcAdapterExtraID(Intent intent) {
         byte[] byte_id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
         return byte_id.toString();
-    }
+    }*/
 }
 

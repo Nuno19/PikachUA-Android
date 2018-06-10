@@ -106,10 +106,10 @@ public class MonsterBioFragment extends Fragment {
                         Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
 
                         TextView t2 = rootView.findViewById(R.id.weight);
-                        t2.setText("Weight: " + mon.getWeight());
+                        t2.setText(getString(R.string.weight) + " " + mon.getWeight());
 
                         TextView t3 = rootView.findViewById(R.id.height);
-                        t3.setText("Height: " + mon.getHeight());
+                        t3.setText(getString(R.string.height) + " " + mon.getHeight());
 
                         TextView t4 = rootView.findViewById(R.id.pokedex);
                         t4.setText(mon.getPokedex());

@@ -15,4 +15,73 @@
     <string name="title_activity_login">Sign in</string>
     <string name="google_maps_key">AIzaSyAYgOvEObb1pIdQRdaPqeeBf0Dj2tqQA6w</string>
     <string name="server_client_id">203725394642-hvtkiosr6d709ls9na98sqvf1o0nos6o.apps.googleusercontent.com</string>
+
+    <string name="total">Total: </string>
+    <string name="delete">How many items to delete? (Total: </string>
+    <string name="all">All</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="delete_items">Do you want to remove </string>
+    <string name="items_singular"> item</string>
+    <string name="items_plural"> items</string>
+    <string name="empty_field_text">Empty field text!</string>
+    <string name="no_items">No items to remove!</string>
+    <string name="too_many_items">Too many items to delete!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="storage_full">Storage Full</string>
+
+    <string name="no_berries">Out of these berries</string>
+    <string name="no_pokeballs">Out of these pokéballs</string>
+    <string name="escaped">Oh no! It escaped!</string>
+    <string name="ran_away">Oh no! It ran away!</string>
+    <string name="catched">Got it!</string>
+
+    <string name="select_ball">Selecciona a tua bola</string>
+    <string name="select_berry">Selecciona a tua baga</string>
+
+    <string name="camera_not_available">Camera not available. Please restart the app..</string>
+    <string name="searching_surfaces">Searching for surfaces...</string>
+    <string name="camera_permission">Camera permission is needed to run this application</string>
+    <string name="none">None</string>
+
+    <string name="ar_error_install">Please install ARCore</string>
+    <string name="ar_error_update">Please update ARCore</string>
+    <string name="ar_error_this">Please update this app</string>
+    <string name="ar_error_not_supported">This device does not support AR</string>
+    <string name="ar_error_session">Failed to create AR session</string>
+
+    <string name="weight">Weight: </string>
+    <string name="height">Height: </string>
+
+    <string name="name_profile">Name: </string>
+    <string name="profile_member">Member since: </string>
+    <string name="monsters_total">Total monsters caught: </string>
+    <string name="total_exp">Total EXP earned: </string>
+
+    <string name="bag_full">Your bag is full!</string>
+    <string name="xp_500">Got 500 XP</string>
+
+    <string name="sort_date"> Order by date </string>
+    <string name="sort_alphabetic"> Order by alphabetic order </string>
+    <string name="selected_one"> selected</string>
+    <string name="selected_more"> selected</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="no_monsters">No monsters selected!</string>
+    <string name="transfer_monsters">Do you want to transfer </string>
+    <string name="monsters_singular"> monster</string>
+    <string name="monsters_plural"> monsters</string>
+    <string name="select_choice">Select your choice</string>
+
+    <string name="ar">AR  </string>
+
+    <string name="sign_out">Sign out</string>
+    <string name="sort">Order</string>
+    <string name="transfer">Transfer</string>
+
+    <string name="you">You</string>
+    <string name="value">Value: </string>
 </resources>

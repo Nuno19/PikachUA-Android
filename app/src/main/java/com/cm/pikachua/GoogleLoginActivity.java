@@ -69,15 +69,13 @@ public class GoogleLoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_login);
 
-        if(checkPermissions()) {
+        checkPermissions();
 
-            mGoogleSignInClient = GoogleSignIn.getClient( this, gso );
+        mGoogleSignInClient = GoogleSignIn.getClient( this, gso );
 
-            SignInButton signInButton = findViewById( R.id.sign_in_button );
-            signInButton.setSize( SignInButton.SIZE_STANDARD );
-            findViewById( R.id.sign_in_button ).setOnClickListener( this );
-
-        }
+        SignInButton signInButton = findViewById( R.id.sign_in_button );
+        signInButton.setSize( SignInButton.SIZE_STANDARD );
+        findViewById( R.id.sign_in_button ).setOnClickListener( this );
 
     }
 

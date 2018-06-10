@@ -120,7 +120,7 @@ public class BagFragment extends Fragment {
                 int total = 200;
 
                 TextView t = rootView.findViewById(R.id.total1);
-                t.setText("Max: " + number + "/" + total);
+                t.setText(getString(R.string.total) + " " + number + "/" + total);
             }
 
             @Override

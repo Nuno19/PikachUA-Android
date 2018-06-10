@@ -147,7 +147,7 @@ public class CollectionFragment extends Fragment {
                 }
 
                 TextView t = rootView.findViewById(R.id.total1);
-                t.setText("Max: " + number + "/" + adapter.getCount());
+                t.setText(getString(R.string.total) + " " + number + "/" + adapter.getCount());
 
                 list_pokedex.clear();
             }

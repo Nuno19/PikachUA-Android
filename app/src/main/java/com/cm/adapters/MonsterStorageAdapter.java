@@ -49,7 +49,7 @@ public class MonsterStorageAdapter extends ArrayAdapter<MonsterStorage> {
         textViewAndroid1.setText(monsterStorage.monsterName);
 
         TextView textViewAndroid2 = (TextView) convertView.findViewById(R.id.item_text2);
-        textViewAndroid2.setText("Value: " + String.valueOf(monsterStorage.stat));
+        textViewAndroid2.setText(getContext().getString(R.string.value) + " " + String.valueOf(monsterStorage.stat));
 
         if (selectedPositions.contains(i)){
             convertView.setBackgroundColor(Color.rgb(255,255,153));

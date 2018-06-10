@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="400sp"
         android:scaleType="center"
-        android:text="Sign Out"
+        android:text="@string/sign_out"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

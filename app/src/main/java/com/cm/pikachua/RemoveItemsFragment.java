@@ -101,7 +101,7 @@ public class RemoveItemsFragment extends Fragment {
                         t1.setText(item_inst.getName());
 
                         TextView t2 = rootView.findViewById(R.id.title2);
-                        t2.setText("How many items to delete?" + " (Total: " + item_inst.getAmount() + ")");
+                        t2.setText(getString(R.string.delete) + " " + item_inst.getAmount() + ")");
 
                         totalAmount = item_inst.getAmount();
 
@@ -161,30 +161,30 @@ public class RemoveItemsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (quantity.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "Empty field text", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.empty_field_text), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                 if (Integer.parseInt(quantity.getText().toString()) <= 0){
-                    Toast.makeText(getContext(), "No items to remove!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.no_items), Toast.LENGTH_LONG).show();
                     return;
                 }
                 else if (Integer.parseInt(quantity.getText().toString()) > totalAmount){
-                    Toast.makeText(getContext(), "Too many items to delete!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.too_many_items), Toast.LENGTH_LONG).show();
                     return;
                 }
                 else if (Integer.parseInt(quantity.getText().toString()) == 1){
-                    builder1.setMessage("Do you want to remove 1 item?");
+                    builder1.setMessage(getString(R.string.delete_items) + " 1 " + getString(R.string.items_singular) + "?");
                 }
                 else {
-                    builder1.setMessage("Do you want to remove " + Integer.parseInt(quantity.getText().toString()) + " items?");
+                    builder1.setMessage(getString(R.string.delete_items) + " " + Integer.parseInt(quantity.getText().toString()) + " " + getString(R.string.items_plural) + "?");
                 }
 
                 builder1.setCancelable(true);
 
                 builder1.setPositiveButton(
-                        "Yes",
+                        getString(R.string.yes),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -193,7 +193,7 @@ public class RemoveItemsFragment extends Fragment {
                         });
 
                 builder1.setNegativeButton(
-                        "No",
+                        getString(R.string.no),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();

@@ -39,4 +39,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
+    <Switch
+        android:id="@+id/toggleAR"
+        android:visibility="invisible"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="10sp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/ar"
+        android:textStyle="bold"/>
+
 </android.support.constraint.ConstraintLayout>

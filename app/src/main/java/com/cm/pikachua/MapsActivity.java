@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Point;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.cm.entities.Coordinates;
@@ -77,7 +77,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Uri personPhoto;
     private String personID;
     private int total_monsters;
-    private Point touchPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +176,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        final Switch toggleAR = findViewById(R.id.toggleAR);
+        if (ArCoreApk.getInstance().checkAvailability(getApplicationContext()).isSupported()) {
+            toggleAR.setVisibility(View.VISIBLE);
+        }
+
         mMap = googleMap;
         try {
             mMap.getUiSettings().setScrollGesturesEnabled(false);
@@ -210,7 +214,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                if(marker.getTitle().equals("You")) {
+                if(marker.getTitle().equals(getString(R.string.you))) {
 
                 }
 
@@ -225,18 +229,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 else{
                     if (total_monsters < 200){
                         ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(getApplicationContext());
-                        if (availability.isSupported()) {
-                            Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                        if (!availability.isSupported() || !toggleAR.isChecked()) {
+                            Intent intent = new Intent(getBaseContext(), CatchNoModelActivity.class);
                             intent.putExtra("ID", marker.getTitle());
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(getBaseContext(), CatchNoModelActivity.class);
-                            intent.putExtra("markerID", marker.getTitle());
+                            Intent intent = new Intent(getBaseContext(), CatchActivity.class);
+                            intent.putExtra("ID", marker.getTitle());
                             startActivity(intent);
                         }
                     }
                     else {
-                        Toast.makeText(MapsActivity.this, "Storage full!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.storage_full), Toast.LENGTH_LONG).show();
                     }
                 }
                 return false;
@@ -520,7 +524,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             currentPos.remove();
         }
 
-        currentPos = mMap.addMarker(new MarkerOptions().position(latLng).title("You"));
+        currentPos = mMap.addMarker(new MarkerOptions().position(latLng).title(getString(R.string.you)));
 
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

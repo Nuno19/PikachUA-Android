@@ -35,7 +35,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
 
     AlertDialog alertDialog1, alertDialog2;
     CharSequence[] values_ball = {" PokeBall: 0 ", " Great Ball: 0 ", " Ultra Ball: 0 "};
-    CharSequence[] values_berry = {" None", " Razz Berry: 0 ", " Golden Razz Berry: 0 "};
+    static CharSequence[] values_berry;
     int choice_ball = 0;
     int choice_berry = 0;
     Pokemon pokemonToCatch = null;
@@ -50,6 +50,8 @@ public class CatchNoModelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_catch_no_model );
+
+        values_berry = new CharSequence[]{" " + getString(R.string.none) + " ", " Razz Berry: 0 ", " Golden Razz Berry: 0 "};
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount( getApplicationContext() );
         if (acct != null) {
@@ -106,7 +108,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
                 number_of_items();
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder( CatchNoModelActivity.this );
-                builder1.setTitle( "Select Your Ball" );
+                builder1.setTitle( getString(R.string.select_ball) );
                 builder1.setSingleChoiceItems( values_ball, choice_ball, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
@@ -151,7 +153,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
                 number_of_items();
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder( CatchNoModelActivity.this );
-                builder2.setTitle( "Select Your Berry" );
+                builder2.setTitle( getString(R.string.select_berry) );
                 builder2.setSingleChoiceItems( values_berry, choice_berry, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
@@ -196,7 +198,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
 
                 if (catchSimValue == 1) {
                     Toast.makeText( CatchNoModelActivity.this,
-                            "Got it!", Toast.LENGTH_LONG )
+                            getString(R.string.catched), Toast.LENGTH_LONG )
                             .show();
 
                     updatePlayer(1000,true);
@@ -212,13 +214,13 @@ public class CatchNoModelActivity extends AppCompatActivity {
                     onBackPressed();
                 } else if (catchSimValue == 2) {
                     Toast.makeText( CatchNoModelActivity.this,
-                            "Oh No! It escaped!", Toast.LENGTH_LONG )
+                            getString(R.string.escaped), Toast.LENGTH_LONG )
                             .show();
                     number_of_items();
 
                 } else if (catchSimValue == 3) {
                     Toast.makeText( CatchNoModelActivity.this,
-                            "Oh No! It ran away!", Toast.LENGTH_LONG )
+                            getString(R.string.ran_away), Toast.LENGTH_LONG )
                             .show();
                     updatePlayer(250,false);
                     onBackPressed();
@@ -281,7 +283,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
                 valid_berry = true;
             }
             else{
-                Toast.makeText( this, "Out of these berries", Toast.LENGTH_LONG ).show();
+                Toast.makeText( this, getString(R.string.no_berries), Toast.LENGTH_LONG ).show();
                 valid_berry = false;
             }
         }
@@ -294,7 +296,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
             valid_ball = true;
         }
         else{
-            Toast.makeText( this, "Out of these pokéballs", Toast.LENGTH_LONG ).show();
+            Toast.makeText( this, getString(R.string.no_pokeballs), Toast.LENGTH_LONG ).show();
             valid_ball = false;
         }
 
@@ -324,13 +326,13 @@ public class CatchNoModelActivity extends AppCompatActivity {
         }
 
         switch (ball) {
-            case 0:
-                break;
             case 1:
                 catchRate *= 1.5;
                 break;
             case 2:
                 catchRate *= 2.0;
+                break;
+            default:
                 break;
         }
 
@@ -374,7 +376,7 @@ public class CatchNoModelActivity extends AppCompatActivity {
         query.addValueEventListener(postListener);
 
         values_ball = new CharSequence[]{" PokeBall: " + num_items_bag[0], " Great Ball: " + num_items_bag[1], " Ultra Ball: " + num_items_bag[2]};
-        values_berry = new CharSequence[]{" None", " Razz Berry: " + num_items_bag[3], " Golden Razz Berry: " + +num_items_bag[4]};
+        values_berry = new CharSequence[]{" " + getString(R.string.none) + " ", " Razz Berry: " + num_items_bag[3], " Golden Razz Berry: " + +num_items_bag[4]};
     }
 
     public void updateBag(final String k){

@@ -77,7 +77,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     private TapHelper tapHelper;
 
     private final BackgroundRenderer backgroundRenderer = new BackgroundRenderer();
-    private ObjectRenderer virtualObject = null;
+    private ObjectRenderer virtualObject = new ObjectRenderer( "/000/000.obj" );
     private final PlaneRenderer planeRenderer = new PlaneRenderer();
     private final PointCloudRenderer pointCloudRenderer = new PointCloudRenderer();
 
@@ -89,7 +89,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
     AlertDialog alertDialog1, alertDialog2;
     CharSequence[] values_ball = {" PokeBall: 0 ", " Great Ball: 0 ", " Ultra Ball: 0 "};
-    CharSequence[] values_berry = {" None", " Razz Berry: 0 ", " Golden Razz Berry: 0 "};
+    CharSequence[] values_berry;
     int choice_ball = 0;
     int choice_berry = 0;
     Pokemon pokemonToCatch = null;
@@ -105,6 +105,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_catch );
+
+        values_berry = new CharSequence[]{" " + getString(R.string.none) + " ", " Razz Berry: 0 ", " Golden Razz Berry: 0 "};
 
         surfaceView = findViewById( R.id.surfaceview );
         displayRotationHelper = new DisplayRotationHelper(/*context=*/ this );
@@ -182,7 +184,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 number_of_items();
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder( CatchActivity.this );
-                builder1.setTitle( "Select Your Ball" );
+                builder1.setTitle( getString(R.string.select_ball) );
                 builder1.setSingleChoiceItems( values_ball, choice_ball, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
@@ -227,7 +229,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 number_of_items();
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder( CatchActivity.this );
-                builder2.setTitle( "Select Your Berry" );
+                builder2.setTitle( getString(R.string.select_berry) );
                 builder2.setSingleChoiceItems( values_berry, choice_berry, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int item) {
@@ -272,7 +274,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
                 if (catchSimValue == 1) {
                     Toast.makeText( CatchActivity.this,
-                            "Got it!", Toast.LENGTH_LONG )
+                            getString(R.string.catched), Toast.LENGTH_LONG )
                             .show();
 
                     updatePlayer(1000,true);
@@ -288,13 +290,13 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                     onBackPressed();
                 } else if (catchSimValue == 2) {
                     Toast.makeText( CatchActivity.this,
-                            "Oh No! It escaped!", Toast.LENGTH_LONG )
+                            getString(R.string.escaped), Toast.LENGTH_LONG )
                             .show();
                     number_of_items();
 
                 } else if (catchSimValue == 3) {
                     Toast.makeText( CatchActivity.this,
-                            "Oh No! It ran away!", Toast.LENGTH_LONG )
+                            getString(R.string.ran_away), Toast.LENGTH_LONG )
                             .show();
                     updatePlayer(250,false);
                     onBackPressed();
@@ -350,7 +352,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 valid_berry = true;
             }
             else{
-                Toast.makeText( this, "Out of these berries", Toast.LENGTH_LONG ).show();
+                Toast.makeText( this, getString(R.string.no_berries), Toast.LENGTH_LONG ).show();
                 valid_berry = false;
             }
         }
@@ -363,7 +365,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             valid_ball = true;
         }
         else{
-            Toast.makeText( this, "Out of these pokéballs", Toast.LENGTH_LONG ).show();
+            Toast.makeText( this, getString(R.string.no_pokeballs), Toast.LENGTH_LONG ).show();
             valid_ball = false;
         }
 
@@ -393,13 +395,13 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
         }
 
         switch (ball) {
-            case 0:
-                break;
             case 1:
                 catchRate *= 1.5;
                 break;
             case 2:
                 catchRate *= 2.0;
+                break;
+            default:
                 break;
         }
 
@@ -445,19 +447,19 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
             } catch (UnavailableArcoreNotInstalledException
                     | UnavailableUserDeclinedInstallationException e) {
-                message = "Please install ARCore";
+                message = getString(R.string.ar_error_install);
                 exception = e;
             } catch (UnavailableApkTooOldException e) {
-                message = "Please update ARCore";
+                message = getString(R.string.ar_error_update);
                 exception = e;
             } catch (UnavailableSdkTooOldException e) {
-                message = "Please update this app";
+                message = getString(R.string.ar_error_this);
                 exception = e;
             } catch (UnavailableDeviceNotCompatibleException e) {
-                message = "This device does not support AR";
+                message = getString(R.string.ar_error_not_supported);
                 exception = e;
             } catch (Exception e) {
-                message = "Failed to create AR session";
+                message = getString(R.string.ar_error_session);
                 exception = e;
             }
 
@@ -475,7 +477,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
             // In some cases (such as another camera app launching) the camera may be given to
             // a different app instead. Handle this properly by showing a message and recreate the
             // session at the next iteration.
-            messageSnackbarHelper.showError( this, "Camera not available. Please restart the app." );
+            messageSnackbarHelper.showError( this, getString(R.string.camera_not_available) );
             session = null;
             return;
         }
@@ -483,7 +485,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
         surfaceView.onResume();
         displayRotationHelper.onResume();
 
-        messageSnackbarHelper.showMessage( this, "Searching for surfaces..." );
+        messageSnackbarHelper.showMessage( this, getString(R.string.searching_surfaces) );
     }
 
     @Override
@@ -502,7 +504,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
         if (!CameraPermissionHelper.hasCameraPermission( this )) {
-            Toast.makeText( this, "Camera permission is needed to run this application", Toast.LENGTH_LONG )
+            Toast.makeText( this, getString(R.string.camera_permission), Toast.LENGTH_LONG )
                     .show();
             if (!CameraPermissionHelper.shouldShowRequestPermissionRationale( this )) {
                 // Permission denied with checking "Do not ask again".
@@ -710,7 +712,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
         query.addValueEventListener(postListener);
 
         values_ball = new CharSequence[]{" PokeBall: " + num_items_bag[0], " Great Ball: " + num_items_bag[1], " Ultra Ball: " + num_items_bag[2]};
-        values_berry = new CharSequence[]{" None", " Razz Berry: " + num_items_bag[3], " Golden Razz Berry: " + +num_items_bag[4]};
+        values_berry = new CharSequence[]{" " + getString(R.string.none) + " ", " Razz Berry: " + num_items_bag[3], " Golden Razz Berry: " + +num_items_bag[4]};
     }
 
     public void updateBag(final String k){

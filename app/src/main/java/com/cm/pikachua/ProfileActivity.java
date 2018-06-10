@@ -193,15 +193,15 @@ public class ProfileActivity extends AppCompatActivity {
     public void updateUser(View view, Context context, User user)
     {
         TextView textViewAndroid1 = findViewById(R.id.name);
-        textViewAndroid1.setText("Name: " + user.getName());
+        textViewAndroid1.setText(getString(R.string.name_profile) + " " + user.getName());
 
         TextView textViewAndroid2 = (TextView) view.findViewById(R.id.startDate);
-        textViewAndroid2.setText("Member since: " + user.getStartDate());
+        textViewAndroid2.setText(getString(R.string.profile_member) + " " + user.getStartDate());
 
         TextView textViewAndroid3 = (TextView) view.findViewById(R.id.totalMonstersCaught);
-        textViewAndroid3.setText("Total monsters caught: " + user.getMonstersCaught());
+        textViewAndroid3.setText(getString(R.string.monsters_total) + " " + user.getMonstersCaught());
 
         TextView textViewAndroid4 = (TextView) view.findViewById(R.id.totalEXP);
-        textViewAndroid4.setText("Total EXP earned: " + user.getTotalXP());
+        textViewAndroid4.setText(getString(R.string.total_exp) + " " + user.getTotalXP());
     }
 }

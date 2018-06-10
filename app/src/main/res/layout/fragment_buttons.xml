@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="20sp"
-        android:text="Settings"
+        android:text="@string/settings"
         android:layout_marginRight="30sp"/>
 
 </android.support.constraint.ConstraintLayout>

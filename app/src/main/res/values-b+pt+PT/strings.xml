@@ -1,0 +1,87 @@
+<resources>
+    <string name="app_name">PikachUA</string>
+    <string name="map_string">Mostrar Mapa</string>
+    <string name="chooser_title">Qual App?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="storage">Armazenamento</string>
+    <string name="bag">Mochila</string>
+    <string name="collection">Coleção</string>
+    <string name="settings">Definições</string>
+    <string name="profile">Perfil</string>
+    <string name="monster_catch">Apanha</string>
+    <string name="restock">Estação de Reabastecimento</string>
+    <string name="title_activity_login">Iniciar sessão</string>
+    <string name="google_maps_key">AIzaSyAYgOvEObb1pIdQRdaPqeeBf0Dj2tqQA6w</string>
+    <string name="server_client_id">203725394642-hvtkiosr6d709ls9na98sqvf1o0nos6o.apps.googleusercontent.com</string>
+
+    <string name="total">Total: </string>
+    <string name="delete">Quantos itens a eliminar? (Total: </string>
+    <string name="all">Todos</string>
+    <string name="confirm">Confirmar</string>
+
+    <string name="delete_items">Tens a certeza que queres remover </string>
+    <string name="items_singular"> item</string>
+    <string name="items_plural"> itens</string>
+
+    <string name="empty_field_text">Caixa sem texto!</string>
+    <string name="no_items">Sem items para remover!</string>
+    <string name="too_many_items">Demasiados itens para eliminar!</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+
+    <string name="storage_full">Armazenamento Cheio</string>
+
+    <string name="no_berries">Sem estas bagas</string>
+    <string name="no_pokeballs">Sem estas pokébolas</string>
+    <string name="escaped">Oh não! Ele escapou!</string>
+    <string name="ran_away">Oh não! Ele fugiu!</string>
+    <string name="catched">Apanhaste-o!</string>
+    <string name="select_ball">Selecciona a tua bola</string>
+    <string name="select_berry">Selecciona a tua baga</string>
+
+    <string name="camera_not_available">Câmara indisponível. Por favor reinicie a app.</string>
+    <string name="searching_surfaces">À procura de superfícies...</string>
+    <string name="camera_permission">A permissão da câmara é necessária à utilização desta app.</string>
+    <string name="none">Nenhuma</string>
+
+    <string name="ar_error_install">Por favor instale o ARCore</string>
+    <string name="ar_error_update">Por favor atualize o ARCore</string>
+    <string name="ar_error_this">Please Por favor esta app</string>
+    <string name="ar_error_not_supported">Este dispositivo não suporta AR</string>
+    <string name="ar_error_session">Falha ao criar sessão de AR</string>
+
+    <string name="weight">Peso: </string>
+    <string name="height">Altura: </string>
+
+    <string name="name_profile">Nome: </string>
+    <string name="profile_member">Membro desde: </string>
+    <string name="monsters_total">Total de monstros apanhados: </string>
+    <string name="total_exp">Total de EXP ganho: </string>
+
+    <string name="bag_full">Mochila cheia!</string>
+    <string name="xp_500">Ganhou 500 XP</string>
+
+    <string name="sort_date"> Ordenar por data </string>
+    <string name="sort_alphabetic"> Ordenar por ordem arfabética </string>
+    <string name="selected_one"> escolhido</string>
+    <string name="selected_more"> escolhidos</string>
+    <string name="search">Procurar</string>
+    <string name="cancel">Cancelar</string>
+
+    <string name="no_monsters">Nenhum monstro seleccionado!</string>
+    <string name="transfer_monsters">Tens a certeza que queres transferir </string>
+    <string name="monsters_singular"> monstro</string>
+    <string name="monsters_plural"> monstros</string>
+    <string name="select_choice">Selecciona a tua escolha</string>
+
+    <string name="ar">AR  </string>
+
+    <string name="sign_out">Terminar sessão</string>
+    <string name="sort">Ordenar</string>
+    <string name="transfer">Transferir</string>
+
+    <string name="you">Tu</string>
+    <string name="value">Valor: </string>
+</resources>
