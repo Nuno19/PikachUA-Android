@@ -25,8 +25,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -46,7 +46,7 @@ public class RemoveItemsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private ItemInst item_inst = null;
-    private DatabaseReference iFirebaseDatabase;
+    private Query iFirebaseDatabase;
     private FirebaseDatabase iFirebaseInstance;
     private int totalAmount;
 
@@ -87,7 +87,7 @@ public class RemoveItemsFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_remove_items, container, false);
 
-        final DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("items_inst");
+        final Query itemsInst = FirebaseDatabase.getInstance().getReference("items_inst").orderByChild("id").startAt(mParam1).endAt(mParam1 + "\uf8ff");
 
         ValueEventListener listenerItemInst = new ValueEventListener() {
             @Override
@@ -96,35 +96,33 @@ public class RemoveItemsFragment extends Fragment {
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
-                    if(item_inst.getId().equals(mParam1)){
-                        TextView t1 = rootView.findViewById(R.id.title1);
-                        t1.setText(item_inst.getName());
+                    TextView t1 = rootView.findViewById(R.id.title1);
+                    t1.setText(item_inst.getName());
 
-                        TextView t2 = rootView.findViewById(R.id.title2);
-                        t2.setText(getString(R.string.delete) + " " + item_inst.getAmount() + ")");
+                    TextView t2 = rootView.findViewById(R.id.title2);
+                    t2.setText(getString(R.string.delete) + " " + item_inst.getAmount() + ")");
 
-                        totalAmount = item_inst.getAmount();
+                    totalAmount = item_inst.getAmount();
 
-                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(item_inst.getImage());
-                        // Load the image using Glide
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(item_inst.getImage());
+                    // Load the image using Glide
 
-                        final ImageView imageViewAndroid = (ImageView) rootView.findViewById(R.id.image);
-                        // Load the image using Glide
+                    final ImageView imageViewAndroid = (ImageView) rootView.findViewById(R.id.image);
+                    // Load the image using Glide
 
-                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                // Got the download URL for 'users/me/profile.png'
-                                // Pass it to Picasso to download, show in ImageView and caching
-                                Picasso.with(getContext()).load(uri.toString()).into(imageViewAndroid);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                            }
-                        });
-                    }
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            // Got the download URL for 'users/me/profile.png'
+                            // Pass it to Picasso to download, show in ImageView and caching
+                            Picasso.with(getContext()).load(uri.toString()).into(imageViewAndroid);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
                 }
             }
 
@@ -214,7 +212,7 @@ public class RemoveItemsFragment extends Fragment {
     private void deleteItems(final int quantity){
 
         iFirebaseInstance = FirebaseDatabase.getInstance();
-        iFirebaseDatabase = iFirebaseInstance.getReference("items_inst");
+        iFirebaseDatabase = iFirebaseInstance.getReference("items_inst").orderByChild("id").startAt(mParam1).endAt(mParam1 + "\uf8ff");
 
         final boolean[] delete = {true};
 
@@ -227,7 +225,7 @@ public class RemoveItemsFragment extends Fragment {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
 
-                    if(item_inst.getId().equals(mParam1) && (delete[0] == true)) {
+                    if(delete[0] == true) {
                         postSnapshot.getRef().child("amount").setValue(item_inst.getAmount()-quantity);
                         delete[0] = false;
                         hideSoftKeyboard(getActivity());

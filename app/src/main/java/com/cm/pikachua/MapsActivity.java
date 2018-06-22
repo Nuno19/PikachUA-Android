@@ -53,6 +53,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -530,6 +531,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        Log.d(TAG, latitude + " " + longitude);
     }
 
 
@@ -555,7 +558,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void total_storage(){
-        DatabaseReference pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst");
+        Query pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild("user_id").startAt(personID).endAt(personID + "\uf8ff");
 
         ValueEventListener listenerPokemonInst = new ValueEventListener() {
             @Override
@@ -565,11 +568,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 total_monsters = 0;
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    pokemon_inst = postSnapshot.getValue(PokemonInst.class);
-                    if(pokemon_inst.getUser_id().equals(personID)){
-                        total_monsters++;
-                    }
-
+                    total_monsters++;
                 }
             }
 

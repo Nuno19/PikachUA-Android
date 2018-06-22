@@ -136,7 +136,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
         number_of_items();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference( "pokemons" );
+        Query reference = FirebaseDatabase.getInstance().getReference( "pokemons" ).orderByChild("id").startAt(pokemon_id).endAt(pokemon_id + "\uf8ff");
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -144,10 +144,8 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 Pokemon mon = null;
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     mon = postSnapshot.getValue(Pokemon.class);
-                    if(mon.getId().equals(pokemon_id)) {
-                        setPokemon( getWindow().getDecorView().getRootView(), mon );
-                        pokemonToCatch = mon;
-                    }
+                    setPokemon( getWindow().getDecorView().getRootView(), mon );
+                    pokemonToCatch = mon;
                 }
             }
 
@@ -315,7 +313,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
 
     public void getnextID() {
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference( "pokemonsInst" );
+        Query reference = FirebaseDatabase.getInstance().getReference( "pokemonsInst" ).orderByChild("user_id").startAt(personID).endAt(personID + "\uf8ff");
         final ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -324,9 +322,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 next_id = 0;
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     pokemon = postSnapshot.getValue( PokemonInst.class );
-                    if (pokemon.getUser_id().equals( personID )) {
-                        next_id = Integer.parseInt( pokemon.getId().split( "_" )[1] ) + 1;
-                    }
+                    next_id = Integer.parseInt( pokemon.getId().split( "_" )[1] ) + 1;
                 }
             }
 
@@ -716,7 +712,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     }
 
     public void updateBag(final String k){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("items_inst");
+        Query reference = FirebaseDatabase.getInstance().getReference("items_inst").orderByChild("user_id").startAt(personID).endAt(personID + "\uf8ff");;
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -727,7 +723,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
 
-                    if(item_inst.getUser_id().equals(personID) && item_inst.getItem_id().equals(k)){
+                    if(item_inst.getItem_id().equals(k)){
                         postSnapshot.getRef().child("amount").setValue(item_inst.getAmount()-1);
                         break;
                     }
@@ -746,7 +742,7 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
     }
 
     public void updatePlayer(final int xp, final boolean caught_monster){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        Query reference = FirebaseDatabase.getInstance().getReference("users").orderByChild("id").startAt(personID).endAt(personID + "\uf8ff");;
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -756,13 +752,11 @@ public class CatchActivity extends AppCompatActivity implements Renderer {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     user = postSnapshot.getValue(User.class);
 
-                    if(user.getId().equals(personID)){
-                        postSnapshot.getRef().child("totalXP").setValue(String.valueOf(Integer.parseInt(user.getTotalXP())+xp));
-                        if (caught_monster == true){
-                            postSnapshot.getRef().child("monstersCaught").setValue(String.valueOf(Integer.parseInt(user.getMonstersCaught())+1));
-                        }
-                        break;
+                    postSnapshot.getRef().child("totalXP").setValue(String.valueOf(Integer.parseInt(user.getTotalXP())+xp));
+                    if (caught_monster == true){
+                        postSnapshot.getRef().child("monstersCaught").setValue(String.valueOf(Integer.parseInt(user.getMonstersCaught())+1));
                     }
+                    break;
                 }
             }
 

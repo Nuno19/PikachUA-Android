@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class CollectionFragment extends Fragment {
 
     public void loadPokedex(final View rootView, final MonsterCollectionAdapter adapter){
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokedex");
+        Query reference = FirebaseDatabase.getInstance().getReference("pokedex").orderByChild("user_id").startAt(personID).endAt(personID + "\uf8ff");
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,9 +110,7 @@ public class CollectionFragment extends Fragment {
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     mon = postSnapshot.getValue(PokedexInst.class);
-                    if(mon.getUser_id().equals(personID)) {
-                        list_pokedex.add(mon.getPokemon_id());
-                    }
+                    list_pokedex.add(mon.getPokemon_id());
                 }
             }
 

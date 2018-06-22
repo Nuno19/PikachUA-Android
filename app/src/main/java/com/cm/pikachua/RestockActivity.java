@@ -162,7 +162,7 @@ public class RestockActivity extends AppCompatActivity {
 
 
     public void updateBag(final String k, final int num_items){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("items_inst");
+        Query reference = FirebaseDatabase.getInstance().getReference("items_inst").orderByChild("user_id").startAt(person_id).endAt(person_id + "\uf8ff");
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -173,7 +173,7 @@ public class RestockActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
 
-                    if(item_inst.getUser_id().equals(person_id) && item_inst.getItem_id().equals(k)){
+                    if(item_inst.getItem_id().equals(k)){
                         postSnapshot.getRef().child("amount").setValue(item_inst.getAmount()+num_items);
                         break;
                     }
@@ -192,7 +192,7 @@ public class RestockActivity extends AppCompatActivity {
     }
 
     public void updateXP(final int xp){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        Query reference = FirebaseDatabase.getInstance().getReference("users").orderByChild("user_id").startAt(person_id).endAt(person_id + "\uf8ff");
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -201,11 +201,8 @@ public class RestockActivity extends AppCompatActivity {
                 User user = null;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     user = postSnapshot.getValue(User.class);
-
-                    if(user.getId().equals(person_id)){
-                        postSnapshot.getRef().child("totalXP").setValue(String.valueOf(Integer.parseInt(user.getTotalXP())+xp));
-                        break;
-                    }
+                    postSnapshot.getRef().child("totalXP").setValue(String.valueOf(Integer.parseInt(user.getTotalXP())+xp));
+                    break;
                 }
             }
 

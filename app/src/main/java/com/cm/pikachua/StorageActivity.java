@@ -38,6 +38,7 @@ import java.util.ArrayList;
  */
 public class StorageActivity extends AppCompatActivity {
 
+    private static final String TAG = "StorageActivity";
     ArrayList<MonsterStorage> arrayOfMonsterStorage = new ArrayList<MonsterStorage>();
     private ArrayList<String> selectedMonsters;
     AlertDialog alertDialog1;
@@ -90,9 +91,14 @@ public class StorageActivity extends AppCompatActivity {
                             //What ever you want to do with the value
                             YouEditTextValue = edittext.getText();
                             substring = YouEditTextValue.toString();
-                            searching = true;
-                            button_search.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.MULTIPLY);
-                            loadStorage(adapter);
+                            if (substring.isEmpty()){
+                                searching = false;
+                            }
+                            else {
+                                searching = true;
+                                button_search.getBackground().setColorFilter( Color.BLUE, PorterDuff.Mode.MULTIPLY);
+                                loadStorage(adapter);
+                            }
                         }
                     });
 
@@ -293,7 +299,12 @@ public class StorageActivity extends AppCompatActivity {
         Query pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild(string);
 
         if (searching == true){
-            pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild("nickname").startAt(substring.substring(0, 1).toUpperCase() + substring.substring(1,substring.length()-1).toLowerCase()).endAt(substring.substring(0, 1).toUpperCase() + substring.substring(1,substring.length()-1).toLowerCase()+"\uf8ff");
+            substring = substring.toLowerCase();
+            substring = substring.substring(0, 1).toUpperCase();
+            Log.d(TAG,substring);
+            pokemonsInst = FirebaseDatabase.getInstance().getReference("pokemonsInst").orderByChild("nickname")
+                    .startAt(substring)
+                    .endAt(substring + "\uf8ff");
         }
 
         ValueEventListener listenerPokemonInst = new ValueEventListener() {

@@ -20,8 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class BagFragment extends Fragment {
 
     public void loadItems(final View rootView, final ItemAdapter adapter){
 
-        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("items_inst");
+        Query itemsInst = FirebaseDatabase.getInstance().getReference("items_inst").orderByChild("user_id").startAt(personID).endAt(personID + "\uf8ff");
 
         ValueEventListener listenerItemInst = new ValueEventListener() {
             @Override
@@ -109,13 +109,11 @@ public class BagFragment extends Fragment {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     item_inst = postSnapshot.getValue(ItemInst.class);
 
-                    if(item_inst.getUser_id().equals(personID)){
-                        if (item_inst.getAmount() > 0){
-                            Item x = new Item(item_inst.getId(), item_inst.getName(), item_inst.getDescription(), item_inst.getImage(), item_inst.getAmount());
-                            adapter.add(x);
-                        }
-                        number+=item_inst.getAmount();
+                    if (item_inst.getAmount() > 0){
+                        Item x = new Item(item_inst.getId(), item_inst.getName(), item_inst.getDescription(), item_inst.getImage(), item_inst.getAmount());
+                        adapter.add(x);
                     }
+                    number+=item_inst.getAmount();
                 }
                 int total = 200;
 

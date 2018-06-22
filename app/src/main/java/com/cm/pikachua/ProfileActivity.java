@@ -17,8 +17,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri personPhoto;
     private String personID;
 
-    private DatabaseReference mFirebaseDatabase;
+    private Query mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -62,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
-        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+        mFirebaseDatabase = mFirebaseInstance.getReference("users").orderByChild("id").startAt(personID).endAt(personID + "\uf8ff");
 
 
         // app_title change listener
@@ -73,9 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
                 User user = null;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     user = postSnapshot.getValue(User.class);
-                    if(user.getId().equals(personID)){
-                        updateUser(getWindow().getDecorView().getRootView(),getApplicationContext(),user);
-                    }
+                    updateUser(getWindow().getDecorView().getRootView(),getApplicationContext(),user);
                 }
             }
 

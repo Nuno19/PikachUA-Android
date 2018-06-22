@@ -16,8 +16,8 @@ import com.cm.entities.Pokemon;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -84,7 +84,7 @@ public class MonsterBioFragment extends Fragment {
             }
         });
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("pokemons");
+        Query reference = FirebaseDatabase.getInstance().getReference("pokemons").orderByChild("id").startAt(mParam1).endAt(mParam1 + "\uf8ff");
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -95,28 +95,26 @@ public class MonsterBioFragment extends Fragment {
                 int i=0;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     mon = postSnapshot.getValue(Pokemon.class);
-                    if (mon.getId().equals(mParam1)){
-                        TextView t1 = rootView.findViewById(R.id.name);
-                        t1.setText(mon.getName());
+                    TextView t1 = rootView.findViewById(R.id.name);
+                    t1.setText(mon.getName());
 
-                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(mon.getImage());
-                        ImageView imageViewAndroid = (ImageView) rootView.findViewById(R.id.image);
-                        // Load the image using Glide
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(mon.getImage());
+                    ImageView imageViewAndroid = (ImageView) rootView.findViewById(R.id.image);
+                    // Load the image using Glide
 
-                        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
+                    Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageViewAndroid);
 
-                        TextView t2 = rootView.findViewById(R.id.weight);
-                        t2.setText(getString(R.string.weight) + " " + mon.getWeight());
+                    TextView t2 = rootView.findViewById(R.id.weight);
+                    t2.setText(getString(R.string.weight) + " " + mon.getWeight());
 
-                        TextView t3 = rootView.findViewById(R.id.height);
-                        t3.setText(getString(R.string.height) + " " + mon.getHeight());
+                    TextView t3 = rootView.findViewById(R.id.height);
+                    t3.setText(getString(R.string.height) + " " + mon.getHeight());
 
-                        TextView t4 = rootView.findViewById(R.id.pokedex);
-                        t4.setText(mon.getPokedex());
+                    TextView t4 = rootView.findViewById(R.id.pokedex);
+                    t4.setText(mon.getPokedex());
 
-                        TextView t5 = rootView.findViewById(R.id.nickname);
-                        t5.setText(mon.getNickname());
-                    }
+                    TextView t5 = rootView.findViewById(R.id.nickname);
+                    t5.setText(mon.getNickname());
                 }
             }
             @Override
