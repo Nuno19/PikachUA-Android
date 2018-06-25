@@ -1,6 +1,7 @@
 package com.cm.pikachua;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,6 +47,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.ar.core.ArCoreApk;
@@ -55,9 +58,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -264,9 +272,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void run() {
                 // Do something here on the main thread
                 mMap.clear();
-                loadPokeStops();
+                loadPokeStops().addOnCompleteListener( new OnCompleteListener<String>(){
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Exception e = task.getException();
+                            if (e instanceof FirebaseFunctionsException) {
+                                FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                                FirebaseFunctionsException.Code code = ffe.getCode();
+                                Object details = ffe.getDetails();
+                                Log.e("ERROR", details.toString());
+                            }
+                            Log.e("ERROR", e.toString());
+                        }
+                        Log.d("COMPLETE", "Complete");
+                    }
+                });
                 //generatePokemons();
-                loadPokemons();
+                loadPokemons().addOnCompleteListener( new OnCompleteListener<String>(){
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Exception e = task.getException();
+                            if (e instanceof FirebaseFunctionsException) {
+                                FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                                FirebaseFunctionsException.Code code = ffe.getCode();
+                                Object details = ffe.getDetails();
+                                Log.e("ERROR POKEMON", details.toString());
+                            }
+                            Log.e("ERROR POKEMON", e.toString());
+                        }
+                        Log.d("COMPLETE POKEMON", "Complete");
+                    }
+                });;
                 handler.postDelayed(this, 30000);
             }
         };
@@ -279,36 +317,91 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerPokemon[markerID] = state;
         return true;
     }
+    private FirebaseFunctions mFunctions;
 
-    public void loadPokeStops(){
+    public Task<String> loadPokeStops(){
 
-        DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("pokestops");
+        mFunctions = FirebaseFunctions.getInstance();
 
-        ValueEventListener listenerItemInst = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                Coordinates coords = null;
+        Map<String, Object> data = new HashMap<>();
+        Map<String,String> location = new HashMap<>();
+        location.put("lat",String.valueOf(latitude));
+        location.put("long",String.valueOf(longitude));
 
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    coords = postSnapshot.getValue(Coordinates.class);
+        data.put("location", location);
+        Log.d("PokeSTOP", data.toString());
+        return mFunctions
+                .getHttpsCallable("getStopInstLoc")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
 
-                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop))
-                            .position(new LatLng(coords.getLatitude(),coords.getLongitude())).draggable(false).title(coords.getId()));
-                    Log.d("POKESTOP","pokestop");
-                }
-            }
+                        HashMap<String,ArrayList<HashMap<String,Double>>> map =(HashMap<String,ArrayList<HashMap<String,Double>>>) task.getResult().getData();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        itemsInst.addListenerForSingleValueEvent(listenerItemInst);
+
+                        for(Map<String, Double> m : map.get("pokestops")){
+                            mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop))
+                                    .position(new LatLng(m.get("latitude"),m.get("longitude"))).draggable(false).title("PokeStop"));
+                        }
+
+                        return "OK";
+                    }
+                });
+
+
     }
 
+
+    public Task<String> loadPokemons(){
+
+        mFunctions = FirebaseFunctions.getInstance();
+
+        Map<String, Object> data = new HashMap<>();
+        Map<String,String> location = new HashMap<>();
+        location.put("lat",String.valueOf(latitude));
+        location.put("long",String.valueOf(longitude));
+
+        data.put("location", location);
+        Log.d("PokeMON", data.toString());
+        return mFunctions
+                .getHttpsCallable("getPokeInstLoc")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+
+                        HashMap<String,ArrayList<HashMap<String,String>>> map =(HashMap<String,ArrayList<HashMap<String,String>>>) task.getResult().getData();
+                        try {
+                            Log.d("POKESPAWN",map.toString());
+                            for (Map<String, String> m : map.get("pokemon")) {
+
+                                String name = "m" + String.format("%03d", Integer.parseInt(m.get("pokemon_id")));
+
+                                int resource = getResources().getIdentifier(name, "drawable", getPackageName());
+
+                                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(resource))
+                                        .position(new LatLng(Double.parseDouble(m.get("latitude")), Double.parseDouble(m.get("longitude")))).draggable(false).title(m.get("pokeon_id")));
+                                Log.d("POKEMON", "pokemon");
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                        return "OK";
+                    }
+                });
+
+
+    }
+
+/*
     public void loadPokemons(){
 
         DatabaseReference itemsInst = FirebaseDatabase.getInstance().getReference("pokemonsMap");
@@ -342,7 +435,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
+*/
 
     public void generatePokemons(){
 
@@ -403,6 +496,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     //Getting current location
+    @SuppressLint("RestrictedApi")
     private void startLocation() {
         mMap.clear();
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
