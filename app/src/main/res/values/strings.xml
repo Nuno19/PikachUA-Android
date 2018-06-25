@@ -38,8 +38,8 @@
     <string name="ran_away">Oh no! It ran away!</string>
     <string name="catched">Got it!</string>
 
-    <string name="select_ball">Selecciona a tua bola</string>
-    <string name="select_berry">Selecciona a tua baga</string>
+    <string name="select_ball">Select your ball</string>
+    <string name="select_berry">Select your berry</string>
 
     <string name="camera_not_available">Camera not available. Please restart the app..</string>
     <string name="searching_surfaces">Searching for surfaces...</string>
