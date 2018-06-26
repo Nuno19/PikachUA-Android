@@ -223,11 +223,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
+                Log.d(TAG,marker.getTitle());
+
                 if(marker.getTitle().equals(getString(R.string.you))) {
 
                 }
 
-                else if( Integer.valueOf(marker.getTitle()) > 151) {
+                else
+                    if( Integer.valueOf(marker.getTitle()) > 151) {
                     Intent intent = new Intent( getBaseContext(), RestockActivity.class );
                     intent.putExtra( "ID", marker.getTitle() );
                     startActivity( intent );
@@ -345,7 +348,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         for(Map<String, Double> m : map.get("pokestops")){
                             mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop))
-                                    .position(new LatLng(m.get("latitude"),m.get("longitude"))).draggable(false).title("PokeStop"));
+                                    .position(new LatLng(m.get("latitude"),m.get("longitude"))).draggable(false).title( String.valueOf( m.get("id") ) ));
                         }
 
                         return "OK";
@@ -387,7 +390,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 int resource = getResources().getIdentifier(name, "drawable", getPackageName());
 
                                 mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(resource))
-                                        .position(new LatLng(Double.parseDouble(m.get("latitude")), Double.parseDouble(m.get("longitude")))).draggable(false).title(m.get("pokeon_id")));
+                                        .position(new LatLng(Double.parseDouble(m.get("latitude")), Double.parseDouble(m.get("longitude")))).draggable(false).title(m.get("pokemon_id")));
                                 Log.d("POKEMON", "pokemon");
                             }
                         }catch (Exception e){
